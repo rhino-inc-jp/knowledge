@@ -1,14 +1,17 @@
 import React from "react"
+
+import { Viewport } from "@/types/article";
+
 import styles from "@/styles/components/atoms/switchBtns.module.scss"
 
 type Props = {
-  viewType: "list" | "image";
-  setViewType: (type: "list" | "image") => void;
+  viewType: Viewport;
+  setViewType: (type: Viewport) => void;
 }
 
 const SwitchBtns: React.FC<Props> = ({ viewType, setViewType }) => {
   return (
-    <div className={`${ styles.wrapper } flex justify-end`}>
+    <div className={`${ styles.wrapper } flex justify-end px-common-sp`}>
       <div className={`${ styles.btns } flex`}>
         <button
           type="button"

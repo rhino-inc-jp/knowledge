@@ -23,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       <SwitchBtns viewType={viewType} setViewType={setViewType} />
-      <Articlelist data={data} />
+      <Articlelist viewType={viewType} data={data} />
     </>
   );
 }

@@ -1,3 +1,5 @@
+export type Viewport = "list" | "image";
+
 export type Article = {
   id: string;
   title: string;
@@ -23,8 +25,4 @@ export type ListResponse<T> = {
   totalCount: number;
   offset: number;
   limit: number;
-}
-
-export type ArticleListProps = {
-  data: ListResponse<Article>
 }

@@ -25,7 +25,7 @@ export default function RootLayout({
       <body>
         <Header />
 
-        <main className="px-common-sp md:px-common-pc">
+        <main>
           {children}
         </main>
 

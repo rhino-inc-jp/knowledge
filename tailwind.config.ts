@@ -23,6 +23,14 @@ const config: Config = {
             paddingLeft: '5%',
             paddingRight: '5%',
           },
+          '.mx-common-sp': {
+            marginLeft: '10.5%',
+            marginRight: '7%',
+          },
+          '.mx-common-pc': {
+            marginLeft: '5%',
+            marginRight: '5%',
+          },
         },
         ['responsive']
       );

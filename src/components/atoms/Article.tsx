@@ -1,26 +1,32 @@
 import React from 'react'
 import Image from 'next/image'
 
-import type { Article as ArticleType } from '@/types/article'
+import type { Article as ArticleType, Viewport } from '@/types/article'
 
 import styles from '@/styles/components/atoms/article.module.scss'
 
 type Props = {
-  article: ArticleType
+  article: ArticleType;
+  viewType: Viewport;
 }
 
-const Article: React.FC<Props> = ({ article }) => {
+const Article: React.FC<Props> = ({ article, viewType }) => {
   const { article_url, post_staff, description, title, thumb, comment } = article
 
   return (
-    <a href={article_url} target="_blank" rel="noopener noreferrer" className={styles.article}>
-      <div className={`${styles.articleThumb}`}>
-        <Image
-          src={thumb.url}
-          fill
-          alt=""
-        />
-      </div>
+    <a href={article_url} target="_blank" rel="noopener noreferrer" className={`${styles.article} ${styles[viewType]}`}>
+
+      {
+        viewType === "image" && (
+          <div className={`${styles.articleThumb}`}>
+            <Image
+              src={thumb.url}
+              fill
+              alt=""
+            />
+          </div>
+        )
+      }
 
       <h4 className={`${styles.articleTtl}`}>{title}</h4>
 

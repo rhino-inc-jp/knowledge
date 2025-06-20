@@ -1,0 +1,54 @@
+@use 'mixin' as m;
+
+.sectionYear {
+  position: relative;
+}
+.sectionYearTtl,
+.sectionDateTtl {
+  z-index: 9;
+  position: sticky;
+  left: 0;
+  
+  transform: rotate(-90deg) translateY(0%) translateX(-100%);
+  transform-origin: top left;
+  
+  @include m.font_hel;
+  @include m.fz_vw(18);
+  line-height: 1;
+
+  display: inline-block;
+}
+.sectionYearTtl {
+  top: 28%;
+  border-right: 1px solid #000;
+}
+
+.sectionDate {
+  position: relative;
+  border-top: 1px solid #000;
+}
+.sectionDateTtl {
+  top: 28%;
+}
+
+.listWrapper {
+  padding-left: 12%;
+}
+
+.list {
+  width: 100%;
+}
+.list .item {
+  width: 100%;
+}
+
+.image {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.image .item {
+  width: 48%;
+  border-bottom: 1px solid;
+  margin-bottom: 5%;
+}
