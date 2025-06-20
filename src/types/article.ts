@@ -18,11 +18,13 @@ export type Article = {
   comment: string;
 }
 
+export type ListResponse<T> = {
+  contents: T[];
+  totalCount: number;
+  offset: number;
+  limit: number;
+}
+
 export type ArticleListProps = {
-  data: {
-    contents: Article[];
-    totalCount: number;
-    offset: number;
-    limit: number;
-  }
+  data: ListResponse<Article>
 }

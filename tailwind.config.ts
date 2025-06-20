@@ -15,13 +15,13 @@ const config: Config = {
     function ({ addUtilities }) {
       addUtilities(
         {
-          '.px-common-5p': {
+          '.px-common-sp': {
+            paddingLeft: '10.5%',
+            paddingRight: '7%',
+          },
+          '.px-common-pc': {
             paddingLeft: '5%',
             paddingRight: '5%',
-          },
-          '.px-common-8p': {
-            paddingLeft: '7%',
-            paddingRight: '7%',
           },
         },
         ['responsive']

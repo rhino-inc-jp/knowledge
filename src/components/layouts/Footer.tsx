@@ -6,7 +6,7 @@ import styles from "@/styles/components/layouts/footer.module.scss"
 const Footer: React.FC = () => {
   return (
     <footer
-      className={`${styles.footer} px-common-5p md:px-common-8p`}
+      className={`${styles.footer} px-common-sp md:px-common-pc`}
     >
       <div>
         <p className="text-right">

@@ -1,0 +1,32 @@
+@use 'mixin' as m;
+
+.wrapper {
+  margin-bottom: 5%;
+}
+
+.btns {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+
+  line-height: 1;
+  width: 64%;
+}
+
+.btns > .btn:not(:last-child) {
+  border-right: 1px solid #000;
+}
+
+.btn {
+  width: 50%;
+  display: block;
+  padding: 2% 2%;
+
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+
+  @include m.font_hel;
+}
+
+.active {
+  background-color: #FFF171;
+}

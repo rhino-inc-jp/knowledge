@@ -6,10 +6,10 @@ import styles from "@/styles/components/layouts/header.module.scss"
 const Header: React.FC = () => {
   return (
     <header
-      className={`${styles.header} px-common-5p md:px-common-8p`}
+      className={`${styles.header} px-common-sp md:px-common-pc`}
     >
       <div>
-        <h1 className="logo">
+        <h1 className={`${styles.headerLogo}`}>
           <Image
             src="/logo_Knowledge.svg"
             width={358}
