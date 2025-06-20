@@ -1,0 +1,20 @@
+@use '_mixin' as m;
+
+.article {
+  display: block;
+}
+
+.articleThumb {
+  width: 100%;
+  position: relative;
+  padding-top: 52%;
+  margin-bottom: 3%;
+}
+
+.articleTtl {
+  @include m.fz_vw(10);
+}
+
+.articleStaff {
+  @include m.font_hel;
+}

@@ -1,0 +1,19 @@
+@use 'mixin' as m;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #000;
+  font-style: normal;
+  @include m.font_noto;
+  @include m.fz_vw(12);
+  font-weight: 400;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
