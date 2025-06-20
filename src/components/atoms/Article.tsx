@@ -28,7 +28,7 @@ const Article: React.FC<Props> = ({ article }) => {
       <p className="article__desc">{description}</p> 
 
       <div className="article__bottom">
-        <p className="article__staff">{post_staff.staff}</p>
+        <p className={styles.articleStaff}>{post_staff.staff}</p>
         <div className="article__bottom__btns">
           <button type="button" className="article__comment-opener relative">
             <Image

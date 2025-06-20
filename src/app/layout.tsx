@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../styles/globals.css"
+import "../styles/globals.scss"
 
 import Header from "@/components/layouts/Header"
 import Fotter from "@/components/layouts/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Knowledge",
@@ -22,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={inter.className}>
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/nnm5oqg.css"></link>
+      </head>
+      <body>
         <Header />
 
         <main className="px-common-5p md:px-common-8p">

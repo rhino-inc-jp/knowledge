@@ -27,3 +27,15 @@
     font-size: get_vw($font_size, 1440);
   }
 }
+
+// font family
+
+// helvetica-lt-pro weight 300 or 400
+@mixin font_hel {
+  font-family: "helvetica-lt-pro", sans-serif;
+}
+
+// noto-sans weight 300 or 400
+@mixin font_noto {
+  font-family: noto-sans, sans-serif;
+}

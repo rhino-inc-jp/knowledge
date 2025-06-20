@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image"
 
-import styles from "@/styles/components/layouts/header.module.css"
+import styles from "@/styles/components/layouts/header.module.scss"
 
 const Header: React.FC = () => {
   return (

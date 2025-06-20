@@ -14,3 +14,7 @@
 .articleTtl {
   @include m.fz_vw(10);
 }
+
+.articleStaff {
+  @include m.font_hel;
+}
