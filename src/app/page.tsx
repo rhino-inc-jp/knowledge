@@ -17,10 +17,11 @@ const Home: React.FC = () => {
   // 記事一覧の表示タイプ
   const [viewType, setViewType] = useState<"list" | "image">("list");
 
-  // 記事取得関連
+  // 記事取得
   const [articles, setArticles] = useState<Article[]>([]);
   const [offset, setOffset] = useState(0)
   const [isEnd, setIsEnd] = useState(false)
+  const [hasInitialized, setHasInitialized] = useState(false)
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -45,6 +46,8 @@ const Home: React.FC = () => {
           return [...prev, ...newArticles];
         });
       }
+
+      setHasInitialized(true); // 初回読み込み後にフラグをセット、これ以降はスクロールで記事読み込みが可能になる
     }
 
     fetchData();
@@ -52,13 +55,12 @@ const Home: React.FC = () => {
 
   // ページ下部までスクロールしたら、追加の記事を取得&表示
   useEffect(() => {
-    if (!loaderRef.current || isEnd) return;
+    if (!loaderRef.current || isEnd || !hasInitialized) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // offsetをLIMIT分増やすと
-          // １つ目に記述したuseEffectが動いて再び記事を取得します
-          // １つ前のuseEffectの依存配列にはoffsetを設定
+          // offsetをLIMIT分増やすと、
+          // 依存配列にoffsetを設定している１つ目のuseEffectが動いて記事を取得します
           setOffset((prev) => prev + LIMIT)
         }
       },
@@ -71,7 +73,7 @@ const Home: React.FC = () => {
     observer.observe(loaderRef.current)
 
     return () => observer.disconnect()
-  }, [loaderRef.current, isEnd])
+  }, [loaderRef.current, isEnd, hasInitialized]);
 
   return (
     <>
@@ -81,7 +83,14 @@ const Home: React.FC = () => {
         <Articlelist viewType={viewType} articles={articles} />
 
         {
-          !isEnd && (
+          !hasInitialized && (
+            <p className="text-center">Loading...</p>
+          )
+        }
+
+        {
+          // 初回ロード前と読み込める記事がない場合は非表示
+          hasInitialized && !isEnd && (
             <Loading ref={loaderRef} />
           )
         }
