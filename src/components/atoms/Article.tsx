@@ -11,10 +11,15 @@ type Props = {
 }
 
 const Article: React.FC<Props> = ({ article, viewType }) => {
-  const { article_url, post_staff, description, title, thumb, comment } = article
+  const { article_url, date, post_staff, description, title, thumb, comment } = article
+
+  const formattedDate = new Date(date).toLocaleString("ja-JP", {
+    timeZone: "Asia/Tokyo"
+  })
 
   return (
     <a href={article_url} target="_blank" rel="noopener noreferrer" className={`${styles.article} ${styles[viewType]}`}>
+      <p>{ formattedDate }</p>
 
       {
         viewType === "image" && (
