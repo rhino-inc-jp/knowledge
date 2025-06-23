@@ -1,20 +1,16 @@
 import React from "react";
 import Image from "next/image";
 
-import styles from "@/styles/components/layouts/footer.module.scss"
-
 const Footer: React.FC = () => {
   return (
     <footer
-      className={`${styles.footer} px-common-sp md:px-common-pc`}
+      className="px-common-sp md:px-common-pc pt-[45px] pb-[25px] md:pt-[70px] md:pb-[75px]"
     >
-      <div>
-        <p className="text-right">
+      <div className="text-right">
+        <p className="inline-block relative w-[80px] h-[15px] md:w-[120px] md:h-[20px]">
           <Image
-            className="inline-block"
             src="/logo_rhino-inc.svg"
-            width={122}
-            height={100}
+            fill
             alt="&copy; Rhino Inc."
           />
         </p>

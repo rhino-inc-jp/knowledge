@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import type { Article as ArticleType, Viewport } from '@/types/article'
 
-import styles from '@/styles/components/atoms/article.module.scss'
+import styles from '@/styles/components/atoms/article.module.css'
 
 type Props = {
   article: ArticleType;
@@ -18,7 +18,7 @@ const Article: React.FC<Props> = ({ article, viewType }) => {
 
       {
         viewType === "image" && (
-          <div className={`${styles.articleThumb}`}>
+          <div className={`${styles.articleThumb} mb-[10px]`}>
             <Image
               src={thumb.url}
               fill

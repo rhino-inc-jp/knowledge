@@ -1,20 +1,6 @@
-@use 'mixin' as m;
-
-.wrapper {
-  z-index: 99;
-  position: fixed;
-  top: 21%;
-  right: 0;
-  width: 100%;
-  background-color: #fff;
-}
-
 .btns {
   border-left: 1px solid #000;
   border-right: 1px solid #000;
-
-  line-height: 1;
-  width: 64%;
 }
 
 .btns > .btn:not(:last-child) {
@@ -23,13 +9,8 @@
 
 .btn {
   width: 50%;
-  display: block;
-  padding: 2% 2%;
-
   background-color: #fff;
   transition: background-color 0.3s ease;
-
-  @include m.font_hel;
 }
 
 .active {

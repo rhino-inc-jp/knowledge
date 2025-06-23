@@ -5,8 +5,24 @@ import React, { useEffect, useState } from "react"
 import type { Article, ListResponse } from "@/types/article";
 
 import { client } from "@/components/libs/microcms";
+
+import Header from "@/components/layouts/Header"
 import SwitchBtns from '@/components/atoms/SwitchBtns'
 import Articlelist from "@/components/organisms/ArticleList";
+
+type Articlemap = {
+  [year: string]: {
+    [date: string]: Article[]
+  }
+}
+
+const formatData = (article: Article[]): Articlemap => {
+  const map: Articlemap = {}
+
+  
+
+  return map;
+}
 
 const Home: React.FC = () => {
   const [viewType, setViewType] = useState<"list" | "image">("list");
@@ -15,15 +31,21 @@ const Home: React.FC = () => {
   useEffect(() => {
     client
       .getList<Article>({ endpoint: 'blogs' })
-      .then(setData)
+      .then((response) => {
+        console.log(response)
+        setData(response)
+      })
   }, [])
 
   if (!data) return <p>Loading...</p>
 
   return (
     <>
-      <SwitchBtns viewType={viewType} setViewType={setViewType} />
-      <Articlelist viewType={viewType} data={data} />
+      <Header />
+      <main>
+        <SwitchBtns viewType={viewType} setViewType={setViewType} />
+        <Articlelist viewType={viewType} data={data} />
+      </main>
     </>
   );
 }

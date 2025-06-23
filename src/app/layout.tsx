@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import "../styles/globals.scss"
+import "../styles/globals.css"
 
-import Header from "@/components/layouts/Header"
 import Fotter from "@/components/layouts/Footer";
 
 export const metadata: Metadata = {
@@ -22,13 +21,8 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/nnm5oqg.css"></link>
       </head>
-      <body>
-        <Header />
-
-        <main>
-          {children}
-        </main>
-
+      <body className="text-xs font-normal not-italic text-black font-noto pt-[182px]">
+        {children}
         <Fotter />
       </body>
     </html>

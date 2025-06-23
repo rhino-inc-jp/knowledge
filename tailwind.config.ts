@@ -8,28 +8,33 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        noto: ['noto-sans', 'sans-serif'],
+        hel: ['helvetica-lt-pro', 'sans-serif'],
+      }
+    },
   },
   plugins: [
     // @ts-ignore
     function ({ addUtilities }) {
       addUtilities(
         {
-          '.px-common-sp': {
-            paddingLeft: '10.5%',
-            paddingRight: '7%',
+          '.px-common-sp': { // 共通padding
+            paddingLeft: '40px',
+            paddingRight: '25px',
           },
-          '.px-common-pc': {
-            paddingLeft: '5%',
-            paddingRight: '5%',
+          '.px-common-pc': { // 共通padding PC
+            paddingLeft: '70px',
+            paddingRight: '52px',
           },
-          '.mx-common-sp': {
-            marginLeft: '10.5%',
-            marginRight: '7%',
+          '.mx-common-sp': { // 共通margin
+            marginLeft: '40px',
+            marginRight: '25px',
           },
-          '.mx-common-pc': {
-            marginLeft: '5%',
-            marginRight: '5%',
+          '.mx-common-pc': { // 共通margin PC
+            marginLeft: '70px',
+            marginRight: '52px',
           },
         },
         ['responsive']
