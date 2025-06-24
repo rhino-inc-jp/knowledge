@@ -1,0 +1,9 @@
+.article {
+  display: block;
+}
+
+.articleThumb {
+  width: 100%;
+  position: relative;
+  padding-top: 52%;
+}

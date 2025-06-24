@@ -1,0 +1,38 @@
+.sectionYearTtl,
+.sectionDateTtl {
+  z-index: 9;
+  position: sticky;
+  left: 0;
+  
+  transform: rotate(-90deg) translateY(0%) translateX(-100%);
+  transform-origin: top left;
+
+  display: inline-block;
+}
+.sectionYearTtl {
+  border-right: 1px solid #000;
+}
+
+.sectionDate {
+  position: relative;
+  border-top: 1px solid #000;
+}
+
+/* viewType */
+.list {
+  width: 100%;
+}
+.list .item {
+  width: 100%;
+}
+
+.image {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.image .item {
+  width: 48%;
+  border-bottom: 1px solid;
+  margin-bottom: 5%;
+}

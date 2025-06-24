@@ -1,3 +1,5 @@
+export type Viewport = "list" | "image";
+
 export type Article = {
   id: string;
   title: string;
@@ -16,13 +18,11 @@ export type Article = {
     url: string;
   };
   comment: string;
-}
+};
 
-export type ArticleListProps = {
-  data: {
-    contents: Article[];
-    totalCount: number;
-    offset: number;
-    limit: number;
-  }
-}
+export type ListResponse<T> = {
+  contents: T[];
+  totalCount: number;
+  offset: number;
+  limit: number;
+};
