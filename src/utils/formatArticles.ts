@@ -1,4 +1,4 @@
-import { Article } from "@/types/article"
+import { Article } from "@/types/article";
 
 /**
  * microCMSから取得した記事のリストを
@@ -7,18 +7,20 @@ import { Article } from "@/types/article"
 
 export type FormattedArticles = {
   [year: string]: {
-    [date: string]: Article[]
-  }
-}
+    [date: string]: Article[];
+  };
+};
 
-export const formatArticlesByYearAndDate = (articles: Article[]): FormattedArticles => {
+export const formatArticlesByYearAndDate = (
+  articles: Article[]
+): FormattedArticles => {
   const formatted: FormattedArticles = {};
 
-  articles.forEach(article => {
+  articles.forEach((article) => {
     const dateObj = new Date(article.date);
     const year = dateObj.getFullYear().toString();
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
     const displayDate = `${month}.${day}`;
 
     if (!formatted[year]) {
@@ -27,8 +29,8 @@ export const formatArticlesByYearAndDate = (articles: Article[]): FormattedArtic
     if (!formatted[year][displayDate]) {
       formatted[year][displayDate] = [];
     }
-    
-    formatted[year][displayDate].push(article)
+
+    formatted[year][displayDate].push(article);
   });
 
   return formatted;

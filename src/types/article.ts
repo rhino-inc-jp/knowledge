@@ -18,11 +18,11 @@ export type Article = {
     url: string;
   };
   comment: string;
-}
+};
 
 export type ListResponse<T> = {
   contents: T[];
   totalCount: number;
   offset: number;
   limit: number;
-}
+};

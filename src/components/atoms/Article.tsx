@@ -1,42 +1,41 @@
-import React from 'react'
-import Image from 'next/image'
+import React from "react";
+import Image from "next/image";
 
-import type { Article as ArticleType, Viewport } from '@/types/article'
+import type { Article as ArticleType, Viewport } from "@/types/article";
 
-import styles from '@/styles/components/atoms/article.module.css'
+import styles from "@/styles/components/atoms/article.module.css";
 
 type Props = {
   article: ArticleType;
   viewType: Viewport;
-}
+};
 
 const Article: React.FC<Props> = ({ article, viewType }) => {
-  const { article_url, date, post_staff, description, title, thumb, comment } = article
+  const { article_url, date, post_staff, description, title, thumb, comment } =
+    article;
 
   const formattedDate = new Date(date).toLocaleString("ja-JP", {
-    timeZone: "Asia/Tokyo"
-  })
+    timeZone: "Asia/Tokyo",
+  });
 
   return (
-    <a href={article_url} target="_blank" rel="noopener noreferrer" className={`${styles.article} ${styles[viewType]}`}>
-      <p>{ formattedDate }</p>
+    <a
+      href={article_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.article} ${styles[viewType]}`}
+    >
+      <p>{formattedDate}</p>
 
-      {
-        viewType === "image" && (
-          <div className={`${styles.articleThumb} mb-[10px]`}>
-            <Image
-              src={thumb.url}
-              fill
-              alt=""
-            />
-          </div>
-        )
-      }
+      {viewType === "image" && (
+        <div className={`${styles.articleThumb} mb-[10px]`}>
+          <Image src={thumb.url} fill alt="" />
+        </div>
+      )}
 
       <h4 className={`${styles.articleTtl}`}>{title}</h4>
 
-      {/* spのみ */}
-      <p className="article__desc">{description}</p> 
+      <p className="article__desc">{description}</p>
 
       <div className="article__bottom">
         <p className={styles.articleStaff}>{post_staff.staff}</p>
@@ -66,7 +65,7 @@ const Article: React.FC<Props> = ({ article, viewType }) => {
         <p className="article__comment">{comment}</p>
       </div>
     </a>
-  )
-}
+  );
+};
 
 export default Article;

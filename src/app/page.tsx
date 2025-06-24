@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react";
 
 import type { Article, ListResponse } from "@/types/article";
 
 import { client } from "@/components/libs/microcms";
 
-import Header from "@/components/layouts/Header"
-import SwitchBtns from '@/components/atoms/SwitchBtns'
+import SwitchBtns from "@/components/atoms/SwitchBtns";
 import Articlelist from "@/components/organisms/ArticleList";
-import Loading from '@/components/atoms/Loader'
+import Loading from "@/components/atoms/Loader";
 
+// １回で取得する記事数
 const LIMIT = 6;
 
 const Home: React.FC = () => {
@@ -19,20 +19,20 @@ const Home: React.FC = () => {
 
   // 記事取得
   const [articles, setArticles] = useState<Article[]>([]);
-  const [offset, setOffset] = useState(0)
-  const [isEnd, setIsEnd] = useState(false)
-  const [hasInitialized, setHasInitialized] = useState(false)
+  const [offset, setOffset] = useState(0);
+  const [isEnd, setIsEnd] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchData = async ()=> {
+    const fetchData = async () => {
       const res: ListResponse<Article> = await client.getList<Article>({
         endpoint: "blogs",
         queries: {
           limit: LIMIT,
           offset: offset,
-          orders: "-date"
-        }
+          orders: "-date",
+        },
       });
 
       if (res.contents.length === 0) {
@@ -41,14 +41,14 @@ const Home: React.FC = () => {
       } else {
         setArticles((prev) => {
           // idを使って重複チェック
-          const ids = new Set(prev.map(p => p.id));
-          const newArticles = res.contents.filter(a => !ids.has(a.id));
+          const ids = new Set(prev.map((p) => p.id));
+          const newArticles = res.contents.filter((a) => !ids.has(a.id));
           return [...prev, ...newArticles];
         });
       }
 
       setHasInitialized(true); // 初回読み込み後にフラグをセット、これ以降はスクロールで記事読み込みが可能になる
-    }
+    };
 
     fetchData();
   }, [offset]);
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
         if (entry.isIntersecting) {
           // offsetをLIMIT分増やすと、
           // 依存配列にoffsetを設定している１つ目のuseEffectが動いて記事を取得します
-          setOffset((prev) => prev + LIMIT)
+          setOffset((prev) => prev + LIMIT);
         }
       },
       {
@@ -70,33 +70,26 @@ const Home: React.FC = () => {
       }
     );
 
-    observer.observe(loaderRef.current)
+    observer.observe(loaderRef.current);
 
-    return () => observer.disconnect()
-  }, [loaderRef.current, isEnd, hasInitialized]);
+    return () => observer.disconnect();
+  }, [isEnd, hasInitialized]);
 
   return (
     <>
-      <Header />
       <main>
         <SwitchBtns viewType={viewType} setViewType={setViewType} />
         <Articlelist viewType={viewType} articles={articles} />
 
-        {
-          !hasInitialized && (
-            <p className="text-center">Loading...</p>
-          )
-        }
+        {!hasInitialized && <p className="text-center">Loading...</p>}
 
         {
           // 初回ロード前と読み込める記事がない場合は非表示
-          hasInitialized && !isEnd && (
-            <Loading ref={loaderRef} />
-          )
+          hasInitialized && !isEnd && <Loading ref={loaderRef} />
         }
       </main>
     </>
   );
-}
+};
 
 export default Home;
