@@ -13,7 +13,7 @@ type Props = {
   viewType: Viewport;
 };
 
-const Articlelist: React.FC<Props> = ({ viewType, articles }) => {
+const Articlelist = ({ viewType, articles }: Props) => {
   // リストの表示レイアウト
   const listStyle = styles[viewType] || "";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <header className="w-full fixed top-0 left-0 z-50 px-common-sp md:px-common-pc pt-[28px] pb-[50px] md:pt-[70px] md:pb-[90px] bg-white">
       <div>

@@ -13,7 +13,7 @@ import Loading from "@/components/atoms/Loader";
 // １回で取得する記事数
 const LIMIT = 6;
 
-const Home: React.FC = () => {
+const Home = () => {
   // 記事一覧の表示タイプ
   const [viewType, setViewType] = useState<"list" | "image">("list");
 

@@ -10,7 +10,7 @@ type Props = {
   viewType: Viewport;
 };
 
-const Article: React.FC<Props> = ({ article, viewType }) => {
+const Article = ({ article, viewType }: Props) => {
   const { article_url, date, post_staff, description, title, thumb, comment } =
     article;
 

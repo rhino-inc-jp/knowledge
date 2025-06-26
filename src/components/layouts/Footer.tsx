@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-const Footer: React.FC = () => {
+const Footer = () => {
   return (
     <footer className="px-common-sp md:px-common-pc pt-[45px] pb-[25px] md:pt-[70px] md:pb-[75px]">
       <div className="text-right">

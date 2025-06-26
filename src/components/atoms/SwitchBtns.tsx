@@ -9,7 +9,7 @@ type Props = {
   setViewType: (type: Viewport) => void;
 };
 
-const SwitchBtns: React.FC<Props> = ({ viewType, setViewType }) => {
+const SwitchBtns = ({ viewType, setViewType }: Props) => {
   return (
     <div
       className={`z-50 w-full fixed top-[143px] right-0 bg-white flex justify-end px-common-sp pb-[15px]`}
