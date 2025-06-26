@@ -19,10 +19,6 @@ const nextConfig = {
       },
     ],
   },
-  sassOptions: {
-    // mixin.scssグローバルで読み込めるように設定
-    includePaths: [path.join(__dirname, "src/styles")],
-  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
