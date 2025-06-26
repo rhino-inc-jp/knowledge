@@ -9,18 +9,6 @@ const __dirname = path.dirname(__filename);
 // /opt/build/repo/node_modules/stretchで
 // fsモジュールを参照しているが、クライアントサイドには存在しないためNetlify上でbuildが失敗する
 // fsモジュールを空扱いする
-module.exports = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.node = {
-        fs: false,
-      };
-    }
-
-    return config;
-  },
-};
-
 const nextConfig = {
   images: {
     // microcmsから取得した画像の表示を許可
@@ -34,6 +22,15 @@ const nextConfig = {
   sassOptions: {
     // mixin.scssグローバルで読み込めるように設定
     includePaths: [path.join(__dirname, "src/styles")],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.node = {
+        fs: false,
+      };
+    }
+
+    return config;
   },
 };
 
