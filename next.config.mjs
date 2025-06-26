@@ -25,7 +25,7 @@ const nextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.node = {
+      config.resolve.fallback = {
         fs: false,
       };
     }
