@@ -1,0 +1,109 @@
+
+
+
+  .logoWrapper img{
+    position: unset!important;
+    height: auto!important;
+  }
+  
+  .searchBoxWrap {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    border-top: solid 1px #000;
+  }
+
+
+  .searchHeader{
+    display: none;
+  }
+
+  .searchBtn{
+    display: flex;
+    justify-content: center;
+    margin-top: 12%;
+    margin-bottom: 12%;
+  }
+  
+  .logoWrapper {
+    display: block;
+    width: 80px;
+    height: 15px;
+    margin: 0 4.26% 4.72% auto;
+  }
+
+  .closeBtnWrap{
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin-top: 3.3%;
+    margin-right: 3.3%;
+    z-index: 50;
+}
+
+  .closeBtn{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: #000;
+    border-radius: 50%;
+
+  }
+
+  .closeBtn span{
+    position: relative;
+    position: absolute;
+    width: 26px;
+    height: 1px;
+    background: #fff;
+    left: 50%;
+    top: 50%;
+  }
+
+  .closeBtn span:first-of-type{
+    transform: translate(-50%,-50%) rotate(30deg);
+  }
+  .closeBtn span:last-of-type{
+    transform: translate(-50%,-50%) rotate(-30deg);
+  }
+
+  /* mdスクリーン以上（768px～）でサイズ変更 */
+  @media (min-width: 768px) {
+    .logoWrapper {
+      width: 120px;
+      height: 20px;
+      margin: 0 7.24% 3.4% 0;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+    .searchBoxWrap{
+      display: flex;
+      justify-content: center;
+      gap: 4.49%;
+      padding-top: 22.98%;
+      width: 100%;
+      margin: unset;
+      border-top: unset;
+  }
+
+    .searchHeader{
+        display: block;
+      }
+
+      .searchBtn{
+        margin-top: 5.62%;
+        margin-bottom: 9.7%;
+      }
+
+      .closeBtnWrap{
+        margin-top: 2.2%;
+        margin-right: 2.2%;
+      }
+
+      .closeBtn{
+        width: 50px;
+        height: 50px;
+      }
+
+  }

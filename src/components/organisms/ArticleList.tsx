@@ -8,6 +8,7 @@ import styles from "@/styles/components/organisms/articleList.module.css";
 
 import { formatArticlesByYearAndDate } from "@/utils/formatArticles";
 
+
 type Props = {
   articles: ArticleType[];
   viewType: Viewport;
@@ -20,8 +21,11 @@ const Articlelist = ({ viewType, articles }: Props) => {
   // 年・日でセクションを分ける
   const formatted = formatArticlesByYearAndDate(articles);
 
+  
+
   return (
     <div>
+      
       {Object.entries(formatted)
         .sort(([aYear], [bYear]) => Number(bYear) - Number(aYear))
         .map(([year, dates]) => (

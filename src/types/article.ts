@@ -18,6 +18,7 @@ export type Article = {
     url: string;
   };
   comment: string;
+  
 };
 
 export type ListResponse<T> = {
