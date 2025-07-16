@@ -12,7 +12,6 @@ type Props = {
         <div className={styles.searchIcon}>
                 <span></span>
                 <span></span>
-            {/* <Image src="/icon_search.svg" alt="検索" width={13} height={13} /> */}
         </div>
       </div>
     );

@@ -37,7 +37,7 @@ const FilterSection = ({
       <h3 className="text-[23px] border-b border-black pb-[5.29%] pt-[5.29%]">{label}</h3>
       <div className="pt-[5%] text-[17px] max-h-[220px] overflow-y-auto">
         {items.map((item) => (
-          <label key={item} className="block mb-[4.8%]">
+          <label key={item} className="block mb-[5.3%]">
             <input
               type="checkbox"
               className={styles.checkbox}

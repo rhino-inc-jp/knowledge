@@ -53,7 +53,7 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-white overflow-auto w-full" style={{ zIndex: 100 }}>
+    <div className="fixed inset-0 bg-white overflow-auto w-full md:overflow-hidden" style={{ zIndex: 100 }}>
       <div className={styles.searchHeader}>
         <Header />
       </div>

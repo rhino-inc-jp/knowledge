@@ -9,6 +9,8 @@ import Articlelist from "@/components/organisms/ArticleList";
 import Loading from "@/components/atoms/Loader";
 import SearchIcon from "@/components/atoms/SearchIcon";
 import SearchFilterModal from "@/components/organisms/SearchFilterModal";
+// import styles from "@/styles/app/page.module.css";
+import styles from "@/styles/components/atoms/Headline.module.css";
 
 // １回で取得する記事数
 const LIMIT = 100;
@@ -115,6 +117,7 @@ const Home = () => {
         {/* 初期ロード中 */}
         {!hasInitialized && <p className="text-center">Loading...</p>}
 
+        <div className={styles.headLine}></div>
         {/* 検索条件の表示 */}
         {searchParams && (
           <div className="my-4 p-4 rounded text-sm">
