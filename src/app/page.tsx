@@ -92,6 +92,7 @@ const Home = () => {
   return (
     <>
       <main>
+        <div className="content-[''] fixed top-0 left-0 w-full h-[182px] z-[200] bg-white md:h-[260px]"></div>
         {/* 表示形式の切り替えボタン */}
         <SwitchBtns viewType={viewType} setViewType={setViewType} />
 

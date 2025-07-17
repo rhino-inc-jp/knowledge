@@ -2,6 +2,7 @@
   width: 100%;
   background-color: #fff;
   padding-bottom: 15px;
+  z-index: 200;
 }
 
 .btns {

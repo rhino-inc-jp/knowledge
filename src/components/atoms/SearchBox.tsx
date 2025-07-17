@@ -35,7 +35,7 @@ const FilterSection = ({
   return (
     <div className={styles.searchBox}>
       <h3 className="text-[23px] border-b border-black pb-[5.29%] pt-[5.29%]">{label}</h3>
-      <div className="pt-[5%] text-[17px] max-h-[220px] overflow-y-auto">
+      <div className="pt-[5%] text-[17px] min-h-[160px] max-h-[160px] overflow-y-auto md:min-h-[200px] md:max-h-[200px]">
         {items.map((item) => (
           <label key={item} className="block mb-[5.3%]">
             <input

@@ -7,7 +7,7 @@ import Header from "@/components/layouts/Header";
 import styles from "@/styles/components/organisms/SearchFilterModal.module.css";
 import Image from "next/image";
 import type { Viewport } from "@/types/article";
-import SearchIcon from "@/components/atoms/SearchIcon"; 
+import { motion, AnimatePresence } from "framer-motion"; // 変更: AnimatePresenceをインポート
 
 type Props = {
   isOpen: boolean;
@@ -51,39 +51,49 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
     });
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-white overflow-auto w-full md:overflow-hidden" style={{ zIndex: 100 }}>
-      <div className={styles.searchHeader}>
-        <Header />
-      </div>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-hidden"
+          style={{ zIndex: 300 }}
+          initial={{ x: "100%" }} // 初期状態: 画面の右外に配置
+          animate={{ x: 0 }} // アニメーション中: 画面内にスライドイン
+          exit={{ x: "100%" }} // 閉じるとき: 画面外にスライドアウト
+          transition={{
+            duration: 0.4, // アニメーションの時間を0.4秒に短縮
+            ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
+          }}
+        >
+          {/* <div className={styles.searchHeader}>
+            <Header />
+          </div> */}
 
-      {/* <SearchIcon onClick={onClose} />  */}
-      
-      <SearchBar keyword={keyword} setKeyword={setKeyword} />
+          <SearchBar keyword={keyword} setKeyword={setKeyword} />
 
-      <div className={styles.searchBoxWrap}>
-        <SearchBox
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-          selectedDates={selectedDates}
-          setSelectedDates={setSelectedDates}
-          selectedStaffs={selectedStaffs}
-          setSelectedStaffs={setSelectedStaffs}
-        />
-      </div>
+          <div className={styles.searchBoxWrap}>
+            <SearchBox
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              selectedDates={selectedDates}
+              setSelectedDates={setSelectedDates}
+              selectedStaffs={selectedStaffs}
+              setSelectedStaffs={setSelectedStaffs}
+            />
+          </div>
 
-      <div className={styles.searchBtn}>
-        <button className="w-[340px] bg-black text-white py-3 text-lg" onClick={handleSearch}>
-          Search
-        </button>
-      </div>
+          <div className={styles.searchBtn}>
+            <button className="w-[340px] bg-black text-white py-3 text-lg" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
 
-      <p className={styles.logoWrapper}>
-        <Image src="/logo_rhino-inc.svg" fill alt="&copy; Rhino Inc." />
-      </p>
-    </div>
+          <p className={styles.logoWrapper}>
+            <Image src="/logo_rhino-inc.svg" fill alt="&copy; Rhino Inc." />
+          </p>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
