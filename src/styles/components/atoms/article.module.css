@@ -130,6 +130,12 @@
     flex: 1.00;
     padding:0 22px 0 10px;
   }
+  .image .articleTtl{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
   .article__desc{
     margin-top: 0;
     flex: 1.44;

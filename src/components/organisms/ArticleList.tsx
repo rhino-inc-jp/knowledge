@@ -12,6 +12,7 @@ import { formatArticlesByYearAndDate } from "@/utils/formatArticles";
 type Props = {
   articles: ArticleType[];
   viewType: Viewport;
+  
 };
 
 const Articlelist = ({ viewType, articles }: Props) => {

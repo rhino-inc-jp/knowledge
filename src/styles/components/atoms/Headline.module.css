@@ -19,6 +19,32 @@
 }
 @media (min-width: 1500px) {
     .headLine{
-        width: 86.5%;
+        width: 86.35%;
     }
 }
+
+
+.searchWord{
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 182px;    
+    margin-left: 10px;    
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.searchWord p{
+    padding: 3px 0;
+}
+@media (min-width: 1500px) {
+    .searchWord{
+        margin-top: 260px;    
+        margin-left: 30px;    
+
+    }
+}
+

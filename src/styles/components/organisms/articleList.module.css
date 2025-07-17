@@ -43,6 +43,14 @@
   width: 33px;
 }
 
+/* 検索画面の時のみsectionWrapに.sectionWrapSearchが追加 */
+
+.sectionWrapSearch .sectionDateTtl{
+  display: none;
+}
+
+
+
 .sectionYearTtl{
 /* ⚠️反転しているため見えている箇所と逆に付与する */
   margin-left: 4px;

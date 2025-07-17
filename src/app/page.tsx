@@ -7,9 +7,8 @@ import { client } from "@/components/libs/microcms";
 import SwitchBtns from "@/components/atoms/SwitchBtns";
 import Articlelist from "@/components/organisms/ArticleList";
 import Loading from "@/components/atoms/Loader";
-import SearchIcon from "@/components/atoms/SearchIcon";
+import SearchIcon from "@/components/atoms/SearchIcon"; 
 import SearchFilterModal from "@/components/organisms/SearchFilterModal";
-// import styles from "@/styles/app/page.module.css";
 import styles from "@/styles/components/atoms/Headline.module.css";
 
 // １回で取得する記事数
@@ -17,9 +16,10 @@ const LIMIT = 100;
 
 const Home = () => {
   const [viewType, setViewType] = useState<Viewport>("list");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態を管理
+
+  const handleOpenModal = () => setIsModalOpen(true);  // モーダルを開く
+  const handleCloseModal = () => setIsModalOpen(false);  // モーダルを閉じる
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
@@ -98,13 +98,11 @@ const Home = () => {
         {/* 絞り込んだ記事リスト */}
         <Articlelist viewType={viewType} articles={filteredArticles} />
 
-        {/* 検索アイコンボタン */}
-        <button
-          className="fixed top-0 right-0 mt-[3.3%] mr-[3.3%] md:mt-[2.2%] md:mr-[2.2%] z-50"
-          onClick={handleOpenModal}
-        >
-          <SearchIcon />
-        </button>
+        {/* 検索アイコン */}
+        <SearchIcon
+          onClick={isModalOpen ? handleCloseModal : handleOpenModal}  // モーダルが開いている場合は閉じる処理、それ以外は開く処理
+          isOpen={isModalOpen} // モーダルが開いている状態を渡す
+        />
 
         {/* 検索フィルターモーダル */}
         <SearchFilterModal
@@ -120,10 +118,10 @@ const Home = () => {
         <div className={styles.headLine}></div>
         {/* 検索条件の表示 */}
         {searchParams && (
-          <div className="my-4 p-4 rounded text-sm">
+          <div className={`rounded text-sm ${styles.searchWord}`}>
+            <p>{searchParams.category.join(" / ") || ""}</p>|
+            <p>{searchParams.staff.join(" / ") || ""}</p>|
             <p>{searchParams.keyword || ""}</p>
-            <p>{searchParams.category.join(", ") || ""}</p>
-            <p>{searchParams.staff.join(", ") || ""}</p>
           </div>
         )}
       </main>

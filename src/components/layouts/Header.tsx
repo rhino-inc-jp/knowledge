@@ -9,7 +9,9 @@ const Header = () => {
         <h1
           className="relative w-[240px] h-[65px] md:w-[360px] md:h-[100px]"
         >
-          <Image src="/logo_Knowledge.svg" fill alt="Knowledge" />
+          <a href="/">
+            <Image src="/logo_Knowledge.svg" fill alt="Knowledge" />
+          </a>
         </h1>
       </div>
     </header>

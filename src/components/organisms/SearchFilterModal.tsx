@@ -7,6 +7,7 @@ import Header from "@/components/layouts/Header";
 import styles from "@/styles/components/organisms/SearchFilterModal.module.css";
 import Image from "next/image";
 import type { Viewport } from "@/types/article";
+import SearchIcon from "@/components/atoms/SearchIcon"; 
 
 type Props = {
   isOpen: boolean;
@@ -58,13 +59,8 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
         <Header />
       </div>
 
-      <button className={styles.closeBtnWrap} onClick={onClose} style={{ zIndex: 100 }}>
-        <div className={styles.closeBtn}>
-          <span></span>
-          <span></span>
-        </div>
-      </button>
-
+      {/* <SearchIcon onClick={onClose} />  */}
+      
       <SearchBar keyword={keyword} setKeyword={setKeyword} />
 
       <div className={styles.searchBoxWrap}>
