@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-
 import type { Article as ArticleType, Viewport } from "@/types/article";
-
 import styles from "@/styles/components/atoms/article.module.css";
 
 type Props = {
@@ -11,58 +9,59 @@ type Props = {
 };
 
 const Article = ({ article, viewType }: Props) => {
-  const { article_url, date, post_staff, description, title, thumb, comment } =
-    article;
+  const { article_url, date, post_staff, description, title, thumb, comment } = article;
 
-  const formattedDate = new Date(date).toLocaleString("ja-JP", {
-    timeZone: "Asia/Tokyo",
-  });
+  const [isCommentVisible, setIsCommentVisible] = useState(false);
+  const containerRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsCommentVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const handleCommentToggle = (e: React.MouseEvent) => {
+    e.preventDefault(); // aタグ遷移防止
+    e.stopPropagation();
+    setIsCommentVisible(!isCommentVisible);
+  };
 
   return (
     <a
+      ref={containerRef}
       href={article_url}
       target="_blank"
       rel="noopener noreferrer"
       className={`${styles.article} ${styles[viewType]}`}
     >
-      <p>{formattedDate}</p>
-
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[10px]`}>
           <Image src={thumb.url} fill alt="" />
         </div>
       )}
 
-      <h4 className={`${styles.articleTtl}`}>{title}</h4>
+      <h4 className={styles.articleTtl}>{title}</h4>
+      <p className={styles.article__desc}>{description}</p>
 
-      <p className="article__desc">{description}</p>
-
-      <div className="article__bottom">
+      <div className={styles.article__bottom}>
         <p className={styles.articleStaff}>{post_staff.staff}</p>
-        <div className="article__bottom__btns">
-          <button type="button" className="article__comment-opener relative">
-            <Image
-              src="/icon_message.svg"
-              width={20}
-              height={20}
-              className="object-cover"
-              alt=""
-            />
+        <div className={styles.article__bottom__btns}>
+          <button type="button" className="article__comment-opener relative" onClick={handleCommentToggle}>
+            <Image src="/icon_message.svg" width={20} height={20} className="object-cover" alt="" />
           </button>
-          <button type="button" className="">
-            <Image
-              src="/icon_heart.svg"
-              width={20}
-              height={20}
-              className="object-cover"
-              alt=""
-            />
+          <button type="button">
+            <Image src="/icon_heart.svg" width={20} height={20} className="object-cover" alt="" />
           </button>
         </div>
       </div>
 
-      <div className="article__cover">
-        <p className="article__comment">{comment}</p>
+      <div className={`${styles.article__cover} ${isCommentVisible ? styles.visible : ""}`}>
+        <p className={styles.article__comment}>{comment}</p>
       </div>
     </a>
   );

@@ -1,3 +1,10 @@
+.btnsWrap{
+  width: 100%;
+  background-color: #fff;
+  padding-bottom: 15px;
+  z-index: 200;
+}
+
 .btns {
   border-left: 1px solid #000;
   border-right: 1px solid #000;
@@ -15,4 +22,18 @@
 
 .active {
   background-color: #FFF171;
+}
+
+@media (min-width: 768px) {
+  .btnsWrap{
+    width: fit-content;
+    background-color: none;
+    padding: 0;
+    transform: rotate(90deg);
+    transform-origin: top right;
+    right: 0;
+    top: 0;
+    margin: 450px 50px 0 0;
+  }
+  
 }

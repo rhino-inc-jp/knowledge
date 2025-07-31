@@ -12,7 +12,7 @@ type Props = {
 const SwitchBtns = ({ viewType, setViewType }: Props) => {
   return (
     <div
-      className={`z-50 w-full fixed top-[143px] right-0 bg-white flex justify-end px-common-sp pb-[15px]`}
+      className={`${styles.btnsWrap} z-50 fixed top-[143px] right-0 flex justify-end px-common-sp`}
     >
       <div className={`${styles.btns} flex w-[190px] font-hel`}>
         <button
