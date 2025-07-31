@@ -34,7 +34,9 @@ const FilterSection = ({
 
   return (
     <div className={styles.searchBox}>
-      <h3 className="text-[23px] border-b border-black pb-[5.29%] pt-[5.29%]">{label}</h3>
+      <h3 className="text-[23px] border-b border-black pb-[5.29%] pt-[5.29%]">
+        {label}
+      </h3>
       <div className="pt-[5%] text-[17px] min-h-[160px] max-h-[160px] overflow-y-auto md:min-h-[200px] md:max-h-[200px]">
         {items.map((item) => (
           <label key={item} className="block mb-[5.3%]">
@@ -72,6 +74,8 @@ const SearchBox = ({
           queries: { limit: 100 },
         });
 
+        console.log(res);
+
         const categorySet = new Set<string>();
         const dateSet = new Set<string>();
         const staffSet = new Set<string>();
@@ -82,7 +86,10 @@ const SearchBox = ({
           }
           if (article.date) {
             const d = new Date(article.date);
-            const ym = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}`;
+            const ym = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(
+              2,
+              "0"
+            )}`;
             dateSet.add(ym);
           }
           if (article.post_staff?.staff) {

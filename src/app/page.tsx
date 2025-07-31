@@ -15,6 +15,24 @@ import styles from "@/styles/components/atoms/Headline.module.css";
 // １回で取得する記事数
 const LIMIT = 5;
 
+// microCMSのフィルター機能でand検索できるフォーマットに変換
+const formatSearchParams = (
+  category: string[],
+  date: string[],
+  staff: string[]
+): string => {
+  // const categoryFilters = category
+  //   .map((c) => `category[equals]${c}`)
+  //   .join("[or]");
+  // const dateFilters = date.map((d) => `date[equals]${d}`).join("[or]");
+  const staffFilters = staff.map((s) => `post_staff[equals]${s}`).join("[or]");
+  // const filters = [categoryFilters, dateFilters, staffFilters]
+  const filters = [staffFilters].filter(Boolean).join("[and]");
+  console.log(filters);
+  // 最終的にこなれば良い post_staff[equals]sw43deo29n[and]date[equals]sw43deo29n
+  return filters;
+};
+
 const Home = () => {
   const [viewType, setViewType] = useState<Viewport>("list");
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態を管理
@@ -44,6 +62,8 @@ const Home = () => {
       date = [],
       staff = [],
     }: SearchParams) => {
+      const filters = formatSearchParams(category, date, staff);
+
       const res: ListResponse<Article> = await client.getList<Article>({
         endpoint: "blogs",
         queries: {
@@ -51,6 +71,7 @@ const Home = () => {
           offset: offset,
           orders: "-date",
           q: keyword,
+          filters: filters,
         },
       });
 
@@ -73,6 +94,10 @@ const Home = () => {
 
     fetchData(searchParams);
   }, [offset, searchParams]);
+
+  useEffect(() => {
+    console.log("get staff data");
+  }, []);
 
   /* ページ下部までスクロールしたら、追加の記事を取得 */
   useEffect(() => {
@@ -98,20 +123,8 @@ const Home = () => {
     return () => observer.disconnect();
   }, [isEnd, hasInitialized]);
 
-  /*
-   * 🔍 検索結果で絞り込み
-   */
-  const handleSearch = ({
-    keyword,
-    category,
-    date,
-    staff,
-  }: {
-    keyword: string;
-    category: string[];
-    date: string[];
-    staff: string[];
-  }) => {
+  /* 🔍 検索結果で絞り込み */
+  const handleSearch = ({ keyword, category, date, staff }: SearchParams) => {
     // 記事一覧の状態をリセット
     setArticles([]);
     setOffset(0);
