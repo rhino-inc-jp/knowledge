@@ -37,3 +37,6 @@ next-env.d.ts
 
 # netlify
 .netlify
+
+# npm run build
+public/robots.txt
