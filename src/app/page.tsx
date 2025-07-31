@@ -1,7 +1,8 @@
-"use client"; // 追加
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import type { Viewport, Article, ListResponse } from "@/types/article";
+import type { SearchParams } from "@/types/search";
 
 import { client } from "@/components/libs/microcms";
 import SwitchBtns from "@/components/atoms/SwitchBtns";
@@ -26,25 +27,30 @@ const Home = () => {
   const [isEnd, setIsEnd] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
-  // const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
 
   // 検索条件ステート
-  const [searchParams, setSearchParams] = useState<{
-    keyword: string;
-    category: string[];
-    date: string[];
-    staff: string[];
-  } | null>(null);
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    keyword: "",
+    category: [],
+    date: [],
+    staff: [],
+  });
 
   /* MicroCMSからデータ取得 */
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async ({
+      keyword = "",
+      category = [],
+      date = [],
+      staff = [],
+    }: SearchParams) => {
       const res: ListResponse<Article> = await client.getList<Article>({
         endpoint: "blogs",
         queries: {
           limit: LIMIT,
           offset: offset,
           orders: "-date",
+          q: keyword,
         },
       });
 
@@ -62,13 +68,11 @@ const Home = () => {
         });
       }
 
-      // setArticles(res.contents);
-      // setFilteredArticles(res.contents); // 初期状態では全件表示
       setHasInitialized(true); // 初回読み込み後にフラグをセット、これ以降はスクロールで記事読み込みが可能になる
     };
 
-    fetchData();
-  }, [offset]);
+    fetchData(searchParams);
+  }, [offset, searchParams]);
 
   /* ページ下部までスクロールしたら、追加の記事を取得 */
   useEffect(() => {
@@ -78,7 +82,9 @@ const Home = () => {
         if (entry.isIntersecting) {
           // offsetをLIMIT分増やすと、
           // 依存配列にoffsetを設定している１つ目のuseEffectが動いて記事を取得します
-          setOffset((prev) => prev + LIMIT);
+          setOffset((prev) => {
+            return prev + LIMIT;
+          });
         }
       },
       {
@@ -92,7 +98,9 @@ const Home = () => {
     return () => observer.disconnect();
   }, [isEnd, hasInitialized]);
 
-  // 🔍 検索結果で絞り込み
+  /*
+   * 🔍 検索結果で絞り込み
+   */
   const handleSearch = ({
     keyword,
     category,
@@ -104,31 +112,17 @@ const Home = () => {
     date: string[];
     staff: string[];
   }) => {
-    // const results = articles.filter((article) => {
-    //   const matchKeyword =
-    //     !keyword ||
-    //     article.title?.includes(keyword) ||
-    //     article.description?.includes(keyword);
+    // 記事一覧の状態をリセット
+    setArticles([]);
+    setOffset(0);
+    setIsEnd(false);
+    setHasInitialized(false);
 
-    //   const matchCategory =
-    //     category.length === 0 ||
-    //     category.includes(article.post_category?.category || "");
+    // 検索条件を保存
+    setSearchParams({ keyword, category, date, staff });
 
-    //   const matchDate =
-    //     date.length === 0 ||
-    //     date.includes(
-    //       new Date(article.date).toISOString().slice(0, 7).replace("-", ".")
-    //     );
-
-    //   const matchStaff =
-    //     staff.length === 0 || staff.includes(article.post_staff?.staff || "");
-
-    //   return matchKeyword && matchCategory && matchDate && matchStaff;
-    // });
-
-    // setFilteredArticles(results);
-    setSearchParams({ keyword, category, date, staff }); // 検索条件を保存
-    setIsModalOpen(false); // モーダルを閉じる
+    // モーダルを閉じる
+    setIsModalOpen(false);
   };
 
   return (
