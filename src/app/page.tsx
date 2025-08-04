@@ -1,24 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import type { Viewport } from "@/types/article";
-import type {
-  Category,
-  CategoryResponse,
-  Staff,
-  StaffResponse,
-  SearchParams,
-  Date,
-} from "@/types/search";
+import { useState } from "react";
 
-import { client } from "@/components/libs/microcms";
+import styles from "@/styles/components/atoms/Headline.module.css";
+
+import type { Viewport } from "@/types/article";
+import type { SearchParams } from "@/types/search";
+
+import useArticles from "@/hooks/useArticles";
+import useSearchOptions from "@/hooks/useSearchOptions";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+
 import SwitchBtns from "@/components/atoms/SwitchBtns";
-import Articlelist from "@/components/organisms/ArticleList";
 import Loading from "@/components/atoms/Loader";
 import SearchIcon from "@/components/atoms/SearchIcon";
+
+import Articlelist from "@/components/organisms/ArticleList";
 import SearchFilterModal from "@/components/organisms/SearchModal";
-import styles from "@/styles/components/atoms/Headline.module.css";
-import useArticles from "@/hooks/useArticles";
 
 // １回で取得する記事数
 const LIMIT = 5;
@@ -34,13 +32,7 @@ const Home = () => {
   const handleOpenModal = () => setIsModalOpen(true); // モーダルを開く
   const handleCloseModal = () => setIsModalOpen(false); // モーダルを閉じる
 
-  // コンポーネント
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-
   // 検索
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [calendar, setCalendar] = useState<Date[]>([]);
-  const [staff, setStaff] = useState<Staff[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     keyword: "",
     category: [],
@@ -65,104 +57,20 @@ const Home = () => {
    * 検索時に使用するIDもMicroCMSから渡されたものを使用
    * 実行はサイト読み込み時のみ
    */
-  useEffect(() => {
-    // カテゴリーの取得
-    const fetchCategories = async () => {
-      try {
-        const resCategory: CategoryResponse<Category> =
-          await client.getList<Category>({
-            endpoint: "category",
-            queries: {
-              limit: 30,
-            },
-          });
+  const { categories, calendar, staff } = useSearchOptions(YEAR, MONTH);
 
-        if (resCategory.contents.length > 0) {
-          setCategories(resCategory.contents);
-        }
-      } catch {
-        console.log("カテゴリーが取得できませんでした");
-      }
-    };
-
-    /**
-     * 日付の一覧
-     */
-    const generateCalendar = (startYear: number, startMonth: number) => {
-      const result: { id: string; value: string }[] = [];
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1;
-
-      let year = startYear;
-      let month = startMonth;
-
-      while (
-        year < currentYear ||
-        (year === currentYear && month <= currentMonth)
-      ) {
-        const paddedMonth = month.toString().padStart(2, "0");
-        result.push({
-          id: `${year}-${paddedMonth}`,
-          value: `${year}.${paddedMonth}`,
-        });
-
-        // 月を進める
-        month++;
-        if (month > 12) {
-          month = 1;
-          year++;
-        }
-      }
-
-      setCalendar(result);
-    };
-
-    // スタッフの取得
-    const fetchStaff = async () => {
-      try {
-        const resStaff: StaffResponse<Staff> = await client.getList<Staff>({
-          endpoint: "staff",
-          queries: {
-            limit: 50,
-          },
-        });
-
-        if (resStaff.contents.length > 0) {
-          setStaff(resStaff.contents);
-        }
-      } catch {
-        console.log("スタッフが取得できませんでした");
-      }
-    };
-
-    fetchCategories();
-    generateCalendar(YEAR, MONTH);
-    fetchStaff();
-  }, []);
-
-  /* ページ下部までスクロールしたら、追加の記事を取得 */
-  useEffect(() => {
-    if (!loaderRef.current || isEnd || !hasInitialized) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          // LIMITを増やすことで記事取得のuseEffectが動く
-          setOffset((prev) => {
-            return prev + LIMIT;
-          });
-        }
-      },
-      {
-        rootMargin: "0px 0px 0px 0px",
-        threshold: 0.2,
-      }
-    );
-
-    observer.observe(loaderRef.current);
-
-    return () => observer.disconnect();
-  }, [isEnd, hasInitialized]);
+  /*
+   * ページ下部までスクロールしたら、追加の記事を取得
+   */
+  const calcOffset = () => {
+    setOffset((prev) => prev + LIMIT);
+  };
+  const { loaderRef } = useInfiniteScroll(
+    isEnd,
+    hasInitialized,
+    calcOffset,
+    LIMIT
+  );
 
   /*
    * 🔍検索結果で絞り込み
@@ -185,6 +93,7 @@ const Home = () => {
   return (
     <main>
       <div className="content-[''] fixed top-0 left-0 w-full h-[182px] z-[200] bg-white md:h-[260px]"></div>
+
       {/* 表示形式の切り替えボタン */}
       <SwitchBtns viewType={viewType} setViewType={setViewType} />
 

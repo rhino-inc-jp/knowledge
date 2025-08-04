@@ -5,12 +5,12 @@ import SearchBar from "@/components/atoms/SearchBar";
 import styles from "@/styles/components/organisms/SearchFilterModal.module.css";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Category, Date, Staff } from "@/types/search";
+import { Category, CalnderDate, Staff } from "@/types/search";
 import FilterSection from "../atoms/FilterSection";
 
 type Props = {
   categories: Category[];
-  calendar: Date[];
+  calendar: CalnderDate[];
   staff: Staff[];
   isOpen: boolean;
   onSearch: (params: {

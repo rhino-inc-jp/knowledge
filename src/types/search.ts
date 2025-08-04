@@ -14,7 +14,7 @@ export type CategoryResponse<T> = {
   limit: number;
 };
 
-export type Date = {
+export type CalnderDate = {
   id: string;
   value: string;
 };
