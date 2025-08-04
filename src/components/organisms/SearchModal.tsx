@@ -21,7 +21,7 @@ type Props = {
   }) => void;
 };
 
-export default function SearchFilterModal({
+export default function SearchModal({
   categories,
   calendar,
   staff,

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import type { Viewport, Article, ListResponse } from "@/types/article";
+import type { Viewport } from "@/types/article";
 import type {
   Category,
   CategoryResponse,
@@ -16,8 +16,9 @@ import SwitchBtns from "@/components/atoms/SwitchBtns";
 import Articlelist from "@/components/organisms/ArticleList";
 import Loading from "@/components/atoms/Loader";
 import SearchIcon from "@/components/atoms/SearchIcon";
-import SearchFilterModal from "@/components/organisms/SearchFilterModal";
+import SearchFilterModal from "@/components/organisms/SearchModal";
 import styles from "@/styles/components/atoms/Headline.module.css";
+import useArticles from "@/hooks/useArticles";
 
 // １回で取得する記事数
 const LIMIT = 5;
@@ -26,30 +27,6 @@ const LIMIT = 5;
 const YEAR = 2025;
 const MONTH = 6;
 
-// microCMSのフィルター機能でand検索できるフォーマットに変換
-const formatSearchParams = (
-  category: string[],
-  date: string[],
-  staff: string[]
-): string => {
-  const categoryFilters = category
-    .map((c) => `post_category[equals]${c}`)
-    .join("[or]");
-  const dateFilters = date
-    .map((d) => {
-      const from = `${d}-01T00:00:00Z`;
-      const to = `${d}-31T23:59:59Z`;
-      return `date[greater_than]${from}[and]date[less_than]${to}`;
-    })
-    .join("[or]");
-
-  const staffFilters = staff.map((s) => `post_staff[equals]${s}`).join("[or]");
-  const filters = [categoryFilters, dateFilters, staffFilters]
-    .filter(Boolean)
-    .join("[and]");
-  return filters;
-};
-
 const Home = () => {
   const [viewType, setViewType] = useState<Viewport>("list");
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態を管理
@@ -57,14 +34,7 @@ const Home = () => {
   const handleOpenModal = () => setIsModalOpen(true); // モーダルを開く
   const handleCloseModal = () => setIsModalOpen(false); // モーダルを閉じる
 
-  // 記事一覧
-  const [articles, setArticles] = useState<Article[]>([]);
-
   // コンポーネント
-  const [error, setError] = useState<string | null>(null);
-  const [offset, setOffset] = useState(0);
-  const [isEnd, setIsEnd] = useState(false);
-  const [hasInitialized, setHasInitialized] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   // 検索
@@ -79,53 +49,16 @@ const Home = () => {
   });
 
   /* MicroCMSから記事取得 */
-  useEffect(() => {
-    const fetchData = async ({
-      keyword = "",
-      category = [],
-      date = [],
-      staff = [],
-    }: SearchParams) => {
-      try {
-        const filters = formatSearchParams(category, date, staff);
-        const res: ListResponse<Article> = await client.getList<Article>({
-          endpoint: "blogs",
-          queries: {
-            limit: LIMIT,
-            offset: offset,
-            orders: "-date",
-            q: keyword,
-            filters: filters,
-          },
-        });
-
-        if (res.contents.length <= 0) {
-          // 記事取得数が0の場合はこれ以上記事を読み込めないようにフラグを変更
-          setIsEnd(true);
-        } else {
-          setArticles((prev) => {
-            // idを使って重複チェック
-            const ids = new Set(prev.map((p) => p.id));
-            const newArticles = res.contents.filter((a) => !ids.has(a.id));
-
-            // 既存記事リストに新しい記事をマージ
-            return [...prev, ...newArticles];
-          });
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("不明なエラーが発生しました");
-        }
-        setIsEnd(true);
-      } finally {
-        setHasInitialized(true);
-      }
-    };
-
-    fetchData(searchParams);
-  }, [offset, searchParams]);
+  const {
+    articles,
+    setArticles,
+    isEnd,
+    setIsEnd,
+    hasInitialized,
+    setHasInitialized,
+    setOffset,
+    error,
+  } = useArticles(searchParams, LIMIT);
 
   /*
    * 検索アイテム（Category, Staff）をmicroCMSのAPIで取得
@@ -281,8 +214,6 @@ const Home = () => {
 
       {/* 追加読み込みの記事がある場合はLoadingを表示 */}
       {hasInitialized && !isEnd && <Loading ref={loaderRef} />}
-
-      <p>{`${hasInitialized} ${isEnd}`}</p>
 
       <div className={styles.headLine}></div>
 

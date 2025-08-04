@@ -13,6 +13,9 @@ export default function FilterSection({
   selectedItems: string[];
   setSelectedItems: (value: string[]) => void;
 }) {
+  /**
+   *
+   */
   const handleChange = (id: string) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter((i) => i !== id));
