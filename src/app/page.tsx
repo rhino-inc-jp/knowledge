@@ -42,6 +42,7 @@ const formatSearchParams = (
       return `date[greater_than]${from}[and]date[less_than]${to}`;
     })
     .join("[or]");
+
   const staffFilters = staff.map((s) => `post_staff[equals]${s}`).join("[or]");
   const filters = [categoryFilters, dateFilters, staffFilters]
     .filter(Boolean)
@@ -98,7 +99,7 @@ const Home = () => {
           },
         });
 
-        if (res.contents.length === 0) {
+        if (res.contents.length <= 0) {
           // 記事取得数が0の場合はこれ以上記事を読み込めないようにフラグを変更
           setIsEnd(true);
         } else {
@@ -220,8 +221,8 @@ const Home = () => {
         }
       },
       {
-        rootMargin: "100px",
-        threshold: 0,
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0.2,
       }
     );
 
@@ -238,6 +239,8 @@ const Home = () => {
     // 表示済みの記事一覧の状態をリセット
     setArticles([]);
     setOffset(0);
+    setIsEnd(false);
+    setHasInitialized(false);
 
     // 検索条件を保存
     setSearchParams({ keyword, category, date, staff });
@@ -278,6 +281,8 @@ const Home = () => {
 
       {/* 追加読み込みの記事がある場合はLoadingを表示 */}
       {hasInitialized && !isEnd && <Loading ref={loaderRef} />}
+
+      <p>{`${hasInitialized} ${isEnd}`}</p>
 
       <div className={styles.headLine}></div>
 
