@@ -17,6 +17,7 @@ import SearchIcon from "@/components/atoms/SearchIcon";
 
 import Articlelist from "@/components/organisms/ArticleList";
 import SearchFilterModal from "@/components/organisms/SearchModal";
+import StickyResult from "@/components/atoms/StickyResult";
 
 // １回で取得する記事数
 const LIMIT = 5;
@@ -32,7 +33,7 @@ const Home = () => {
   const handleOpenModal = () => setIsModalOpen(true); // モーダルを開く
   const handleCloseModal = () => setIsModalOpen(false); // モーダルを閉じる
 
-  // 検索
+  /* 検索 */
   const [searchParams, setSearchParams] = useState<SearchParams>({
     keyword: "",
     category: [],
@@ -127,13 +128,7 @@ const Home = () => {
       <div className={styles.headLine}></div>
 
       {/* 検索条件の表示 */}
-      {searchParams && (
-        <div className={`rounded text-sm ${styles.searchWord}`}>
-          <p>{searchParams.category.join(" / ") || ""}</p>|
-          <p>{searchParams.staff.join(" / ") || ""}</p>|
-          <p>{searchParams.keyword || ""}</p>
-        </div>
-      )}
+      {searchParams && <StickyResult searchParams={searchParams} />}
     </main>
   );
 };

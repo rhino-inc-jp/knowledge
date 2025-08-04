@@ -21,13 +21,13 @@ type Props = {
   }) => void;
 };
 
-export default function SearchModal({
+const SearchModal = ({
   categories,
   calendar,
   staff,
   isOpen,
   onSearch,
-}: Props) {
+}: Props) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [selectedStaff, setSelectedStaff] = useState<string[]>([]);
@@ -108,4 +108,6 @@ export default function SearchModal({
       )}
     </AnimatePresence>
   );
-}
+};
+
+export default SearchModal;

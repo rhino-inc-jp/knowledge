@@ -33,13 +33,13 @@ const Articlelist = ({ viewType, articles }: Props) => {
             <h2 className={`${styles.sectionYearTtl}`}>{year}</h2>
             <div className={`w-[100%] relative ${styles.articlesWrap}`}>
               {
-                /* 日付毎のセクションを生成 */
+                // 日付毎のセクションを生成
                 Object.entries(dates).map(([date, articles]) => (
                   <section key={date} className={`${styles.sectionDate}`}>
                     <h3 className={styles.sectionDateTtl}>{date}</h3>
                     <div className={`${listStyle} ${styles.itemWrap}`}>
                       {
-                        /* 日付の記事一覧 */
+                        // 日付の記事一覧
                         articles.map((article) => (
                           <div key={article.id} className={`${styles.item}`}>
                             <Article article={article} viewType={viewType} />

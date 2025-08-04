@@ -1,50 +1,45 @@
 .headLine{
-    content: "";
-    width: auto;
-    height: 1px;
-    background: #000;
-    position: fixed;
-    top: 0;
-    right: 0;
-    margin: 182px 4.2% 0 0;
-    width: 84.5%;
-    z-index: 50;
+  content: "";
+  width: auto;
+  height: 1px;
+  background: #000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 182px 4.2% 0 0;
+  width: 84.5%;
+  z-index: 50;
 }
-
 @media (min-width: 768px) {
-    .headLine{
-        margin: 260px 7.2% 0 auto;
-        width: 85.8%;
-    }
+  .headLine{
+    margin: 260px 7.2% 0 auto;
+    width: 85.8%;
+  }
 }
 @media (min-width: 1500px) {
-    .headLine{
-        width: 86.35%;
-    }
+  .headLine{
+    width: 86.35%;
+  }
 }
 
-
-.searchWord{
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin-top: 182px;    
-    margin-left: 10px;    
-    font-size: 15px;
-    white-space: nowrap;
-}
-
-.searchWord p{
-    padding: 3px 0;
+.searchWord {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 182px;
+  margin-left: 10px;
+  font-size: 15px;
+  white-space: nowrap;
 }
 @media (min-width: 1500px) {
-    .searchWord{
-        margin-top: 260px;    
-        margin-left: 30px;    
-
-    }
+  .searchWord {
+    margin-top: 260px;
+    margin-left: 30px;
+  }
 }
-
+.searchWord p {
+  padding: 3px 0;
+}
