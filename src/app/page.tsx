@@ -4,7 +4,8 @@ import { useState } from "react";
 
 import styles from "@/styles/components/atoms/Headline.module.css";
 
-import type { Viewport } from "@/types/article";
+import { ViewType } from "@/constants/viewTypes";
+import { SEARCH_TYPES } from "@/constants/searchTypes";
 import type { SearchParams } from "@/types/search";
 
 import useArticles from "@/hooks/useArticles";
@@ -19,15 +20,8 @@ import Articlelist from "@/components/organisms/ArticleList";
 import SearchFilterModal from "@/components/organisms/SearchModal";
 import StickyResult from "@/components/atoms/StickyResult";
 
-// １回で取得する記事数
-const LIMIT = 5;
-
-// 検索の日付いつから始めるか
-const YEAR = 2025;
-const MONTH = 6;
-
 const Home = () => {
-  const [viewType, setViewType] = useState<Viewport>("list");
+  const [viewType, setViewType] = useState<ViewType>("list");
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態を管理
 
   const handleOpenModal = () => setIsModalOpen(true); // モーダルを開く
@@ -51,26 +45,29 @@ const Home = () => {
     setHasInitialized,
     setOffset,
     error,
-  } = useArticles(searchParams, LIMIT);
+  } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
 
   /*
    * 検索アイテム（Category, Staff）をmicroCMSのAPIで取得
    * 検索時に使用するIDもMicroCMSから渡されたものを使用
    * 実行はサイト読み込み時のみ
    */
-  const { categories, calendar, staff } = useSearchOptions(YEAR, MONTH);
+  const { categories, calendar, staff } = useSearchOptions(
+    SEARCH_TYPES.YEAR,
+    SEARCH_TYPES.MONTH
+  );
 
   /*
    * ページ下部までスクロールしたら、追加の記事を取得
    */
   const calcOffset = () => {
-    setOffset((prev) => prev + LIMIT);
+    setOffset((prev) => prev + SEARCH_TYPES.LIMIT);
   };
   const { loaderRef } = useInfiniteScroll(
     isEnd,
     hasInitialized,
     calcOffset,
-    LIMIT
+    SEARCH_TYPES.LIMIT
   );
 
   /*

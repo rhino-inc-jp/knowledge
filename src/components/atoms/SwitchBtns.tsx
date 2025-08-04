@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Viewport } from "@/types/article";
+import { ViewType } from "@/constants/viewTypes";
 
 import styles from "@/styles/components/atoms/switchBtns.module.css";
 
 type Props = {
-  viewType: Viewport;
-  setViewType: (type: Viewport) => void;
+  viewType: ViewType;
+  setViewType: (type: ViewType) => void;
 };
 
 const SwitchBtns = ({ viewType, setViewType }: Props) => (

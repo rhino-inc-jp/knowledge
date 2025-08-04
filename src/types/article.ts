@@ -1,5 +1,3 @@
-export type Viewport = "list" | "image";
-
 export type Article = {
   id: string;
   title: string;
