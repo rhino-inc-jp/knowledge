@@ -9,14 +9,18 @@ type Props = {
 };
 
 const Article = ({ article, viewType }: Props) => {
-  const { article_url, date, post_staff, description, title, thumb, comment } = article;
+  const { article_url, post_staff, description, title, thumb, comment } =
+    article;
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsCommentVisible(false);
       }
     };
@@ -49,18 +53,38 @@ const Article = ({ article, viewType }: Props) => {
       <p className={styles.article__desc}>{description}</p>
 
       <div className={styles.article__bottom}>
-        <p className={styles.articleStaff}>{post_staff.staff}</p>
+        <p className={styles.articleStaff}>{post_staff.value}</p>
         <div className={styles.article__bottom__btns}>
-          <button type="button" className="article__comment-opener relative" onClick={handleCommentToggle}>
-            <Image src="/icon_message.svg" width={20} height={20} className="object-cover" alt="" />
+          <button
+            type="button"
+            className="article__comment-opener relative"
+            onClick={handleCommentToggle}
+          >
+            <Image
+              src="/icon_message.svg"
+              width={20}
+              height={20}
+              className="object-cover"
+              alt=""
+            />
           </button>
           <button type="button">
-            <Image src="/icon_heart.svg" width={20} height={20} className="object-cover" alt="" />
+            <Image
+              src="/icon_heart.svg"
+              width={20}
+              height={20}
+              className="object-cover"
+              alt=""
+            />
           </button>
         </div>
       </div>
 
-      <div className={`${styles.article__cover} ${isCommentVisible ? styles.visible : ""}`}>
+      <div
+        className={`${styles.article__cover} ${
+          isCommentVisible ? styles.visible : ""
+        }`}
+      >
         <p className={styles.article__comment}>{comment}</p>
       </div>
     </a>
