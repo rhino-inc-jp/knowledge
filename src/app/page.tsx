@@ -1,133 +1,132 @@
-"use client"; // 追加
+"use client";
 
-import React, { useEffect, useState } from "react";
-import type { Viewport, Article, ListResponse } from "@/types/article";
+import { useState } from "react";
 
-import { client } from "@/components/libs/microcms";
-import SwitchBtns from "@/components/atoms/SwitchBtns";
-import Articlelist from "@/components/organisms/ArticleList";
-import Loading from "@/components/atoms/Loader";
-import SearchIcon from "@/components/atoms/SearchIcon";
-import SearchFilterModal from "@/components/organisms/SearchFilterModal";
 import styles from "@/styles/components/atoms/Headline.module.css";
 
-// １回で取得する記事数
-const LIMIT = 15;
+import { ViewType } from "@/constants/viewTypes";
+import { SEARCH_TYPES } from "@/constants/searchTypes";
+import type { SearchParams } from "@/types/search";
+
+import useArticles from "@/hooks/useArticles";
+import useSearchOptions from "@/hooks/useSearchOptions";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+
+import SwitchBtns from "@/components/atoms/SwitchBtns";
+import Loading from "@/components/atoms/Loader";
+import SearchIcon from "@/components/atoms/SearchIcon";
+
+import Articlelist from "@/components/organisms/ArticleList";
+import SearchFilterModal from "@/components/organisms/SearchModal";
+import StickyResult from "@/components/atoms/StickyResult";
 
 const Home = () => {
-  const [viewType, setViewType] = useState<Viewport>("list");
+  const [viewType, setViewType] = useState<ViewType>("list");
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態を管理
 
   const handleOpenModal = () => setIsModalOpen(true); // モーダルを開く
   const handleCloseModal = () => setIsModalOpen(false); // モーダルを閉じる
 
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
-  const [hasInitialized, setHasInitialized] = useState(false);
+  /* 検索 */
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    keyword: "",
+    category: [],
+    date: [],
+    staff: [],
+  });
 
-  // 検索条件ステート
-  const [searchParams, setSearchParams] = useState<{
-    keyword: string;
-    category: string[];
-    date: string[];
-    staff: string[];
-  } | null>(null);
+  /* MicroCMSから記事取得 */
+  const {
+    articles,
+    setArticles,
+    isEnd,
+    setIsEnd,
+    hasInitialized,
+    setHasInitialized,
+    setOffset,
+    error,
+  } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res: ListResponse<Article> = await client.getList<Article>({
-        endpoint: "blogs",
-        queries: {
-          limit: LIMIT,
-          orders: "-date",
-        },
-      });
+  /*
+   * 検索アイテム（Category, Staff）をmicroCMSのAPIで取得
+   * 検索時に使用するIDもMicroCMSから渡されたものを使用
+   * 実行はサイト読み込み時のみ
+   */
+  const { categories, calendar, staff } = useSearchOptions(
+    SEARCH_TYPES.YEAR,
+    SEARCH_TYPES.MONTH
+  );
 
-      setArticles(res.contents);
-      setFilteredArticles(res.contents); // 初期状態では全件表示
-      setHasInitialized(true);
-    };
+  /*
+   * ページ下部までスクロールしたら、追加の記事を取得
+   */
+  const calcOffset = () => {
+    setOffset((prev) => prev + SEARCH_TYPES.LIMIT);
+  };
+  const { loaderRef } = useInfiniteScroll(
+    isEnd,
+    hasInitialized,
+    calcOffset,
+    SEARCH_TYPES.LIMIT
+  );
 
-    fetchData();
-  }, []);
+  /*
+   * 🔍検索結果で絞り込み
+   * 小要素へ渡し、インプット要素で使用する
+   */
+  const handleSearch = ({ keyword, category, date, staff }: SearchParams) => {
+    // 表示済みの記事一覧の状態をリセット
+    setArticles([]);
+    setOffset(0);
+    setIsEnd(false);
+    setHasInitialized(false);
 
-  // 🔍 検索結果で絞り込み
-  const handleSearch = ({
-    keyword,
-    category,
-    date,
-    staff,
-  }: {
-    keyword: string;
-    category: string[];
-    date: string[];
-    staff: string[];
-  }) => {
-    const results = articles.filter((article) => {
-      const matchKeyword =
-        !keyword ||
-        article.title?.includes(keyword) ||
-        article.description?.includes(keyword);
+    // 検索条件を保存
+    setSearchParams({ keyword, category, date, staff });
 
-      const matchCategory =
-        category.length === 0 ||
-        category.includes(article.post_category?.category || "");
-
-      const matchDate =
-        date.length === 0 ||
-        date.includes(
-          new Date(article.date).toISOString().slice(0, 7).replace("-", ".")
-        );
-
-      const matchStaff =
-        staff.length === 0 || staff.includes(article.post_staff?.staff || "");
-
-      return matchKeyword && matchCategory && matchDate && matchStaff;
-    });
-
-    setFilteredArticles(results);
-    setSearchParams({ keyword, category, date, staff }); // 検索条件を保存
-    setIsModalOpen(false); // モーダルを閉じる
+    // モーダルを閉じる
+    setIsModalOpen(false);
   };
 
   return (
-    <>
-      <main>
-        <div className="content-[''] fixed top-0 left-0 w-full h-[182px] z-[200] bg-white md:h-[260px]"></div>
-        {/* 表示形式の切り替えボタン */}
-        <SwitchBtns viewType={viewType} setViewType={setViewType} />
+    <main>
+      <div className="content-[''] fixed top-0 left-0 w-full h-[182px] z-[200] bg-white md:h-[260px]"></div>
 
-        {/* 絞り込んだ記事リスト */}
-        <Articlelist viewType={viewType} articles={filteredArticles} />
+      {/* 表示形式の切り替えボタン */}
+      <SwitchBtns viewType={viewType} setViewType={setViewType} />
 
-        {/* 検索アイコン */}
-        <SearchIcon
-          onClick={isModalOpen ? handleCloseModal : handleOpenModal} // モーダルが開いている場合は閉じる処理、それ以外は開く処理
-          isOpen={isModalOpen} // モーダルが開いている状態を渡す
-        />
+      {/* 取得した記事リスト */}
+      <Articlelist viewType={viewType} articles={articles} />
 
-        {/* 検索フィルターモーダル */}
-        <SearchFilterModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          initialViewType={viewType}
-          onSearch={handleSearch} // 検索処理
-        />
+      {/* 記事取得エラー時の表示 */}
+      {error && <div className="text-sm text-center mt-4">{error}</div>}
 
-        {/* 初期ロード中 */}
-        {!hasInitialized && <p className="text-center">Loading...</p>}
+      {/* 検索アイコン */}
+      <SearchIcon
+        onClick={isModalOpen ? handleCloseModal : handleOpenModal} // モーダルが開いている場合は閉じる処理、それ以外は開く処理
+        isOpen={isModalOpen} // モーダルが開いている状態を渡す
+      />
 
-        <div className={styles.headLine}></div>
-        {/* 検索条件の表示 */}
-        {searchParams && (
-          <div className={`rounded text-sm ${styles.searchWord}`}>
-            <p>{searchParams.category.join(" / ") || ""}</p>|
-            <p>{searchParams.staff.join(" / ") || ""}</p>|
-            <p>{searchParams.keyword || ""}</p>
-          </div>
-        )}
-      </main>
-    </>
+      {/* 検索フィルターモーダル */}
+      <SearchFilterModal
+        categories={categories}
+        calendar={calendar}
+        staff={staff}
+        isOpen={isModalOpen}
+        onSearch={handleSearch} // 検索処理
+      />
+
+      {/* 初期ロード中 */}
+      {!hasInitialized && <Loading ref={loaderRef} />}
+
+      {/* 追加読み込みの記事がある場合はLoadingを表示 */}
+      {hasInitialized && !isEnd && <Loading ref={loaderRef} />}
+
+      <div className={styles.headLine}></div>
+
+      {/* 検索条件の表示 */}
+      {searchParams && <StickyResult searchParams={searchParams} />}
+    </main>
   );
 };
 

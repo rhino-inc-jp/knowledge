@@ -8,6 +8,4 @@ const Loader = forwardRef<HTMLDivElement>((_, ref) => {
   );
 });
 
-Loader.displayName = "Loader";
-
 export default Loader;

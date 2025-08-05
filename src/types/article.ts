@@ -1,15 +1,13 @@
-export type Viewport = "list" | "image";
-
 export type Article = {
   id: string;
   title: string;
   publishshedAt: string;
   post_staff: {
     id: string;
-    staff: string;
+    value: string;
   };
   post_category: {
-    category: string;
+    value: string;
   };
   date: string;
   article_url: string;
@@ -18,7 +16,6 @@ export type Article = {
     url: string;
   };
   comment: string;
-  
 };
 
 export type ListResponse<T> = {

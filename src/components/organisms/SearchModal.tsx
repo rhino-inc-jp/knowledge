@@ -2,17 +2,17 @@
 
 import React, { useState, useEffect } from "react";
 import SearchBar from "@/components/atoms/SearchBar";
-import SearchBox from "@/components/atoms/SearchBox";
-import Header from "@/components/layouts/Header";
 import styles from "@/styles/components/organisms/SearchFilterModal.module.css";
 import Image from "next/image";
-import type { Viewport } from "@/types/article";
-import { motion, AnimatePresence } from "framer-motion"; // 変更: AnimatePresenceをインポート
+import { motion, AnimatePresence } from "framer-motion";
+import { Category, CalnderDate, Staff } from "@/types/search";
+import FilterSection from "../atoms/FilterSection";
 
 type Props = {
+  categories: Category[];
+  calendar: CalnderDate[];
+  staff: Staff[];
   isOpen: boolean;
-  onClose: () => void;
-  initialViewType: Viewport;
   onSearch: (params: {
     keyword: string;
     category: string[];
@@ -21,15 +21,19 @@ type Props = {
   }) => void;
 };
 
-const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props) => {
-  const [viewType] = useState<Viewport>(initialViewType);
-
+const SearchModal = ({
+  categories,
+  calendar,
+  staff,
+  isOpen,
+  onSearch,
+}: Props) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
-  const [selectedStaffs, setSelectedStaffs] = useState<string[]>([]);
+  const [selectedStaff, setSelectedStaff] = useState<string[]>([]);
   const [keyword, setKeyword] = useState("");
 
-  // body のスクロール制御
+  // 検索展開時のbodyのスクロール制御
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -47,7 +51,7 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
       keyword,
       category: selectedCategories,
       date: selectedDates,
-      staff: selectedStaffs,
+      staff: selectedStaff,
     });
   };
 
@@ -65,25 +69,34 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
             ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
           }}
         >
-          {/* <div className={styles.searchHeader}>
-            <Header />
-          </div> */}
-
           <SearchBar keyword={keyword} setKeyword={setKeyword} />
 
           <div className={styles.searchBoxWrap}>
-            <SearchBox
-              selectedCategories={selectedCategories}
-              setSelectedCategories={setSelectedCategories}
-              selectedDates={selectedDates}
-              setSelectedDates={setSelectedDates}
-              selectedStaffs={selectedStaffs}
-              setSelectedStaffs={setSelectedStaffs}
+            <FilterSection
+              label="Category"
+              items={categories}
+              selectedItems={selectedCategories}
+              setSelectedItems={setSelectedCategories}
+            />
+            <FilterSection
+              label="Date"
+              items={calendar}
+              selectedItems={selectedDates}
+              setSelectedItems={setSelectedDates}
+            />
+            <FilterSection
+              label="Staff"
+              items={staff}
+              selectedItems={selectedStaff}
+              setSelectedItems={setSelectedStaff}
             />
           </div>
 
           <div className={styles.searchBtn}>
-            <button className="w-[340px] bg-black text-white py-3 text-lg" onClick={handleSearch}>
+            <button
+              className="w-[340px] bg-black text-white py-3 text-lg"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </div>
@@ -97,4 +110,4 @@ const SearchFilterModal = ({ isOpen, onClose, initialViewType, onSearch }: Props
   );
 };
 
-export default SearchFilterModal;
+export default SearchModal;
