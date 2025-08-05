@@ -1,5 +1,5 @@
 import styles from "@/styles/components/atoms/SearchBox.module.css";
-import { Category, Date, Staff } from "@/types/search";
+import { Category, CalnderDate, Staff } from "@/types/search";
 
 // フィルターセクション（カテゴリ／日付／スタッフ）
 export default function FilterSection({
@@ -9,7 +9,7 @@ export default function FilterSection({
   setSelectedItems,
 }: {
   label: string;
-  items: Category[] | Date[] | Staff[];
+  items: Category[] | CalnderDate[] | Staff[];
   selectedItems: string[];
   setSelectedItems: (value: string[]) => void;
 }) {

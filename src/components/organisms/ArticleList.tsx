@@ -1,16 +1,17 @@
 import React from "react";
 
-import type { Viewport, Article as ArticleType } from "@/types/article";
+import type { Article as ArticleType } from "@/types/article";
 
 import Article from "@/components/atoms/Article";
 
 import styles from "@/styles/components/organisms/articleList.module.css";
 
 import { formatArticlesByYearAndDate } from "@/utils/formatArticles";
+import { ViewType } from "@/constants/viewTypes";
 
 type Props = {
   articles: ArticleType[];
-  viewType: Viewport;
+  viewType: ViewType;
 };
 
 const Articlelist = ({ viewType, articles }: Props) => {

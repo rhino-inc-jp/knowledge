@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import type { Article as ArticleType, Viewport } from "@/types/article";
+import type { Article as ArticleType } from "@/types/article";
 import styles from "@/styles/components/atoms/article.module.css";
+import { ViewType } from "@/constants/viewTypes";
 
 type Props = {
   article: ArticleType;
-  viewType: Viewport;
+  viewType: ViewType;
 };
 
 const Article = ({ article, viewType }: Props) => {
