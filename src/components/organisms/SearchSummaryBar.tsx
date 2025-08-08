@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "@/styles/components/organisms/SearchSummaryBar.module.css";
 
 type Props = {
   keyword: string;
@@ -20,20 +21,22 @@ const SearchSummaryBar = ({
   if (!hasAny) return null;
 
   return (
-    <div className="px-4 py-3 text-sm flex flex-wrap gap-4">
+  <div
+    className={` gap-4 ${styles.searchSummaryBar}`}
+  >
       {keyword && (
-        <p className="text-gray-800">
+        <p>
           {keyword}
         </p>
       )}
       {category.length > 0 && (
-        <p className="text-gray-800">
+        <p>
           {" "}
           {category.map((id) => categoryMap[id] || id).join(" / ")}
         </p>
       )}
       {staff.length > 0 && (
-        <p className="text-gray-800">
+        <p>
           {" "}
           {staff.map((id) => staffMap[id] || id).join(" / ")}
         </p>

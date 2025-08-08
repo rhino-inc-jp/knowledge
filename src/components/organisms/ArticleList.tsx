@@ -14,7 +14,46 @@ type Props = {
 const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
   const listStyle = styles[viewType] || "";
 
-  const formatted = formatArticlesByYearAndDate(articles); // { [YYYY]: { [MM.DD]: Article[] } }
+  if (isSearchMode) {
+    // 🔍 検索モードは YYYY.MM 単位でグループ化し直す
+    const grouped: Record<string, ArticleType[]> = {};
+
+    articles.forEach((article) => {
+      const date = article.publishedAt ? new Date(article.publishedAt) : new Date();
+      const yyyyMM = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+      if (!grouped[yyyyMM]) grouped[yyyyMM] = [];
+      grouped[yyyyMM].push(article);
+    });
+
+    return (
+      <div>
+        {Object.entries(grouped)
+          .sort(([a], [b]) => b.localeCompare(a)) // YYYY.MM 降順
+          .map(([yyyyMM, group]) => (
+            <section
+                  key={yyyyMM}
+                  className={`${styles.sectionDate} ${styles.searchModeSectionDate}`}
+                >
+              <h3 className={styles.sectionDateTtl}>{yyyyMM}</h3>
+              <div className={`${styles.itemWrap} ${listStyle} ${styles.searchMode}`}>
+                {group.map((article) => (
+                  <div key={article.id} className={styles.item}>
+                    <Article
+                      article={article}
+                      viewType={viewType}
+                      isSearchMode={true}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+      </div>
+    );
+  }
+
+  // 📄 通常モードは年→日単位で構造化（既存の形式）
+  const formatted = formatArticlesByYearAndDate(articles);
 
   return (
     <div>
@@ -22,40 +61,24 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
         .sort(([aYear], [bYear]) => Number(bYear) - Number(aYear))
         .map(([year, dates]) => (
           <section key={year} className={styles.sectionWrap}>
-            {/* ✅ 通常モードのみ 年表示 */}
-            {!isSearchMode && (
-              <h2 className={styles.sectionYearTtl}>{year}</h2>
-            )}
-
+            <h2 className={styles.sectionYearTtl}>{year}</h2>
             <div className={styles.articlesWrap}>
-              {Object.entries(dates).map(([date, articles]) => {
-                const displayDate = isSearchMode
-                  ? `${year}.${date.split(".")[0]}`
-                  : date;
-
-                return (
-                  <section key={date} className={styles.sectionDate}>
-                    {/* ✅ 常に h3 に日付表示（形式を出し分け） */}
-                    <h3 className={styles.sectionDateTtl}>{displayDate}</h3>
-
-                    <div
-                      className={`${styles.itemWrap} ${listStyle} ${
-                        isSearchMode ? styles.searchMode : ""
-                      }`}
-                    >
-                      {articles.map((article) => (
-                        <div key={article.id} className={styles.item}>
-                          <Article
-                            article={article}
-                            viewType={viewType}
-                            isSearchMode={isSearchMode}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                );
-              })}
+              {Object.entries(dates).map(([date, group]) => (
+                <section key={date} className={styles.sectionDate}>
+                  <h3 className={styles.sectionDateTtl}>{date}</h3>
+                  <div className={`${styles.itemWrap} ${listStyle}`}>
+                    {group.map((article) => (
+                      <div key={article.id} className={styles.item}>
+                        <Article
+                          article={article}
+                          viewType={viewType}
+                          isSearchMode={false}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
             </div>
           </section>
         ))}
