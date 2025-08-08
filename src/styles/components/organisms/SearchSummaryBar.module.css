@@ -11,6 +11,7 @@
     white-space: nowrap;
     flex-wrap: nowrap!important;
     display: flex;
+    text-orientation: sideways;
 }
 
 @media (min-width: 768px) {
