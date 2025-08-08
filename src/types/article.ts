@@ -16,6 +16,7 @@ export type Article = {
     url: string;
   };
   comment: string;
+  publishedAt?: string;
 };
 
 export type ListResponse<T> = {

@@ -3,15 +3,24 @@ import Image from "next/image";
 import type { Article as ArticleType } from "@/types/article";
 import styles from "@/styles/components/atoms/article.module.css";
 import { ViewType } from "@/constants/viewTypes";
+import { format } from "date-fns"; // ← 日付整形ライブラリをインポート
 
 type Props = {
   article: ArticleType;
   viewType: ViewType;
+  isSearchMode?: boolean; // ← 検索時の表示切り替え用
 };
 
-const Article = ({ article, viewType }: Props) => {
-  const { article_url, post_staff, description, title, thumb, comment } =
-    article;
+const Article = ({ article, viewType, isSearchMode = false }: Props) => {
+  const {
+    article_url,
+    post_staff,
+    description,
+    title,
+    thumb,
+    comment,
+    publishedAt, // ← 型に追加した前提
+  } = article;
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
@@ -36,6 +45,12 @@ const Article = ({ article, viewType }: Props) => {
     setIsCommentVisible(!isCommentVisible);
   };
 
+  // 🔍 検索モード中のみ、公開日を整形して表示
+  const formattedDate =
+    isSearchMode && publishedAt
+      ? format(new Date(publishedAt), "yyyy.MM")
+      : null;
+
   return (
     <a
       ref={containerRef}
@@ -48,6 +63,11 @@ const Article = ({ article, viewType }: Props) => {
         <div className={`${styles.articleThumb} mb-[10px]`}>
           <Image src={thumb.url} fill alt="" />
         </div>
+      )}
+
+      {/* 🔍 検索モードのみ日付を表示 */}
+      {formattedDate && (
+        <p className={styles.articleDate}>{formattedDate}</p>
       )}
 
       <h4 className={styles.articleTtl}>{title}</h4>
