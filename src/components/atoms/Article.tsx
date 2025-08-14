@@ -11,14 +11,19 @@ type Props = {
   displayDate?: string; // ← 追加
 };
 
-const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props) => {
+const Article = ({
+  article,
+  viewType,
+  isSearchMode = false,
+  displayDate,
+}: Props) => {
   const {
     article_url,
     post_staff,
-    description,
-    title,
-    thumb,
     comment,
+    metaTitle,
+    metaDescription,
+    metaImage,
   } = article;
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
@@ -46,26 +51,25 @@ const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props
 
   return (
     <a
-  ref={containerRef}
-  href={article_url}
-  target="_blank"
-  rel="noopener noreferrer"
-  className={`${styles.article} ${styles[viewType]} ${isSearchMode ? styles.searchMode : ''}`}
->
-
+      ref={containerRef}
+      href={article_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.article} ${styles[viewType]} ${
+        isSearchMode ? styles.searchMode : ""
+      }`}
+    >
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[10px]`}>
-          <Image src={thumb.url} fill alt="" />
+          {metaImage && <Image src={metaImage} fill alt="" />}
         </div>
       )}
 
       {/* グループ先頭だけに年月を表示（検索時） */}
-      {displayDate && (
-        <p className={styles.articleDate}>{displayDate}</p>
-      )}
+      {displayDate && <p className={styles.articleDate}>{displayDate}</p>}
 
-      <h4 className={styles.articleTtl}>{title}</h4>
-      <p className={styles.article__desc}>{description}</p>
+      <h4 className={styles.articleTtl}>{metaTitle}</h4>
+      <p className={styles.article__desc}>{metaDescription}</p>
 
       <div className={styles.article__bottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>
