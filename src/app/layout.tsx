@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 
 import Header from "@/components/layouts/Header";
-import Fotter from "@/components/layouts/Footer";
+import Footer from "@/components/layouts/Footer"; 
 
 export const metadata: Metadata = {
   title: "Knowledge",
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className="text-xs relative font-normal not-italic text-black font-noto pt-[182px] md:pt-[260px]">
         <Header />
         {children}
-        <Fotter />
+        <Footer />
       </body>
     </html>
   );

@@ -7,11 +7,19 @@ import { ViewType } from "@/constants/viewTypes";
 type Props = {
   article: ArticleType;
   viewType: ViewType;
+  isSearchMode?: boolean;
+  displayDate?: string; // ← 追加
 };
 
-const Article = ({ article, viewType }: Props) => {
-  const { article_url, post_staff, description, title, thumb, comment } =
-    article;
+const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props) => {
+  const {
+    article_url,
+    post_staff,
+    description,
+    title,
+    thumb,
+    comment,
+  } = article;
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
@@ -31,23 +39,29 @@ const Article = ({ article, viewType }: Props) => {
   }, []);
 
   const handleCommentToggle = (e: React.MouseEvent) => {
-    e.preventDefault(); // aタグ遷移防止
+    e.preventDefault();
     e.stopPropagation();
     setIsCommentVisible(!isCommentVisible);
   };
 
   return (
     <a
-      ref={containerRef}
-      href={article_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${styles.article} ${styles[viewType]}`}
-    >
+  ref={containerRef}
+  href={article_url}
+  target="_blank"
+  rel="noopener noreferrer"
+  className={`${styles.article} ${styles[viewType]} ${isSearchMode ? styles.searchMode : ''}`}
+>
+
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[10px]`}>
           <Image src={thumb.url} fill alt="" />
         </div>
+      )}
+
+      {/* グループ先頭だけに年月を表示（検索時） */}
+      {displayDate && (
+        <p className={styles.articleDate}>{displayDate}</p>
       )}
 
       <h4 className={styles.articleTtl}>{title}</h4>
