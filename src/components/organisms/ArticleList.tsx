@@ -68,7 +68,7 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
         .map(([year, dates]) => (
           <section key={year} className={styles.sectionWrap}>
             <h2 className={styles.sectionYearTtl}>{year}</h2>
-            <div className={styles.articlesWrap}>
+            <div className="w-full">
               {Object.entries(dates).map(([date, group]) => (
                 <section key={date} className={styles.sectionDate}>
                   <h3 className={styles.sectionDateTtl}>{date}</h3>

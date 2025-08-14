@@ -56,7 +56,7 @@ const Article = ({
       target="_blank"
       rel="noopener noreferrer"
       className={`${styles.article} ${styles[viewType]} ${
-        isSearchMode ? styles.searchMode : ""
+        isSearchMode && styles.searchMode
       }`}
     >
       {viewType === "image" && (
