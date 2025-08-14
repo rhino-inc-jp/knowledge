@@ -61,7 +61,15 @@ const Article = ({
     >
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[10px]`}>
-          {metaImage && <Image src={metaImage} fill alt="" />}
+          {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
+          {metaImage && (
+            <img
+              className="object-cover absolute
+             top-0 left-0"
+              src={metaImage}
+              alt=""
+            />
+          )}
         </div>
       )}
 
