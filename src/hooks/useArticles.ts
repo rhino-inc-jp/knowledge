@@ -4,6 +4,7 @@ import { Article, ListResponse } from "@/types/article";
 import { client } from "@/components/libs/microcms";
 import formatSearchParams from "@/utils/formatSearchParams";
 
+// APIでmetaをスクレイピング
 async function fetchMeta(url: string) {
   const res = await fetch(`/api/extract-meta?url=${encodeURIComponent(url)}`);
   if (!res.ok) throw new Error("meta fetch failed");
@@ -18,7 +19,7 @@ async function fetchMeta(url: string) {
   return formatedData;
 }
 
-// 超簡易の並列制御（同時5件）
+// 並列制御
 async function mapWithLimit<T, R>(
   arr: T[],
   limit: number,
@@ -39,6 +40,7 @@ async function mapWithLimit<T, R>(
   return ret;
 }
 
+// 記事データにmetaデータをマージ
 async function enrichArticles(newArticles: Article[], limit: number) {
   const metas = await mapWithLimit(newArticles, limit, async (a) => {
     try {
