@@ -26,7 +26,7 @@ export default function useInfiniteScroll(
     observer.observe(loaderRef.current);
 
     return () => observer.disconnect();
-  }, [isEnd, hasInitialized]);
+  }, [isEnd, hasInitialized, calcOffset]);
 
   return {
     loaderRef,

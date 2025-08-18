@@ -70,6 +70,16 @@ const Article = ({
               alt=""
             />
           )}
+
+          {/* OGP画像がない場合はno_image.jpgを表示 */}
+          {!metaImage && (
+            <img
+              className="object-cover absolute
+            top-0 left-0"
+              src="/no_image.jpg"
+              alt=""
+            />
+          )}
         </div>
       )}
 
