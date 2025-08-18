@@ -133,11 +133,8 @@ const Home = () => {
         onSearch={handleSearch}
       />
 
-      {/* 初回ロード */}
-      {!hasInitialized && <Loading ref={loaderRef} />}
-
-      {/* 追加読み込み */}
-      {hasInitialized && !isEnd && <Loading ref={loaderRef} />}
+      {/* 初回ロード or 追加読み込み時にローディングを表示*/}
+      {(!hasInitialized || !isEnd) && <Loading ref={loaderRef} />}
     </main>
   );
 };
