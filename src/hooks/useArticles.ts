@@ -39,6 +39,22 @@ async function mapWithLimit<T, R>(
   return ret;
 }
 
+async function enrichArticles(newArticles: Article[], limit: number) {
+  const metas = await mapWithLimit(newArticles, limit, async (a) => {
+    try {
+      return await fetchMeta(a.article_url);
+    } catch {
+      return {
+        metaTitle: "",
+        metaDescription: "",
+        metaImage: "",
+      };
+    }
+  });
+
+  return newArticles.map((a, i) => ({ ...a, ...metas[i] }));
+}
+
 // microCMSのフィルター機能でand検索できるフォーマットに変換
 export default function useArticles(searchParams: SearchParams, limit: number) {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -74,38 +90,28 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
         } else {
           // 既存記事リストに新しい記事をマージ
           setArticles((prev) => {
-            // idを使って重複チェック
-            const ids = new Set(prev.map((p) => p.id));
-            const newArticles = res.contents.filter((a) => !ids.has(a.id));
-
+            // prevと比較して新しい候補を作る
+            const prevIds = new Set(prev.map((p) => p.id));
+            const candidates = res.contents.filter((a) => !prevIds.has(a.id));
+            // 重複を削除
+            const uniqueCandidates = Array.from(
+              new Map(candidates.map((a) => [a.id, a])).values()
+            );
+            // OGP取得 → 記事更新
             (async () => {
-              const metas = await mapWithLimit(
-                newArticles,
-                limit,
-                async (a) => {
-                  try {
-                    return await fetchMeta(a.article_url);
-                  } catch {
-                    return {
-                      metaTitle: "",
-                      metaDescription: "",
-                      metaImage: "",
-                    };
-                  }
-                }
-              );
+              // OGP取得
+              const enriched = await enrichArticles(uniqueCandidates, limit);
 
-              const metaMap = new Map(
-                newArticles.map((a, i) => [a.id, metas[i]])
-              );
-              setArticles((cur) =>
-                cur.map((a) =>
-                  metaMap.has(a.id) ? { ...a, ...metaMap.get(a.id)! } : a
-                )
-              );
+              // 記事更新
+              setArticles((cur) => {
+                const seen = new Set(cur.map((p) => p.id));
+                const deduped = enriched.filter((a) => !seen.has(a.id));
+                console.log([...cur, ...deduped]);
+                return [...cur, ...deduped];
+              });
             })();
 
-            return [...prev, ...newArticles];
+            return prev;
           });
         }
       } catch (error) {

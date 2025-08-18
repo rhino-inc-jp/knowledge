@@ -1,3 +1,9 @@
+/**
+ * next.jsでAPIを定義
+ * microCMSから取得した記事URLごとのOGPを取得
+ * 取得したタイトル、ディスクリプション、画像は記事一覧にて使用
+ */
+
 import "server-only";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
