@@ -8,7 +8,7 @@ type Props = {
   article: ArticleType;
   viewType: ViewType;
   isSearchMode?: boolean;
-  displayDate?: string; // ← 追加
+  displayDate?: string;
 };
 
 const Article = ({
@@ -64,8 +64,8 @@ const Article = ({
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
           {metaImage && (
             <img
-              className="object-cover absolute
-             top-0 left-0"
+              className="object-contain absolute
+             top-0 left-0 w-[100%] h-[100%]"
               src={metaImage}
               alt=""
             />

@@ -21,6 +21,12 @@
 }
 .image .articleTtl{
   height: 55px;
+
+  /* テキスト、3行でクランプ */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden; 
 }
 .article__desc{
   font-size: 10px;
@@ -132,12 +138,6 @@
     padding:0 22px 0 10px;
     display: flex;
     align-items: center;
-  }
-  .image .articleTtl{
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
   }
   .article__desc{
     margin-top: 0;
