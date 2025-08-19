@@ -52,6 +52,7 @@ const Home = () => {
     setHasInitialized,
     setOffset,
     error,
+    isEnriching,
   } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
 
   /* 検索オプション（カテゴリ、スタッフ、カレンダー） */
@@ -74,6 +75,7 @@ const Home = () => {
   const { loaderRef } = useInfiniteScroll(
     isEnd,
     hasInitialized,
+    isEnriching,
     calcOffset,
     SEARCH_TYPES.LIMIT
   );
@@ -87,6 +89,8 @@ const Home = () => {
     setSearchParams({ keyword, category, date, staff });
     setIsModalOpen(false);
   };
+
+  const showLoader = isEnriching || !(hasInitialized && isEnd);
 
   return (
     <main>
@@ -134,7 +138,7 @@ const Home = () => {
       />
 
       {/* 初回ロード or 追加読み込み時にローディングを表示*/}
-      {(!hasInitialized || !isEnd) && <Loading ref={loaderRef} />}
+      {showLoader && <Loading ref={loaderRef} />}
     </main>
   );
 };

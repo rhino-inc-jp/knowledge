@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SearchParams } from "@/types/search";
 import { Article, ListResponse } from "@/types/article";
 import { client } from "@/components/libs/microcms";
@@ -41,20 +41,32 @@ async function mapWithLimit<T, R>(
 }
 
 // 記事データにmetaデータをマージ
-async function enrichArticles(newArticles: Article[], limit: number) {
-  const metas = await mapWithLimit(newArticles, limit, async (a) => {
-    try {
-      return await fetchMeta(a.article_url);
-    } catch {
-      return {
-        metaTitle: "",
-        metaDescription: "",
-        metaImage: "",
-      };
-    }
-  });
+async function enrichArticles(
+  newArticles: Article[],
+  limit: number,
+  setEnrichJobs: Dispatch<SetStateAction<number>>
+) {
+  // stateにmeta取得中カウントを保存
+  setEnrichJobs((j) => j + 1);
 
-  return newArticles.map((a, i) => ({ ...a, ...metas[i] }));
+  try {
+    // metaを取得
+    const metas = await mapWithLimit(newArticles, limit, async (a) => {
+      try {
+        return await fetchMeta(a.article_url);
+      } catch {
+        return {
+          metaTitle: "",
+          metaDescription: "",
+          metaImage: "",
+        };
+      }
+    });
+    return newArticles.map((a, i) => ({ ...a, ...metas[i] }));
+  } finally {
+    // meta取得が終わったらカウントを減らす
+    setEnrichJobs((j) => j - 1);
+  }
 }
 
 // microCMSのフィルター機能でand検索できるフォーマットに変換
@@ -65,6 +77,10 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [hasInitialized, setHasInitialized] = useState(false);
+
+  // meta取得中の数を保存
+  const [enrichJobs, setEnrichJobs] = useState(0);
+  const isEnriching = enrichJobs > 0;
 
   useEffect(() => {
     const fetchData = async ({
@@ -102,13 +118,16 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
             // OGP取得 → 記事更新
             (async () => {
               // OGP取得
-              const enriched = await enrichArticles(uniqueCandidates, limit);
+              const enriched = await enrichArticles(
+                uniqueCandidates,
+                limit,
+                setEnrichJobs
+              );
 
               // 記事更新
               setArticles((cur) => {
                 const seen = new Set(cur.map((p) => p.id));
                 const deduped = enriched.filter((a) => !seen.has(a.id));
-                console.log([...cur, ...deduped]);
                 return [...cur, ...deduped];
               });
             })();
@@ -140,5 +159,6 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
     setHasInitialized,
     setOffset,
     error,
+    isEnriching,
   };
 }
