@@ -74,7 +74,10 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
                   <h3 className={styles.sectionDateTtl}>{date}</h3>
                   <div className={`${styles.itemWrap} ${listStyle}`}>
                     {group.map((article) => (
-                      <div key={article.id} className={styles.item}>
+                      <div
+                        key={article.id}
+                        className={`${styles.item} animate-in`}
+                      >
                         <Article
                           article={article}
                           viewType={viewType}
