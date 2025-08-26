@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-start;
   vertical-align: top;
-  margin: 0 4.2% 0 auto;  
+  margin: 0 4.2% 0 auto;
   gap: 8px;
   width: 93%;
   z-index: 5;
@@ -80,9 +80,8 @@
 
 .sectionDate {
   position: relative;
-  border-top: 1px solid #000; 
+  border-top: 1px solid #000;
 }
-
 
 
 /* viewType */
@@ -90,8 +89,6 @@
 .listStyle{
   border-top: solid 1px #000;
 }
-
-
 
 .list {
   width: 100%;
