@@ -86,12 +86,12 @@ const Article = ({
       {/* グループ先頭だけに年月を表示（検索時） */}
       {displayDate && <p className={styles.articleDate}>{displayDate}</p>}
 
-      <h4 className={styles.articleTtl}>{metaTitle}</h4>
+      <h4 className={`${styles.articleTtl}`}>{metaTitle}</h4>
       <p className={styles.article__desc}>{metaDescription}</p>
 
       <div className={styles.article__bottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>
-        <div className={styles.article__bottom__btns}>
+        <div className={`${styles.article__bottom__btns} pr-[9px]`}>
           <button
             type="button"
             className="article__comment-opener relative"
@@ -105,7 +105,7 @@ const Article = ({
               alt=""
             />
           </button>
-          <button type="button">
+          {/* <button type="button">
             <Image
               src="/icon_heart.svg"
               width={20}
@@ -113,7 +113,7 @@ const Article = ({
               className="object-cover"
               alt=""
             />
-          </button>
+          </button> */}
         </div>
       </div>
 

@@ -14,12 +14,12 @@ const config: Config = {
       },
       keyframes: {
         "fade-in-up": {
-          "0%": { opacity: "0", transform: "translateY(8px) scale(0.98)" },
-          "100%": { opacity: "1", transform: "translateY(0) scale(1)" },
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
       animation: {
-        in: "fade-in-up .8s ease-out both",
+        in: "fade-in-up .5s ease-out both",
       },
     },
   },
