@@ -12,9 +12,9 @@
 }
 @media (min-width: 768px) {
   .headLine{
-    right: 103px;
+    right: 107px;
     margin-top: 257px;
-    width: calc(93% - 148px);
+    width: calc(100% - 250px);
     top: 3px;
   }
 }

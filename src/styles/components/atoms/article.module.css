@@ -148,6 +148,7 @@
 }
 .article__cover.visible{
   opacity: 1;
+  pointer-events: auto;
 }
 
 .article__comment{
@@ -236,11 +237,12 @@
     margin-top: 0px;
   }
 
-  .image .article__bottom__btns > button {
+  /* hover */
+  .article__bottom__btns > button {
     transition: scale 0.3s ease;
     scale: 1;
   }
-  .image .article__bottom__btns > button:hover {
+  .article__bottom__btns > button:hover {
     scale: 1.1;
   }
 }

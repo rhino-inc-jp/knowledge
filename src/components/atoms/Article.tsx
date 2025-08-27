@@ -121,6 +121,7 @@ const Article = ({
         className={`${styles.article__cover} ${
           isCommentVisible ? styles.visible : ""
         }`}
+        onClick={handleCommentToggle}
       >
         <p className={styles.article__comment}>{comment}</p>
       </div>
