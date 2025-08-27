@@ -5,15 +5,17 @@
   background: #000;
   position: fixed;
   top: 0;
-  right: 0;
-  margin: 182px 4.2% 0 0;
+  right: 15px;
+  margin-top: 179px;
   z-index: 50;
-  width: calc(93% - 38px);
+  width: calc(100% - 57px);
 }
 @media (min-width: 768px) {
   .headLine{
-    margin: 260px 7.2% 0 auto;
-    width: calc(88% - 38px);
+    right: 103px;
+    margin-top: 257px;
+    width: calc(93% - 148px);
+    top: 3px;
   }
 }
 

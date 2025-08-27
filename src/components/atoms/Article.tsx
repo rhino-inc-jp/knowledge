@@ -60,7 +60,7 @@ const Article = ({
       }`}
     >
       {viewType === "image" && (
-        <div className={`${styles.articleThumb} mb-[10px]`}>
+        <div className={`${styles.articleThumb} mb-[8px]`}>
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
           {metaImage && (
             <img
@@ -91,7 +91,7 @@ const Article = ({
 
       <div className={styles.article__bottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>
-        <div className={`${styles.article__bottom__btns} pr-[9px]`}>
+        <div className={`${styles.article__bottom__btns}`}>
           <button
             type="button"
             className="article__comment-opener relative"
@@ -99,21 +99,21 @@ const Article = ({
           >
             <Image
               src="/icon_message.svg"
-              width={20}
-              height={20}
-              className="object-cover"
+              width={17}
+              height={17}
+              className="md:w-[22px]"
               alt=""
             />
           </button>
-          {/* <button type="button">
+          <button type="button">
             <Image
               src="/icon_heart.svg"
-              width={20}
-              height={20}
-              className="object-cover"
+              width={17}
+              height={17}
+              className="md:w-[22px]"
               alt=""
             />
-          </button> */}
+          </button>
         </div>
       </div>
 
