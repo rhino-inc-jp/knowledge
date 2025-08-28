@@ -105,7 +105,7 @@ const Article = ({
               alt=""
             />
           </button>
-          <button type="button">
+          {/* <button type="button">
             <Image
               src="/icon_heart.svg"
               width={17}
@@ -113,7 +113,7 @@ const Article = ({
               className="md:w-[22px]"
               alt=""
             />
-          </button>
+          </button> */}
         </div>
       </div>
 
