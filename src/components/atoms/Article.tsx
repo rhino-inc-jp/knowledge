@@ -8,17 +8,22 @@ type Props = {
   article: ArticleType;
   viewType: ViewType;
   isSearchMode?: boolean;
-  displayDate?: string; // ← 追加
+  displayDate?: string;
 };
 
-const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props) => {
+const Article = ({
+  article,
+  viewType,
+  isSearchMode = false,
+  displayDate,
+}: Props) => {
   const {
     article_url,
     post_staff,
-    description,
-    title,
-    thumb,
     comment,
+    metaTitle,
+    metaDescription,
+    metaImage,
   } = article;
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
@@ -46,49 +51,66 @@ const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props
 
   return (
     <a
-  ref={containerRef}
-  href={article_url}
-  target="_blank"
-  rel="noopener noreferrer"
-  className={`${styles.article} ${styles[viewType]} ${isSearchMode ? styles.searchMode : ''}`}
->
-
+      ref={containerRef}
+      href={article_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${styles.article} ${styles[viewType]} ${
+        isSearchMode && styles.searchMode
+      }`}
+    >
       {viewType === "image" && (
-        <div className={`${styles.articleThumb} mb-[10px]`}>
-          <Image src={thumb.url} fill alt="" />
+        <div className={`${styles.articleThumb} mb-[8px]`}>
+          {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
+          {metaImage && (
+            <img
+              className="object-contain absolute
+             top-0 left-0 w-[100%] h-[100%]"
+              src={metaImage}
+              alt=""
+            />
+          )}
+
+          {/* OGP画像がない場合はno_image.jpgを表示 */}
+          {!metaImage && (
+            <img
+              className="object-cover absolute
+            top-0 left-0"
+              src="/no_image.jpg"
+              alt=""
+            />
+          )}
         </div>
       )}
 
       {/* グループ先頭だけに年月を表示（検索時） */}
-      {displayDate && (
-        <p className={styles.articleDate}>{displayDate}</p>
-      )}
+      {displayDate && <p className={styles.articleDate}>{displayDate}</p>}
 
-      <h4 className={styles.articleTtl}>{title}</h4>
-      <p className={styles.article__desc}>{description}</p>
+      <h4 className={`${styles.articleTtl}`}>{metaTitle}</h4>
+      <p className={styles.articleDesc}>{metaDescription}</p>
 
-      <div className={styles.article__bottom}>
+      <div className={styles.articleBottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>
-        <div className={styles.article__bottom__btns}>
+        <div className={`${styles.articleBottomBtns}`}>
           <button
             type="button"
-            className="article__comment-opener relative"
+            className="relative"
             onClick={handleCommentToggle}
           >
             <Image
               src="/icon_message.svg"
-              width={20}
-              height={20}
-              className="object-cover"
+              width={17}
+              height={17}
+              className="md:w-[22px]"
               alt=""
             />
           </button>
           <button type="button">
             <Image
               src="/icon_heart.svg"
-              width={20}
-              height={20}
-              className="object-cover"
+              width={17}
+              height={17}
+              className="md:w-[22px]"
               alt=""
             />
           </button>
@@ -96,11 +118,12 @@ const Article = ({ article, viewType, isSearchMode = false, displayDate }: Props
       </div>
 
       <div
-        className={`${styles.article__cover} ${
+        className={`${styles.articleCover} ${
           isCommentVisible ? styles.visible : ""
         }`}
+        onClick={handleCommentToggle}
       >
-        <p className={styles.article__comment}>{comment}</p>
+        <p className={styles.articleComment}>{comment}</p>
       </div>
     </a>
   );

@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import styles from "@/styles/components/atoms/SearchBar.module.css";
 
 type Props = {
   keyword: string;
@@ -18,20 +17,27 @@ const SearchBar = ({ keyword, setKeyword }: Props) => {
   };
 
   return (
-    <div className={styles.searchBar}>
+    <div className="">
       <div className="relative w-full border-b border-black">
         {/* アイコン */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[13px] h-[13px]">
-          <Image src="/icon_search.svg" alt="検索" width={13} height={13} />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2">
+          <Image
+            className="md:w-[27px] md:h-[25px]"
+            src="/icon_search.svg"
+            alt="検索"
+            width={13}
+            height={13}
+          />
         </div>
 
         {/* 入力欄 */}
         <input
+          name="freeText"
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full pl-[30px] py-1 text-black text-[16px] bg-transparent outline-none"
+          className="w-full pl-[30px] md:pl-[40px] py-1 text-black text-[16px] bg-transparent outline-none md:h-[54px]"
         />
       </div>
     </div>

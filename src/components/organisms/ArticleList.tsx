@@ -19,8 +19,12 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
     const grouped: Record<string, ArticleType[]> = {};
 
     articles.forEach((article) => {
-      const date = article.publishedAt ? new Date(article.publishedAt) : new Date();
-      const yyyyMM = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}`;
+      const date = article.publishedAt
+        ? new Date(article.publishedAt)
+        : new Date();
+      const yyyyMM = `${date.getFullYear()}.${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`;
       if (!grouped[yyyyMM]) grouped[yyyyMM] = [];
       grouped[yyyyMM].push(article);
     });
@@ -31,11 +35,11 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
           .sort(([a], [b]) => b.localeCompare(a)) // YYYY.MM 降順
           .map(([yyyyMM, group]) => (
             <section
-                  key={yyyyMM}
-                  className={`${styles.sectionDate} ${styles.searchModeSectionDate}`}
-                >
-              <h3 className={styles.sectionDateTtl}>{yyyyMM}</h3>
-              <div className={`${styles.itemWrap} ${listStyle} ${styles.searchMode}`}>
+              key={yyyyMM}
+              className={`${styles.sectionDate} ${styles.searchModeSectionDate}`}
+            >
+              <h3 className={`${styles.sectionDateTtl} font-hel`}>{yyyyMM}</h3>
+              <div className={`${listStyle} ${styles.searchMode}`}>
                 {group.map((article) => (
                   <div key={article.id} className={styles.item}>
                     <Article
@@ -61,14 +65,17 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
         .sort(([aYear], [bYear]) => Number(bYear) - Number(aYear))
         .map(([year, dates]) => (
           <section key={year} className={styles.sectionWrap}>
-            <h2 className={styles.sectionYearTtl}>{year}</h2>
-            <div className={styles.articlesWrap}>
+            <h2 className={`${styles.sectionYearTtl} font-hel`}>{year}</h2>
+            <div className="w-full">
               {Object.entries(dates).map(([date, group]) => (
                 <section key={date} className={styles.sectionDate}>
                   <h3 className={styles.sectionDateTtl}>{date}</h3>
                   <div className={`${styles.itemWrap} ${listStyle}`}>
                     {group.map((article) => (
-                      <div key={article.id} className={styles.item}>
+                      <div
+                        key={article.id}
+                        className={`${styles.item} animate-in`}
+                      >
                         <Article
                           article={article}
                           viewType={viewType}

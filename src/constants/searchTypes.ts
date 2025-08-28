@@ -1,5 +1,5 @@
 export const SEARCH_TYPES = {
-  LIMIT: 5, // １回で取得する記事数
+  LIMIT: 10, // １回で取得する記事数
   YEAR: 2025, // 検索の日付いつから始めるか
   MONTH: 6,
 } as const;

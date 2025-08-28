@@ -28,6 +28,10 @@ const nextConfig = {
 
     return config;
   },
+  /** @type {import('next').NextConfig} */
+  experimental: {
+    serverComponentsExternalPackages: ["cheerio"],
+  },
 };
 
 export default nextConfig;

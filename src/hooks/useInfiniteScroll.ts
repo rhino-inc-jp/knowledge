@@ -3,17 +3,25 @@ import { useEffect, useRef } from "react";
 export default function useInfiniteScroll(
   isEnd: boolean,
   hasInitialized: boolean,
+  isEnriching: boolean,
   calcOffset: () => void,
   LIMIT: number
 ) {
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  // metaを取得中はisEnriching=true
+  // trueの間はスクロールトリガーを発火させないようにする
+  const lockedRef = useRef(false);
+
   useEffect(() => {
-    if (!loaderRef.current || isEnd || !hasInitialized) return;
+    const node = loaderRef.current;
+    if (!node || isEnd || !hasInitialized || isEnriching) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           // LIMITを増やすことで記事取得のuseEffectが動く
+          lockedRef.current = true;
           calcOffset();
         }
       },
@@ -23,12 +31,20 @@ export default function useInfiniteScroll(
       }
     );
 
-    observer.observe(loaderRef.current);
+    observer.observe(node);
 
     return () => observer.disconnect();
-  }, [isEnd, hasInitialized]);
+  }, [isEnd, hasInitialized, calcOffset, isEnriching]);
 
-  return {
-    loaderRef,
-  };
+  // enrichが終わったらロック解除
+  useEffect(() => {
+    if (!isEnriching) {
+      const id = setTimeout(() => {
+        lockedRef.current = false;
+      }, 0);
+      return () => clearTimeout(id);
+    }
+  }, [isEnriching]);
+
+  return { loaderRef };
 }

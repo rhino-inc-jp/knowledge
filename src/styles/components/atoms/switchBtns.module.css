@@ -10,14 +10,15 @@
   border-right: 1px solid #000;
 }
 
-.btns > .btn:not(:last-child) {
-  border-right: 1px solid #000;
-}
-
 .btn {
   width: 50%;
   background-color: #fff;
   transition: background-color 0.3s ease;
+}
+@media (min-width: 768px) {
+  .btn {
+    font-size: 13px;
+  }
 }
 
 .active {
@@ -29,11 +30,8 @@
     width: fit-content;
     background-color: none;
     padding: 0;
-    transform: rotate(90deg);
-    transform-origin: top right;
-    right: 0;
-    top: 0;
-    margin: 450px 50px 0 0;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    margin-top: 336px;
   }
-  
 }

@@ -18,7 +18,7 @@ import SearchIcon from "@/components/atoms/SearchIcon";
 
 import ArticleList from "@/components/organisms/ArticleList";
 import SearchFilterModal from "@/components/organisms/SearchModal";
-import SearchSummaryBar from "@/components/organisms/SearchSummaryBar"; // ✅
+import SearchSummaryBar from "@/components/organisms/SearchSummaryBar";
 
 const Home = () => {
   const [viewType, setViewType] = useState<ViewType>("list");
@@ -52,6 +52,7 @@ const Home = () => {
     setHasInitialized,
     setOffset,
     error,
+    isEnriching,
   } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
 
   /* 検索オプション（カテゴリ、スタッフ、カレンダー） */
@@ -61,7 +62,9 @@ const Home = () => {
   );
 
   /* ID → 表示名 のマップを作成 */
-  const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c.value]));
+  const categoryMap = Object.fromEntries(
+    categories.map((c) => [c.id, c.value])
+  );
   const staffMap = Object.fromEntries(staff.map((s) => [s.id, s.value]));
 
   /* スクロールで追加読み込み */
@@ -72,6 +75,7 @@ const Home = () => {
   const { loaderRef } = useInfiniteScroll(
     isEnd,
     hasInitialized,
+    isEnriching,
     calcOffset,
     SEARCH_TYPES.LIMIT
   );
@@ -86,9 +90,13 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
+  const showLoader = isEnriching || !(hasInitialized && isEnd);
+
   return (
     <main>
-      <div className="content-[''] fixed top-0 left-0 w-full h-[182px] z-[200] bg-white md:h-[260px]"></div>
+      <div className="content-[''] fixed top-0 left-0 w-full h-[178px] z-[200] bg-white md:h-[260px]"></div>
+
+      <div className={styles.headLine}></div>
 
       {/* 表示形式切り替え */}
       <SwitchBtns viewType={viewType} setViewType={setViewType} />
@@ -129,11 +137,8 @@ const Home = () => {
         onSearch={handleSearch}
       />
 
-      {/* 初回ロード or 追加読み込み */}
-      {!hasInitialized && <Loading ref={loaderRef} />}
-      {hasInitialized && !isEnd && <Loading ref={loaderRef} />}
-
-      <div className={styles.headLine}></div>
+      {/* 初回ロード or 追加読み込み時にローディングを表示*/}
+      {showLoader && <Loading ref={loaderRef} />}
     </main>
   );
 };

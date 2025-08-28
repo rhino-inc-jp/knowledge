@@ -59,7 +59,7 @@ const SearchModal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-hidden"
+          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-y-auto no-scrollbar"
           style={{ zIndex: 300 }}
           initial={{ x: "100%" }} // 初期状態: 画面の右外に配置
           animate={{ x: 0 }} // アニメーション中: 画面内にスライドイン
@@ -69,41 +69,52 @@ const SearchModal = ({
             ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
           }}
         >
-          <SearchBar keyword={keyword} setKeyword={setKeyword} />
+          <div className="p-[75px_15px_40px] md:p-[278px_15px_50px] md:max-w-[1188px] md:m-auto">
+            <div className="max-md:p-[0_22px]">
+              <div className="mb-[48px] md:mb-[68px]">
+                <SearchBar keyword={keyword} setKeyword={setKeyword} />
+              </div>
+              <div className={`${styles.searchBoxWrap} mb-[47px]`}>
+                <FilterSection
+                  label="Category"
+                  items={categories}
+                  selectedItems={selectedCategories}
+                  setSelectedItems={setSelectedCategories}
+                />
+                <FilterSection
+                  label="Date"
+                  items={calendar}
+                  selectedItems={selectedDates}
+                  setSelectedItems={setSelectedDates}
+                />
+                <FilterSection
+                  label="Staff"
+                  items={staff}
+                  selectedItems={selectedStaff}
+                  setSelectedItems={setSelectedStaff}
+                />
+              </div>
 
-          <div className={styles.searchBoxWrap}>
-            <FilterSection
-              label="Category"
-              items={categories}
-              selectedItems={selectedCategories}
-              setSelectedItems={setSelectedCategories}
-            />
-            <FilterSection
-              label="Date"
-              items={calendar}
-              selectedItems={selectedDates}
-              setSelectedItems={setSelectedDates}
-            />
-            <FilterSection
-              label="Staff"
-              items={staff}
-              selectedItems={selectedStaff}
-              setSelectedItems={setSelectedStaff}
-            />
+              <div className={`${styles.searchBtn}`}>
+                <button
+                  className="w-[340px] bg-black text-white py-3 md:py-4 text-lg md:text-[23px]"
+                  onClick={handleSearch}
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <p className={`${styles.logoWrapper}`}>
+              <Image
+                className="inline-block"
+                src="/logo_rhino-inc.svg"
+                width={76}
+                height={12.5}
+                alt="&copy; Rhino Inc."
+              />
+            </p>
           </div>
-
-          <div className={styles.searchBtn}>
-            <button
-              className="w-[340px] bg-black text-white py-3 text-lg"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
-          </div>
-
-          <p className={styles.logoWrapper}>
-            <Image src="/logo_rhino-inc.svg" fill alt="&copy; Rhino Inc." />
-          </p>
         </motion.div>
       )}
     </AnimatePresence>

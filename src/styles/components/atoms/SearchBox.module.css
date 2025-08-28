@@ -1,17 +1,26 @@
 .checkbox {
-    margin-right: 6.4%;
-    appearance: none;
+  margin-right: 16px;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #000;
+  background-color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+}
+@media (min-width: 768px) {
+  .checkbox {
+    margin-right: 21px;
     width: 10px;
     height: 10px;
-    border: 1px solid #000;
-    background-color: #fff;
-    border-radius: 0;
-    cursor: pointer;
   }
-  
-  .checkbox:checked {
-    background-color: #000;
-  }
+}
+
+.checkbox:checked {
+  background-color: #000;
+}
 
   .searchBox{
     width: 100%;
@@ -23,8 +32,7 @@
   @media (min-width: 768px) {
     
     .searchBox{
-        width: 23.6%;
-        max-width: 340px;
+        width: 30.2%;
         border-top: solid 1px #000;
     }
   }
