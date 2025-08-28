@@ -87,14 +87,14 @@ const Article = ({
       {displayDate && <p className={styles.articleDate}>{displayDate}</p>}
 
       <h4 className={`${styles.articleTtl}`}>{metaTitle}</h4>
-      <p className={styles.article__desc}>{metaDescription}</p>
+      <p className={styles.articleDesc}>{metaDescription}</p>
 
-      <div className={styles.article__bottom}>
+      <div className={styles.articleBottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>
-        <div className={`${styles.article__bottom__btns}`}>
+        <div className={`${styles.articleBottomBtns}`}>
           <button
             type="button"
-            className="article__comment-opener relative"
+            className="relative"
             onClick={handleCommentToggle}
           >
             <Image
@@ -118,12 +118,12 @@ const Article = ({
       </div>
 
       <div
-        className={`${styles.article__cover} ${
+        className={`${styles.articleCover} ${
           isCommentVisible ? styles.visible : ""
         }`}
         onClick={handleCommentToggle}
       >
-        <p className={styles.article__comment}>{comment}</p>
+        <p className={styles.articleComment}>{comment}</p>
       </div>
     </a>
   );

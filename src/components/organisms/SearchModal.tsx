@@ -59,7 +59,7 @@ const SearchModal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-hidden"
+          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-y-auto no-scrollbar"
           style={{ zIndex: 300 }}
           initial={{ x: "100%" }} // 初期状態: 画面の右外に配置
           animate={{ x: 0 }} // アニメーション中: 画面内にスライドイン
@@ -69,7 +69,7 @@ const SearchModal = ({
             ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
           }}
         >
-          <div className="p-[75px_15px_20px] md:p-[278px_15px_20px] md:max-w-[1188px] md:m-auto">
+          <div className="p-[75px_15px_40px] md:p-[278px_15px_50px] md:max-w-[1188px] md:m-auto">
             <div className="max-md:p-[0_22px]">
               <div className="mb-[48px] md:mb-[68px]">
                 <SearchBar keyword={keyword} setKeyword={setKeyword} />
