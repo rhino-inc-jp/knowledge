@@ -63,6 +63,9 @@
   display: flex;
   flex-wrap: wrap;
 }
+.image .sectionWrap {
+  width: 100%;
+}
 .image .itemWrap {
   display: flex;
   flex-wrap: wrap;
