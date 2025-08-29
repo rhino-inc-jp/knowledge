@@ -13,11 +13,6 @@
   }
 }
 
-.image.article{
-  padding: 0 0 12.5px;
-  height: 100%;
-}
-
 .articleThumb {
   width: 100%;
   position: relative;
@@ -31,7 +26,7 @@
   padding: 0 9px;
 }
 
-.image .articleTtl{
+.image .articleTtl {
   margin-bottom: 8px;
   overflow: hidden;
   display: -webkit-box;
@@ -192,7 +187,7 @@
     align-items: center;
   }
   .image .articleTtl {
-    min-height: 65px;
+    min-height: 61px;
   }
 
   .articleDesc{
