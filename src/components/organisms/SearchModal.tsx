@@ -100,7 +100,7 @@ const SearchModal = ({
                           className="md:w-[22px] max-md:mr-[20px]"
                           alt=""
                         />
-                        <span className="hidden">{name}</span>
+                        <span className="md:hidden">{name}</span>
                       </a>
                     </li>
                   ))}
