@@ -73,12 +73,12 @@ const SearchModal = ({
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-white overflow-auto w-full md:overflow-y-auto no-scrollbar z-[200]"
-          initial={{ x: "100%" }} // 初期状態: 画面の右外に配置
-          animate={{ x: 0 }} // アニメーション中: 画面内にスライドイン
-          exit={{ x: "100%" }} // 閉じるとき: 画面外にスライドアウト
+          initial={{ scale: 1.02, opacity: 0 }} // 初期状態
+          animate={{ scale: 1, opacity: 1 }} // アニメーション中
+          exit={{ scale: 1.05, opacity: 0 }} // 閉じるとき
           transition={{
-            duration: 0.4, // アニメーションの時間を0.4秒に短縮
-            ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
+            duration: 0.2, // アニメーションの時間
+            ease: [0.25, 0.46, 0.45, 0.94], // イージング
           }}
         >
           <div className="p-[75px_15px_40px] md:p-[60px_15px_50px] md:m-auto">

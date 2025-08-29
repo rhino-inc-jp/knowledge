@@ -1,7 +1,3 @@
-.borderTop {
-  position: relative;
-}
-
 .sectionWrap{
   position: relative;
   display: flex;
@@ -135,6 +131,9 @@
   border-top: none;
 }
 
+.image .item {
+  padding-top: 5px;
+}
 @media (min-width: 768px) {
   .image {
     display: flex;

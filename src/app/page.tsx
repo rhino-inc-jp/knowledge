@@ -21,7 +21,7 @@ import SearchFilterModal from "@/components/organisms/SearchModal";
 import SearchSummaryBar from "@/components/organisms/SearchSummaryBar";
 
 const Home = () => {
-  const [viewType, setViewType] = useState<ViewType>("list");
+  const [viewType, setViewType] = useState<ViewType>("image");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => setIsModalOpen(true);

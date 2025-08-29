@@ -39,7 +39,7 @@ const ArticleList = ({ viewType, articles, isSearchMode }: Props) => {
               className={`${styles.sectionDate} ${styles.searchModeSectionDate}`}
             >
               <h3 className={`${styles.sectionDateTtl} font-hel`}>{yyyyMM}</h3>
-              <div className={`${listStyle} ${styles.searchMode}`}>
+              <div className={`${listStyle}`}>
                 {group.map((article) => (
                   <div key={article.id} className={styles.item}>
                     <Article
