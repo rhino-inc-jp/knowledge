@@ -8,6 +8,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Category, CalnderDate, Staff } from "@/types/search";
 import FilterSection from "../atoms/FilterSection";
 
+const links = [
+  {
+    name: "Contact",
+    icon: "mail",
+    href: "/",
+  },
+  {
+    name: "My Page",
+    icon: "heart",
+    href: "/",
+  },
+];
+
 type Props = {
   categories: Category[];
   calendar: CalnderDate[];
@@ -59,8 +72,7 @@ const SearchModal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-y-auto no-scrollbar"
-          style={{ zIndex: 300 }}
+          className="fixed inset-0 bg-white overflow-auto w-full md:overflow-y-auto no-scrollbar z-[200]"
           initial={{ x: "100%" }} // 初期状態: 画面の右外に配置
           animate={{ x: 0 }} // アニメーション中: 画面内にスライドイン
           exit={{ x: "100%" }} // 閉じるとき: 画面外にスライドアウト
@@ -69,8 +81,31 @@ const SearchModal = ({
             ease: [0.25, 0.46, 0.45, 0.94], // イージングを調整し、スムーズでバウンド感を追加
           }}
         >
-          <div className="p-[75px_15px_40px] md:p-[278px_15px_50px] md:max-w-[1188px] md:m-auto">
+          <div className="p-[75px_15px_40px] md:p-[60px_15px_50px] md:m-auto">
             <div className="max-md:p-[0_22px]">
+              <div className="mb-[28px] md:pr-[102px]">
+                <ul className="max-md:[&>:not(:last-child)]:mb-[25px] md:[&>:not(:last-child)]:mr-[17px] md:flex md:items-center md:justify-end">
+                  {links.map(({ name, icon, href }) => (
+                    <li key={name}>
+                      <a
+                        className="flex items-center text-[17px] leading-none"
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          src={`/icon_${icon}.svg`}
+                          width={19.5}
+                          height={17}
+                          className="md:w-[22px] max-md:mr-[20px]"
+                          alt=""
+                        />
+                        <span className="hidden">{name}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="mb-[48px] md:mb-[68px]">
                 <SearchBar keyword={keyword} setKeyword={setKeyword} />
               </div>
@@ -103,17 +138,17 @@ const SearchModal = ({
                   Search
                 </button>
               </div>
-            </div>
 
-            <p className={`${styles.logoWrapper}`}>
-              <Image
-                className="inline-block"
-                src="/logo_rhino-inc.svg"
-                width={76}
-                height={12.5}
-                alt="&copy; Rhino Inc."
-              />
-            </p>
+              <p className="text-right mt-[45px] md:mt-[70px]">
+                <Image
+                  className="inline-block md:w-[120px] md:h-[20px]"
+                  src="/logo_rhino-inc.svg"
+                  width={76}
+                  height={12.5}
+                  alt="&copy; Rhino Inc."
+                />
+              </p>
+            </div>
           </div>
         </motion.div>
       )}

@@ -49,40 +49,30 @@
 
 /* mdスクリーン以上（768px～）でサイズ変更 */
 @media (min-width: 768px) {
-  .logoWrapper {
-    width: 120px;
-    height: 20px;
-    margin: 0 105px 50px 0;
-    position: absolute;
-    bottom: 10px;
-    right: 0;
-  }
-  .logoWrapper img {
-    width: 100%;
-  }
   .searchBoxWrap{
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: unset;
-    border-top: unset;
+    margin: 0;
+    border-top: 0;
   }
 
   .searchHeader{
-      display: block;
-    }
+    display: block;
+  }
 
-    .searchBtn{
-      margin-top: 80px;
-    }
+  .searchBtn{
+    margin-top: 80px;
+  }
 
-    .closeBtnWrap{
-      margin-top: 2.2%;
-      margin-right: 2.2%;
-    }
+  .closeBtnWrap{
+    margin-top: 2.2%;
+    margin-right: 2.2%;
+  }
 
-    .closeBtn{
-      width: 50px;
-      height: 50px;
-    }
+  .closeBtn{
+    width: 50px;
+    height: 50px;
+  }
+
 }
