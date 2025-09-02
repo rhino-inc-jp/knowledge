@@ -2,7 +2,6 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  vertical-align: top;
   margin: 0 15px;
   z-index: 5;
 }
@@ -12,101 +11,43 @@
   }
 }
 
-.sectionDate {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  vertical-align: top;
-}
-
-
-.sectionYearTtl,
-.sectionDateTtl {
+.sectionYearTtl {
   z-index: 9;
   position: sticky;
+  top: 180px;
   left: 0;
   display: inline-block;
+
   font-size: 17px;
   line-height: 1;
-  top: 180px;
   writing-mode: vertical-rl;
+
+  border-top: solid 1px #000;
   padding-top: 10px;
   padding-right: 1px;
+  padding-bottom: 10px;
+  margin-right: 10px;
 }
 @media (min-width: 768px) {
   .sectionYearTtl {
+    font-size: 15px;
     padding-left: 6px;
     padding-right: 6px;
   }
-  .sectionDateTtl {
-    padding-right: 14px;
-  }
 }
 
-.sectionDateTtl {
-  width: 30px;
-  padding-bottom: 12.5px;
-}
 @media (min-width: 768px) {
-  .sectionYearTtl,
-  .sectionDateTtl {
-    font-size: 15px;
-  }
-  .sectionDateTtl {
-    width: 50px;
-    padding-bottom: 19px;
-  }
-}
-
-/* 検索画面の時のみsectionWrapに.sectionWrapSearchが追加 */
-
-.sectionWrapSearch .sectionDateTtl{
-  display: none;
-}
-
-.sectionYearTtl{
-  margin-right: 10px;
-  border-top: solid 1px #000;
-  padding-top: 10px;
-}
-@media (min-width: 768px) {
-  .sectionYearTtl,
-  .sectionDateTtl {
+  .sectionYearTtl {
     top: 260px;
     font-size: 30px;
     padding-top: 17px;
-  }
-  .sectionYearTtl{
+    padding-bottom: 17px;
     margin-right: 31px;
   }
 }
 
 
-.sectionDate {
-  position: relative;
-  border-top: 1px solid #000;
-}
-
-
 /* viewType */
-
-.listStyle{
-  border-top: solid 1px #000;
-}
-
-.list {
-  width: 100%;
-}
-.list .item {
-  width: 100%;
-}
-@media (min-width: 768px) {
-  .list {
-    margin-left: auto;
-    width: calc(100% - 65px);
-  }
-}
-
 .item{
   border-top: solid 1px #000;
 }
@@ -114,14 +55,23 @@
   border-top: none;
 }
 
-
 .image {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.image .sectionWrap {
+  width: 100%;
+}
+.image .itemWrap {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
 }
+
 .image .item {
+  /* padding-top: 5px; */
   width: 47%;
 }
 .image .item:nth-of-type(1){
@@ -131,20 +81,17 @@
   border-top: none;
 }
 
-.image .item {
-  padding-top: 5px;
-}
 @media (min-width: 768px) {
-  .image {
+  .image .itemWrap {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 0 2.154%;
-    padding-left: 30px;
+    gap: 0 2.66666%;
   }
 
   .image .item {
-    width: 23.3%;
+    width: 23%;
   }
   .image .item:nth-of-type(1){
     border-top: none;
@@ -159,7 +106,6 @@
     border-top: none;
   }
 }
-
 
 /* 検索語のCSS */
 .searchModeSectionDate{

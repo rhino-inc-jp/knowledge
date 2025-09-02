@@ -11,6 +11,22 @@ type Props = {
   displayDate?: string;
 };
 
+/*　月毎のホバーカラー　*/
+const monthColors: Record<number, string> = {
+  1: "hover:bg-[#FF948D]",
+  2: "hover:bg-[#FFB995]",
+  3: "hover:bg-[#FFD384]",
+  4: "hover:bg-[#FFF171]",
+  5: "hover:bg-[#CCFF6A]",
+  6: "hover:bg-[#92FF8D]",
+  7: "hover:bg-[#99FFD8]",
+  8: "hover:bg-[#9AF3FF]",
+  9: "hover:bg-[#71C4FF]",
+  10: "hover:bg-[#8DA9FF]",
+  11: "hover:bg-[#CC8DFF]",
+  12: "hover:bg-[#FFA5B8]",
+};
+
 const Article = ({
   article,
   viewType,
@@ -18,6 +34,7 @@ const Article = ({
   displayDate,
 }: Props) => {
   const {
+    month,
     article_url,
     post_staff,
     comment,
@@ -49,15 +66,17 @@ const Article = ({
     setIsCommentVisible(!isCommentVisible);
   };
 
+  const listStyle = styles[viewType] || "";
+
   return (
     <a
       ref={containerRef}
       href={article_url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${styles.article} ${styles[viewType]} ${
+      className={`${styles.article} ${listStyle} ${
         isSearchMode && styles.searchMode
-      }`}
+      } ${monthColors[month]}`}
     >
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[8px]`}>

@@ -9,6 +9,7 @@ export type Article = {
     value: string;
   };
   date: string;
+  month: number;
   article_url: string;
   comment: string;
   publishedAt?: string;

@@ -113,11 +113,7 @@ const Home = () => {
       )}
 
       {/* 記事一覧 */}
-      <ArticleList
-        viewType={viewType}
-        articles={articles}
-        isSearchMode={isSearchMode}
-      />
+      <ArticleList viewType={viewType} articles={articles} />
 
       {/* エラーメッセージ */}
       {error && <div className="text-sm text-center mt-4">{error}</div>}
