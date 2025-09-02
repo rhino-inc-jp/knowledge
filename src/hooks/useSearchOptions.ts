@@ -63,6 +63,9 @@ export default function useSearchOptions(year: number, month: number) {
         }
       }
 
+      // 日付降順
+      result.reverse();
+
       setCalendar(result);
     };
 
