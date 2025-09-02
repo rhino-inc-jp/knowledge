@@ -8,18 +8,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Category, CalnderDate, Staff } from "@/types/search";
 import FilterSection from "../atoms/FilterSection";
 
-const links = [
-  {
-    name: "Contact",
-    icon: "mail",
-    href: "/",
-  },
-  {
-    name: "My Page",
-    icon: "heart",
-    href: "/",
-  },
-];
+// const links = [
+// {
+//   name: "Contact",
+//   icon: "mail",
+//   href: "/",
+// },
+// {
+//   name: "My Page",
+//   icon: "heart",
+//   href: "/",
+// },
+// ];
 
 type Props = {
   categories: Category[];
@@ -83,7 +83,7 @@ const SearchModal = ({
         >
           <div className="p-[75px_15px_40px] md:p-[60px_15px_50px] md:m-auto">
             <div className="max-md:p-[0_22px]">
-              <div className="mb-[28px] md:pr-[102px]">
+              {/* <div className="mb-[28px] md:pr-[102px]">
                 <ul className="max-md:[&>:not(:last-child)]:mb-[25px] md:[&>:not(:last-child)]:mr-[17px] md:flex md:items-center md:justify-end">
                   {links.map(({ name, icon, href }) => (
                     <li key={name}>
@@ -105,7 +105,7 @@ const SearchModal = ({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
               <div className="mb-[48px] md:mb-[68px]">
                 <SearchBar keyword={keyword} setKeyword={setKeyword} />
               </div>
