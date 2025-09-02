@@ -38,6 +38,9 @@ const Article = ({
     article_url,
     post_staff,
     comment,
+    title,
+    description,
+    thumb,
     metaTitle,
     metaDescription,
     metaImage,
@@ -81,6 +84,16 @@ const Article = ({
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[8px]`}>
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
+
+          {thumb?.url && (
+            <img
+              className="object-contain absolute
+             top-0 left-0 w-[100%] h-[100%]"
+              src={thumb?.url}
+              alt=""
+            />
+          )}
+
           {metaImage && (
             <img
               className="object-contain absolute
@@ -91,7 +104,7 @@ const Article = ({
           )}
 
           {/* OGP画像がない場合はno_image.jpgを表示 */}
-          {!metaImage && (
+          {!thumb?.url && !metaImage && (
             <img
               className="object-cover absolute
             top-0 left-0"
@@ -105,8 +118,12 @@ const Article = ({
       {/* グループ先頭だけに年月を表示（検索時） */}
       {displayDate && <p className={styles.articleDate}>{displayDate}</p>}
 
-      <h4 className={`${styles.articleTtl}`}>{metaTitle}</h4>
-      <p className={styles.articleDesc}>{metaDescription}</p>
+      <h4 className={`${styles.articleTtl}`}>
+        {title?.length > 0 ? title : metaTitle}
+      </h4>
+      <p className={styles.articleDesc}>
+        {description?.length > 0 ? description : metaDescription}
+      </p>
 
       <div className={styles.articleBottom}>
         <p className={styles.articleStaff}>{post_staff.value}</p>

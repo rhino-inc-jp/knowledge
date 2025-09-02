@@ -14,6 +14,12 @@ export type Article = {
   comment: string;
   publishedAt?: string;
 
+  title: string;
+  description: string;
+  thumb: {
+    url: string;
+  };
+
   // apiで取得するmeta情報
   metaTitle?: string;
   metaDescription?: string;
