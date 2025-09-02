@@ -21,6 +21,8 @@ export const formatArticlesByYearAndMonth = (
 
     const key = `${year}.${month}`;
 
+    article.month = Number(month);
+
     (formatted[key] ??= []).push(article);
   });
 

@@ -22,22 +22,24 @@ const ArticleList = ({ viewType, articles }: Props) => {
     <div className={`${listStyle}`}>
       {Object.entries(formatted)
         .sort(([aYear], [bYear]) => Number(bYear) - Number(aYear))
-        .map(([year, dates], idx) => (
-          <section key={year} className={styles.sectionWrap}>
-            <h2 className={`${styles.sectionYearTtl} font-hel`}>{year}</h2>
-            <div className={`w-full ${styles.itemWrap} ${wrapBorder(idx)}`}>
-              {Object.entries(dates).map(([_, article]) => (
-                <div key={article.id} className={`${styles.item} animate-in`}>
-                  <Article
-                    article={article}
-                    viewType={viewType}
-                    isSearchMode={false}
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+        .map(([year, dates], idx) => {
+          return (
+            <section key={year} className={styles.sectionWrap}>
+              <h2 className={`${styles.sectionYearTtl} font-hel`}>{year}</h2>
+              <div className={`w-full ${styles.itemWrap} ${wrapBorder(idx)}`}>
+                {Object.entries(dates).map(([_, article]) => (
+                  <div key={article.id} className={`${styles.item} animate-in`}>
+                    <Article
+                      article={article}
+                      viewType={viewType}
+                      isSearchMode={false}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
     </div>
   );
 };

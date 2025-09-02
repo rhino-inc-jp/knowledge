@@ -13,9 +13,9 @@
     transition: background-color 0.3s ease;
   }
 
-  .article:hover {
+  /* .article:hover {
     background-color: #FFF171;
-  }
+  } */
   .image.article:hover .articleStaff::after{
     background-color: #fff;
   }
