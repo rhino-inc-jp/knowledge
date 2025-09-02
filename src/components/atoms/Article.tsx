@@ -106,8 +106,8 @@ const Article = ({
           {/* OGP画像がない場合はno_image.jpgを表示 */}
           {!thumb?.url && !metaImage && (
             <img
-              className="object-cover absolute
-            top-0 left-0"
+              className="object-contain absolute
+            top-0 left-0 w-[100%] h-[100%]"
               src="/no_image.jpg"
               alt=""
             />
