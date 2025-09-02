@@ -1,15 +1,46 @@
 .article {
   display: block;
   position: relative;
-  padding: 20px 8px 13px;
+  padding: 5px 8px 13px;
 }
 @media (min-width: 768px) {
   .article {
     transition: background-color 0.3s ease;
     background-color: #fff;
   }
+
+  .image .articleStaff::after{
+    transition: background-color 0.3s ease;
+  }
+
   .article:hover {
     background-color: #FFF171;
+  }
+  .image.article:hover .articleStaff::after{
+    background-color: #fff;
+  }
+}
+
+.image.article {
+  padding: 5px 0 15px;
+}
+.image.article .articleTtl,
+.image .articleBottom {
+  padding: 0 7.5px;
+}
+.list.article {
+  padding: 20px 7.5px 15px;
+}
+@media (min-width: 768px) {
+  .list.article {
+    padding: 17px 7.5px;
+  }
+  .image.article {
+    padding: 5px 0 20px;
+  }
+  .image.article .articleTtl,
+  .image .articleBottom {
+    padding: 0 15px 0 10px;
   }
 }
 
@@ -23,7 +54,6 @@
   font-size: 12px;
   display: block;
   line-height: 1.4;
-  padding: 0 9px;
 }
 
 .image .articleTtl {
@@ -72,7 +102,6 @@
   display: block;
   margin: 0;
   width: 100%;
-  padding: 0 9px;
 }
 @media (min-width: 768px) {
   .image .articleBottom{
@@ -167,14 +196,12 @@
 @media (min-width: 768px) {
   .article{
     display: grid;
-    padding: 5px 0;
     grid-template-columns: 33% 47.5% 19.5%;
     width: 100%;
     min-height: 95px;
   }
   .image.article{
     display: block;
-    padding: 0 0 19px;
   }
   
   .articleTtl {

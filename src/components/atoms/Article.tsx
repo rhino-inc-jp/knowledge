@@ -49,13 +49,15 @@ const Article = ({
     setIsCommentVisible(!isCommentVisible);
   };
 
+  const listStyle = styles[viewType] || "";
+
   return (
     <a
       ref={containerRef}
       href={article_url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${styles.article} ${styles[viewType]} ${
+      className={`${styles.article} ${listStyle} ${
         isSearchMode && styles.searchMode
       }`}
     >

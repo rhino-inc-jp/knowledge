@@ -25,6 +25,7 @@
   border-top: solid 1px #000;
   padding-top: 10px;
   padding-right: 1px;
+  padding-bottom: 10px;
   margin-right: 10px;
 }
 @media (min-width: 768px) {
@@ -40,23 +41,19 @@
     top: 260px;
     font-size: 30px;
     padding-top: 17px;
+    padding-bottom: 17px;
     margin-right: 31px;
   }
 }
 
 
 /* viewType */
-.list {
-  
-}
-
 .item{
   border-top: solid 1px #000;
 }
 .item:nth-of-type(1){
   border-top: none;
 }
-
 
 .image {
   width: 100%;
@@ -74,7 +71,7 @@
 }
 
 .image .item {
-  padding-top: 5px;
+  /* padding-top: 5px; */
   width: 47%;
 }
 .image .item:nth-of-type(1){
