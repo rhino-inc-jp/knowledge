@@ -1,7 +1,8 @@
 .article {
   display: block;
   position: relative;
-  padding: 5px 8px 13px;
+  padding: 0px 8px 13px;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   .article {
@@ -19,7 +20,7 @@
 }
 
 .image.article {
-  padding: 5px 0 15px;
+  padding: 0px 0 15px;
 }
 .image.article .articleTtl,
 .image .articleBottom {
@@ -33,7 +34,7 @@
     padding: 17px 7.5px;
   }
   .image.article {
-    padding: 5px 0 20px;
+    padding: 0px 0 20px;
   }
   .image.article .articleTtl,
   .image .articleBottom {
