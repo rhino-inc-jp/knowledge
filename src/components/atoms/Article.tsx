@@ -34,9 +34,11 @@ const Article = ({
   displayDate,
 }: Props) => {
   const {
+    date,
     month,
     article_url,
     post_staff,
+    post_category,
     comment,
     title,
     description,
@@ -125,7 +127,25 @@ const Article = ({
         {description?.length > 0 ? description : metaDescription}
       </p>
 
+      <p className={styles.articleDateList}>
+        {new Date(date).toLocaleDateString("ja-JP", {
+          timeZone: "Asia/Tokyo",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })}
+      </p>
+
       <div className={styles.articleBottom}>
+        <p className={`${styles.articleDateList} ${styles.articleDateListPc}`}>
+          {new Date(date).toLocaleDateString("ja-JP", {
+            timeZone: "Asia/Tokyo",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })}
+        </p>
+        <p className={styles.articleCategory}>#{post_category.value}</p>
         <p className={styles.articleStaff}>{post_staff.value}</p>
         <div className={`${styles.articleBottomBtns}`}>
           <button
@@ -133,13 +153,21 @@ const Article = ({
             className="relative"
             onClick={handleCommentToggle}
           >
-            <Image
-              src="/icon_message.svg"
-              width={17}
-              height={17}
-              className="md:w-[22px]"
-              alt=""
-            />
+          <Image
+            src="/icon_message.svg"
+            width={17}
+            height={17}
+            className="md:w-[22px]"
+            alt=""
+          />
+          <p className={styles.articleDateList}>
+            {new Date(date).toLocaleDateString("ja-JP", {
+              timeZone: "Asia/Tokyo",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })}
+          </p>
           </button>
           {/* <button type="button">
             <Image
