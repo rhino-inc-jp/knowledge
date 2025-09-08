@@ -52,6 +52,28 @@ export async function GET(req: Request) {
     if (!url)
       return NextResponse.json({ error: "url is required" }, { status: 400 });
     const target = new URL(url);
+  
+    if (
+      target.hostname.includes("youtube.com") ||
+      target.hostname.includes("youtu.be")
+    ) {
+    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
+      target.toString()
+    )}&format=json`;
+      const oembedRes = await fetch(oembedUrl);
+      if (oembedRes.ok) {
+        const oembed = await oembedRes.json();
+        return Response.json({
+          ok: true,
+          meta: {
+            title: oembed.title,
+            description: "",
+            image: oembed.thumbnail_url,
+          },
+        });
+      }
+    }
+
     if (!/^https?:$/.test(target.protocol)) {
       return NextResponse.json(
         { error: "only http/https allowed" },
