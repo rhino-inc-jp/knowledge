@@ -65,14 +65,75 @@
 }
 
 
-/* articleDateList */
+/* .articleDateList / 投稿日 */
 .articleDateList {
   margin-top: 15px;
 }
-.articleDateListPc {
-  /* display: none; */
+.articleDateList.articleDateListPc {
+  display: none;
 }
 
+/* 
+  imageタブ時のクラス 
+  .article_image__QRxrM
+*/
+.image .articleBottomBtns .articleDateList {
+  display: none;
+}
+.image .articleStaff{
+  width: 100%;
+}
+.image .articleDateList {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  margin-bottom: 7.55px;
+ }
+ @media (min-width: 768px) {
+   .image .articleStaff{
+     width: fit-content;
+   }
+   .image .articleDateList {
+     padding-left: 10px;
+     margin-bottom: 7.5px;
+   }
+ }
+
+
+/* 
+    listタブ時のクラス 
+    .article_list__cTFXc
+  */
+  .list .articleBottomBtns .articleDateList{
+    display: none;
+  }
+  .list .articleBottom{
+    flex-wrap: wrap;
+    column-gap: 4%;
+  }
+  .list .articleBottomBtns{
+    margin-left: 4%;
+  }
+  @media (min-width: 768px) {
+    .list .articleBottomBtns{
+      margin: 0 0 0 auto;
+    }
+    .list .articleDateList{
+      display: none;
+    }
+    .list .articleBottom{
+      flex-wrap: wrap;
+      padding-left: 10%;
+      justify-content: flex-start;
+      column-gap: 4%;
+    }
+    .list .articleDateList.articleDateListPc {
+      display: block;
+    }
+    .list .articleBottom .articleDateListPc {
+      margin-top: 0;
+      width: 100%;
+    }
+  }
 
 /* articleCategory */
 .articleCategory {
@@ -117,9 +178,14 @@
   }
 }
 .image .articleBottom{
-  display: block;
+  /* display: block; */
   margin: 0;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  column-gap: 4%;
+  row-gap: 5px;
 }
 @media (min-width: 768px) {
   .image .articleBottom{
@@ -134,7 +200,7 @@
   display: block;
   position: relative;
   padding-left: 12px;
-  margin-right: 27px;
+  /* margin-right: 27px; */
 }
 .image .articleStaff{
   padding-left: 15px;
@@ -146,7 +212,8 @@
 }
 @media (min-width: 768px) {
   .articleStaff{
-    margin-right: 12%;
+    /* margin-right: 12%; */
+    margin-right: 0;
   }
 }
 
@@ -176,8 +243,10 @@
 }
 
 .image .articleBottomBtns{
-  margin-top: 9px;
+  /* margin-top: 9px; */
   justify-content: right;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .articleCover{
@@ -274,9 +343,13 @@
     justify-content: right;
     align-items: center;
     vertical-align: middle;
+    column-gap: 8%;
+    row-gap: 5px;
+    flex-wrap: wrap;
   }
   .image .articleBottomBtns{
     margin-top: 0px;
+    margin-left: 4%;
   }
 
   /* hover */

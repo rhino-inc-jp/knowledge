@@ -38,6 +38,7 @@ const Article = ({
     month,
     article_url,
     post_staff,
+    post_staff_multiple,
     post_category,
     comment,
     title,
@@ -47,6 +48,14 @@ const Article = ({
     metaDescription,
     metaImage,
   } = article;
+
+  const staffText =
+  (Array.isArray(post_staff_multiple) && post_staff_multiple.length > 0)
+    ? post_staff_multiple
+        .map((s) => s?.value)
+        .filter(Boolean)
+        .join(" / ")
+    : (post_staff?.value ?? "");
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
@@ -146,7 +155,8 @@ const Article = ({
           })}
         </p>
         <p className={styles.articleCategory}>#{post_category.value}</p>
-        <p className={styles.articleStaff}>{post_staff.value}</p>
+        {/* <p className={styles.articleStaff}>{post_staff.value}</p> */}
+        <p className={styles.articleStaff}>{staffText}</p>
         <div className={`${styles.articleBottomBtns}`}>
           <button
             type="button"

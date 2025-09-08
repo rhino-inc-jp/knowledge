@@ -5,6 +5,10 @@ export type Article = {
     id: string;
     value: string;
   };
+  post_staff_multiple: {
+    id: string;
+    value: string;
+  }[];
   post_category: {
     value: string;
   };
