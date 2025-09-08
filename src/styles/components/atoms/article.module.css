@@ -39,7 +39,7 @@
   }
   .image.article .articleTtl,
   .image .articleBottom {
-    padding: 0 15px 0 10px;
+    padding: 0 7.5px;
   }
 }
 
@@ -179,7 +179,6 @@
   }
 }
 .image .articleBottom{
-  /* display: block; */
   margin: 0;
   width: 100%;
   display: flex;
@@ -189,9 +188,6 @@
   row-gap: 5px;
 }
 @media (min-width: 768px) {
-  .image .articleBottom{
-    padding: 0 17px;
-  }
   .image .articleBottom > button:not(:last-child) {
     margin-right: 24px;
   }
@@ -201,7 +197,6 @@
   display: block;
   position: relative;
   padding-left: 12px;
-  /* margin-right: 27px; */
 }
 .image .articleStaff{
   padding-left: 15px;
@@ -213,7 +208,6 @@
 }
 @media (min-width: 768px) {
   .articleStaff{
-    /* margin-right: 12%; */
     margin-right: 0;
   }
 }
@@ -244,10 +238,9 @@
 }
 
 .image .articleBottomBtns{
-  /* margin-top: 9px; */
-  justify-content: right;
   margin-left: auto;
   margin-right: 0;
+  justify-content: flex-end;
 }
 
 .articleCover{
@@ -341,16 +334,11 @@
   }
   .image .articleBottom{
     display: flex;
-    justify-content: right;
     align-items: center;
     vertical-align: middle;
     column-gap: 8%;
     row-gap: 5px;
     flex-wrap: wrap;
-  }
-  .image .articleBottomBtns{
-    margin-top: 0px;
-    margin-left: 4%;
   }
 
   /* hover */
