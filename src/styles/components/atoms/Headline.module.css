@@ -1,0 +1,42 @@
+.headLine{
+  content: "";
+  width: auto;
+  height: 1px;
+  background: #000;
+  position: fixed;
+  top: 0;
+  right: 15px;
+  margin-top: 179px;
+  z-index: 50;
+  width: calc(100% - 57px);
+}
+@media (min-width: 768px) {
+  .headLine{
+    right: 107px;
+    margin-top: 257px;
+    width: calc(100% - 250px);
+    top: 3px;
+  }
+}
+
+.searchWord {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 182px;
+  margin-left: 10px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+@media (min-width: 1500px) {
+  .searchWord {
+    margin-top: 260px;
+    margin-left: 30px;
+  }
+}
+.searchWord p {
+  padding: 3px 0;
+}

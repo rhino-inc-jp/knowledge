@@ -1,0 +1,120 @@
+.sectionWrap{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin: 0 15px;
+  z-index: 5;
+}
+@media (min-width: 768px) {
+  .sectionWrap{
+    margin: 0 107px 0 70px;
+  }
+}
+
+.sectionYearTtl {
+  z-index: 9;
+  position: sticky;
+  top: 180px;
+  left: 0;
+  display: inline-block;
+
+  font-size: 17px;
+  line-height: 1;
+  writing-mode: vertical-rl;
+
+  border-top: solid 1px #000;
+  padding-top: 10px;
+  padding-right: 1px;
+  padding-bottom: 10px;
+  margin-right: 10px;
+}
+@media (min-width: 768px) {
+  .sectionYearTtl {
+    font-size: 15px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 768px) {
+  .sectionYearTtl {
+    top: 260px;
+    font-size: 30px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    margin-right: 31px;
+  }
+}
+
+
+/* viewType */
+.item{
+  border-top: solid 1px #000;
+}
+.item:nth-of-type(1){
+  border-top: none;
+}
+
+.image {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.image .sectionWrap {
+  width: 100%;
+}
+.image .itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.image .item {
+  /* padding-top: 5px; */
+  width: 47%;
+}
+.image .item:nth-of-type(1){
+  border-top: none;
+}
+.image .item:nth-of-type(2){
+  border-top: none;
+}
+
+@media (min-width: 768px) {
+  .image .itemWrap {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0 2.66666%;
+  }
+
+  .image .item {
+    width: 23%;
+  }
+  .image .item:nth-of-type(1){
+    border-top: none;
+  }
+  .image .item:nth-of-type(2){
+    border-top: none;
+  }
+  .image .item:nth-of-type(3){
+    border-top: none;
+  }
+  .image .item:nth-of-type(4){
+    border-top: none;
+  }
+}
+
+/* 検索語のCSS */
+.searchModeSectionDate{
+  width: 83.5%;
+  margin: 0 4.28% 0 auto;
+}
+@media (min-width: 768px) {
+  .searchModeSectionDate{
+    margin: 0 7.2% 0 auto;
+    width: 85.8%;
+  }
+}

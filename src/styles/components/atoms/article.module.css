@@ -1,0 +1,352 @@
+.article {
+  display: block;
+  position: relative;
+  padding: 0px 8px 13px;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .article {
+    transition: background-color 0.3s ease;
+    background-color: #fff;
+  }
+
+  .image .articleStaff::after{
+    transition: background-color 0.3s ease;
+  }
+
+  .image.article:hover .articleStaff::after{
+    background-color: #fff;
+  }
+}
+
+.image.article {
+  padding: 0px 0 15px;
+  height: 100%;
+}
+.image.article .articleTtl,
+.image .articleBottom {
+  padding: 0 7.5px;
+}
+.list.article {
+  padding: 20px 7.5px 15px;
+}
+@media (min-width: 768px) {
+  .list.article {
+    padding: 17px 7.5px;
+  }
+  .image.article {
+    padding: 0px 0 20px;
+  }
+  .image.article .articleTtl,
+  .image .articleBottom {
+    padding: 0 7.5px;
+  }
+}
+
+.articleThumb {
+  width: 100%;
+  position: relative;
+  padding-top: 52.5%;
+}
+
+.articleTtl{
+  font-size: 12px;
+  display: block;
+  line-height: 1.4;
+}
+
+.image .articleTtl {
+  margin-bottom: 8px;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  min-height: 48px;
+}
+
+
+/* .articleDateList / 投稿日 */
+.articleDateList {
+  margin-top: 15px;
+}
+.articleDateList.articleDateListPc {
+  display: none;
+}
+
+/* 
+  imageタブ時のクラス 
+  .article_image__QRxrM
+*/
+.image .articleBottomBtns .articleDateList {
+  display: none;
+}
+.image .articleStaff{
+  width: 100%;
+}
+.image .articleDateList {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+  margin-bottom: 7.55px;
+ }
+ @media (min-width: 768px) {
+   .image .articleStaff{
+     width: fit-content;
+   }
+   .image .articleDateList {
+     padding-left: 10px;
+     margin-bottom: 7.5px;
+   }
+ }
+
+
+/* 
+    listタブ時のクラス 
+    .article_list__cTFXc
+  */
+  .list .articleBottomBtns .articleDateList{
+    display: none;
+  }
+  .list .articleBottom{
+    flex-wrap: wrap;
+    column-gap: 4%;
+  }
+  .list .articleBottomBtns{
+    margin-left: 4%;
+  }
+  @media (min-width: 768px) {
+    .list .articleBottomBtns{
+      margin: 0 0 0 auto;
+    }
+    .list .articleDateList{
+      display: none;
+    }
+    .list .articleBottom{
+      flex-wrap: wrap;
+      padding-left: 10%;
+      justify-content: flex-start;
+      column-gap: 4%;
+    }
+    .list .articleDateList.articleDateListPc {
+      display: block;
+    }
+    .list .articleBottom .articleDateListPc {
+      margin-top: 0;
+      width: 100%;
+    }
+  }
+
+/* articleCategory */
+.articleCategory {
+  background-color: #000;
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 10px;
+  display: block;
+  width: fit-content;
+}
+
+.articleDesc{
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 16px;
+
+  /* テキスト、3行でクランプ */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .articleDesc{
+    font-size: 12px;
+  }
+}
+.image .articleDesc{
+  display: none;
+}
+
+.articleBottom{
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 14px 0 0 auto;
+}
+@media (max-width: 768px) {
+  .articleBottom{
+    padding-right: 4px;
+  }
+}
+.image .articleBottom{
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  column-gap: 4%;
+  row-gap: 5px;
+}
+@media (min-width: 768px) {
+  .image .articleBottom > button:not(:last-child) {
+    margin-right: 24px;
+  }
+}
+
+.articleStaff{
+  display: block;
+  position: relative;
+  padding-left: 12px;
+}
+.image .articleStaff{
+  padding-left: 15px;
+}
+@media (max-width: 768px) {
+  .image .articleStaff{
+    margin-right: auto;
+  }
+}
+@media (min-width: 768px) {
+  .articleStaff{
+    margin-right: 0;
+  }
+}
+
+
+.articleStaff::after{
+  content: "";
+  position: absolute;
+  width: 6.8px;
+  height: 6.8px;
+  border-radius: 50%;
+  background: #FFF171;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.articleBottomBtns{
+  display: flex;
+}
+.articleBottomBtns > button:not(:last-child) {
+  margin-right: 17px;
+}
+@media (min-width: 768px) {
+  .image .articleBottomBtns > button:not(:last-child) {
+    margin-right: 21px;
+  }
+}
+
+.image .articleBottomBtns{
+  margin-left: auto;
+  margin-right: 0;
+  justify-content: flex-end;
+}
+
+.articleCover{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all .3s ease;
+  pointer-events: none;
+  padding: 24px 43px;
+  display: flex;
+  align-items: center;
+}
+.articleCover.visible{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.articleComment{
+  color: #fff;
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.image .articleCover {
+  padding: 16px 14px;
+}
+
+/* mdスクリーン以上（768px～）でサイズ変更 */
+@media (min-width: 768px) {
+  .article{
+    display: grid;
+    grid-template-columns: 33% 47.5% 19.5%;
+    width: 100%;
+    min-height: 95px;
+  }
+  .image.article{
+    display: block;
+  }
+  
+  .articleTtl {
+    flex: 1.00;
+    padding:0 22px 0 10px;
+    font-size: 14px;
+  }
+  .list .articleTtl {
+    display: flex;
+    align-items: center;
+  }
+  .image .articleTtl {
+    min-height: 61px;
+  }
+
+  .articleDesc{
+    margin-top: 0;
+    flex: 1.44;
+    position: relative;
+    padding: 0 29px;
+    display: flex;
+    align-items: center;
+  }
+  .articleDesc::after{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    content: "";
+    width: 1px;
+    height: 100%;
+    background: #000;
+    transform: translateY(-50%);
+  }
+  .articleDesc::before{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    content: "";
+    width: 1px;
+    height: 100%;
+    background: #000;
+    transform: translateY(-50%);
+  }
+
+  .articleBottom{
+    margin: 0;
+    flex: 0.60;
+    justify-content: center;
+  }
+  .image .articleBottom{
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    column-gap: 8%;
+    row-gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  /* hover */
+  .articleBottomBtns > button {
+    transition: scale 0.3s ease;
+    scale: 1;
+  }
+  .articleBottomBtns > button:hover {
+    scale: 1.1;
+  }
+}

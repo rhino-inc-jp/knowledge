@@ -1,0 +1,38 @@
+.checkbox {
+  margin-right: 16px;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #000;
+  background-color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+}
+@media (min-width: 768px) {
+  .checkbox {
+    margin-right: 21px;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.checkbox:checked {
+  background-color: #000;
+}
+
+  .searchBox{
+    width: 100%;
+    border-top: none;
+    border-bottom: solid 1px #000;
+  }
+
+  /* mdスクリーン以上（768px～）でサイズ変更 */
+  @media (min-width: 768px) {
+    
+    .searchBox{
+        width: 30.2%;
+        border-top: solid 1px #000;
+    }
+  }

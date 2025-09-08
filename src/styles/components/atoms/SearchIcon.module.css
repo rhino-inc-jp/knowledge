@@ -1,0 +1,64 @@
+/* SearchIcon.module.css */
+.searchIcon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin-top: 13px;
+    margin-right: 13px;
+    z-index: 500;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #000;
+    line-height: 0;
+    cursor: pointer; /* アイコンをクリックできるようにする */
+  }
+  
+  .searchIconInner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .searchIconInner span {
+    position: absolute;
+    width: 26px;
+    height: 1px;
+    background: #fff;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    transition: all 0.3s ease;
+  }
+  
+  .searchIconInner span:first-of-type {
+    top: 40%;
+  }
+  
+  .searchIconInner span:last-of-type {
+    top: 60%;
+  }
+  
+  /* .open クラスが付与された時にアイコンがバツに変わる */
+  .open .searchIconInner span:first-of-type {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(30deg);
+  }
+  
+  .open .searchIconInner span:last-of-type {
+    transform: translate(-50%, -50%) rotate(-30deg);
+    top: 50%;
+  }
+  
+  @media (min-width: 768px) {
+    .searchIcon {
+      margin-top: 32px;
+      margin-right: 32px;
+    }
+  
+    .searchIcon {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  
