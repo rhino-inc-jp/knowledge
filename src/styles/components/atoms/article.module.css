@@ -21,6 +21,7 @@
 
 .image.article {
   padding: 0px 0 15px;
+  height: 100%;
 }
 .image.article .articleTtl,
 .image .articleBottom {
