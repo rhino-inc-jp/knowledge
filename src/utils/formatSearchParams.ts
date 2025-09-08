@@ -6,6 +6,7 @@ export default function formatSearchParams(
   const categoryFilters = category
     .map((c) => `post_category[equals]${c}`)
     .join("[or]");
+
   const dateFilters = date
     .map((d) => {
       const from = `${d}-01T00:00:00Z`;
@@ -14,9 +15,15 @@ export default function formatSearchParams(
     })
     .join("[or]");
 
-  const staffFilters = staff.map((s) => `post_staff[equals]${s}`).join("[or]");
+  // post_staff（単一）と post_staff_multiple（複数）の両方に対応
+  const staffFilters = staff.map((s) =>
+        `(post_staff[equals]${s}[or]post_staff_multiple[contains]${s})`
+    )
+    .join("[or]");
+
   const filters = [categoryFilters, dateFilters, staffFilters]
     .filter(Boolean)
     .join("[and]");
+
   return filters;
 }
