@@ -74,6 +74,37 @@ export async function GET(req: Request) {
       }
     }
 
+    // Instagram URLに対応（oEmbed）
+  if (
+    target.hostname.includes("instagram.com") ||
+    target.hostname.includes("www.instagram.com")
+  ) {
+    const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!;
+    const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!;
+    const oembedUrl = `https://graph.facebook.com/v17.0/instagram_oembed?url=${encodeURIComponent(
+      target.toString()
+    )}&access_token=${FACEBOOK_APP_ID}|${FACEBOOK_APP_SECRET}`;
+
+    const oembedRes = await fetch(oembedUrl);
+    if (oembedRes.ok) {
+      const oembed = await oembedRes.json();
+      return Response.json({
+        ok: true,
+        meta: {
+          title: oembed.title ?? "",
+          description: "",
+          image: oembed.thumbnail_url ?? "",
+        },
+      });
+    } else {
+      return NextResponse.json(
+        { error: `Instagram oEmbed fetch failed: ${oembedRes.status}` },
+        { status: 502 }
+      );
+    }
+  }
+
+
     if (!/^https?:$/.test(target.protocol)) {
       return NextResponse.json(
         { error: "only http/https allowed" },
