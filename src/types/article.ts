@@ -28,6 +28,8 @@ export type Article = {
   metaTitle?: string;
   metaDescription?: string;
   metaImage?: string;
+
+  editor: string;
 };
 
 export type ListResponse<T> = {

@@ -40,22 +40,22 @@ const Article = ({
     post_staff,
     post_staff_multiple,
     post_category,
-    comment,
     title,
     description,
     thumb,
     metaTitle,
     metaDescription,
     metaImage,
+    editor,
   } = article;
 
   const staffText =
-  (Array.isArray(post_staff_multiple) && post_staff_multiple.length > 0)
-    ? post_staff_multiple
-        .map((s) => s?.value)
-        .filter(Boolean)
-        .join(" / ")
-    : (post_staff?.value ?? "");
+    Array.isArray(post_staff_multiple) && post_staff_multiple.length > 0
+      ? post_staff_multiple
+          .map((s) => s?.value)
+          .filter(Boolean)
+          .join(" / ")
+      : post_staff?.value ?? "";
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
@@ -77,6 +77,7 @@ const Article = ({
   const handleCommentToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     setIsCommentVisible(!isCommentVisible);
   };
 
@@ -163,21 +164,21 @@ const Article = ({
             className="relative"
             onClick={handleCommentToggle}
           >
-          <Image
-            src="/icon_message.svg"
-            width={17}
-            height={17}
-            className="md:w-[22px]"
-            alt=""
-          />
-          <p className={styles.articleDateList}>
-            {new Date(date).toLocaleDateString("ja-JP", {
-              timeZone: "Asia/Tokyo",
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </p>
+            <Image
+              src="/icon_message.svg"
+              width={17}
+              height={17}
+              className="md:w-[22px]"
+              alt=""
+            />
+            <p className={styles.articleDateList}>
+              {new Date(date).toLocaleDateString("ja-JP", {
+                timeZone: "Asia/Tokyo",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </p>
           </button>
           {/* <button type="button">
             <Image
@@ -195,9 +196,15 @@ const Article = ({
         className={`${styles.articleCover} ${
           isCommentVisible ? styles.visible : ""
         }`}
-        onClick={handleCommentToggle}
+        onClick={(e) => {
+          if (e.target !== e.currentTarget) return;
+          handleCommentToggle(e);
+        }}
       >
-        <p className={styles.articleComment}>{comment}</p>
+        <div
+          className={styles.articleComment}
+          dangerouslySetInnerHTML={{ __html: editor }}
+        />
       </div>
     </a>
   );
