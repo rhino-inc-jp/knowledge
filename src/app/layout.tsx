@@ -5,7 +5,7 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 
 export const metadata: Metadata = {
-  title: "Knowledge",
+  title: "Nowledge",
   description: "Case Study Sharing by Rhino inc.",
   icons: {
     icon: "/favicon.png",
