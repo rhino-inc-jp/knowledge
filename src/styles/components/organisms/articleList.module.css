@@ -14,7 +14,7 @@
 .sectionYearTtl {
   z-index: 9;
   position: sticky;
-  top: 180px;
+  top: 108px;
   left: 0;
   display: inline-block;
 
@@ -38,7 +38,7 @@
 
 @media (min-width: 768px) {
   .sectionYearTtl {
-    top: 260px;
+    top: 147px;
     font-size: 30px;
     padding-top: 17px;
     padding-bottom: 17px;

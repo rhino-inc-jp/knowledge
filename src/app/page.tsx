@@ -94,7 +94,7 @@ const Home = () => {
 
   return (
     <main>
-      <div className="content-[''] fixed top-0 left-0 w-full h-[178px] z-[10] bg-white md:h-[260px]"></div>
+      <div className="content-[''] fixed top-0 left-0 w-full h-[108px] z-[10] bg-white md:h-[146px]"></div>
 
       <div className={styles.headLine}></div>
 
