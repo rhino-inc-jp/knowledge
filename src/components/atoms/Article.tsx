@@ -97,16 +97,18 @@ const Article = ({
         <div className={`${styles.articleThumb} mb-[8px]`}>
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
 
+          {/* 記事投稿に設定した画像（最優先で表示） */}
           {thumb?.url && (
             <img
               className="object-contain absolute
-             top-0 left-0 w-[100%] h-[100%]"
+             top-0 left-0 w-[100%] h-[100%] z-10"
               src={thumb?.url}
               alt=""
             />
           )}
 
-          {metaImage && (
+          {/* スクレイピングで取得した画像（次点で表示） */}
+          {!thumb?.url && metaImage && (
             <img
               className="object-contain absolute
              top-0 left-0 w-[100%] h-[100%]"
@@ -115,7 +117,7 @@ const Article = ({
             />
           )}
 
-          {/* OGP画像がない場合はno_image.jpgを表示 */}
+          {/* 記事投稿に設定した画像とスクレイピングで取得した画像がない場合はno_image.jpgを表示 */}
           {!thumb?.url && !metaImage && (
             <img
               className="object-contain absolute
