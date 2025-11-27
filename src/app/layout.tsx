@@ -41,7 +41,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="text-xs relative font-normal not-italic text-black font-noto pt-[179px] md:pt-[260px]">
+      <body className="text-xs relative font-normal not-italic text-black font-noto pt-[109px] md:pt-[146px]">
         <Header />
         {children}
         <Footer />

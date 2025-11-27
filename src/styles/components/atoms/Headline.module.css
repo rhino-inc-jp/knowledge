@@ -6,16 +6,16 @@
   position: fixed;
   top: 0;
   right: 15px;
-  margin-top: 179px;
+  margin-top: 108px;
   z-index: 50;
   width: calc(100% - 57px);
 }
 @media (min-width: 768px) {
   .headLine{
     right: 107px;
-    margin-top: 257px;
+    margin-top: 146px;
     width: calc(100% - 250px);
-    top: 3px;
+    top: 0px;
   }
 }
 

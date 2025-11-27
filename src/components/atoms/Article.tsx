@@ -83,6 +83,14 @@ const Article = ({
 
   const listStyle = styles[viewType] || "";
 
+  {
+    /** サムネイルの画像を決定 */
+    /* 記事投稿に設定した画像（最優先で表示） */
+    /* スクレイピングで取得した画像（次点で表示） */
+    /* どちらもない場合はno_image.jpgを表示 */
+  }
+  const imgSrc = thumb?.url ?? metaImage ?? "/no_image.jpg";
+
   return (
     <a
       ref={containerRef}
@@ -96,34 +104,13 @@ const Article = ({
       {viewType === "image" && (
         <div className={`${styles.articleThumb} mb-[8px]`}>
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
-
-          {thumb?.url && (
-            <img
-              className="object-contain absolute
-             top-0 left-0 w-[100%] h-[100%]"
-              src={thumb?.url}
-              alt=""
-            />
-          )}
-
-          {metaImage && (
-            <img
-              className="object-contain absolute
-             top-0 left-0 w-[100%] h-[100%]"
-              src={metaImage}
-              alt=""
-            />
-          )}
-
-          {/* OGP画像がない場合はno_image.jpgを表示 */}
-          {!thumb?.url && !metaImage && (
-            <img
-              className="object-contain absolute
-            top-0 left-0 w-[100%] h-[100%]"
-              src="/no_image.jpg"
-              alt=""
-            />
-          )}
+          <img
+            className="object-contain absolute
+             top-0 left-0 w-[100%] h-[100%] z-10"
+            src={imgSrc}
+            onError={(e) => (e.currentTarget.src = "/no_image.jpg")}
+            alt=""
+          />
         </div>
       )}
 
