@@ -106,7 +106,7 @@ const Article = ({
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
           <img
             className="object-contain absolute
-             top-0 left-0 w-[100%] h-[100%] z-10"
+             top-0 left-0 w-[100%] h-[100%]"
             src={imgSrc}
             onError={(e) => (e.currentTarget.src = "/no_image.jpg")}
             alt=""
@@ -182,7 +182,7 @@ const Article = ({
       <div
         className={`${styles.articleCover} ${
           isCommentVisible ? styles.visible : ""
-        }`}
+        } z-10`}
         onClick={(e) => {
           if (e.target !== e.currentTarget) return;
           handleCommentToggle(e);
