@@ -9,11 +9,13 @@ export function middleware(request: NextRequest) {
 
   const isLocal = hostname.includes("localhost");
 
+  const topPage = pathname === "/";
+
   /**
-   * microCMSの管理画面とローカル環境ではページを表示
+   * microCMSの管理画面とローカル環境、トップはページを表示
    * それ以外では403を表示
    */
-  if (!(isMicroCMS || isLocal)) {
+  if (!(isMicroCMS || isLocal || topPage)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
