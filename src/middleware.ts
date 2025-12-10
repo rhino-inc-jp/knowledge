@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const referer = request.headers.get("referer") || "";
   const { hostname, pathname } = request.nextUrl;
 
   const isMicroCMS =
-    hostname.includes("microcms.io") || hostname.includes("microcms.app");
+    referer.includes("microcms.io") || referer.includes("microcms.app");
 
   const isLocal = hostname.includes("localhost");
 
