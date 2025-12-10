@@ -17,12 +17,20 @@ export function middleware(request: NextRequest) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
-  return NextResponse.next();
+  /**
+   * custom-fieldページの場合は
+   * layout.tsxでヘッダー、フッター、bodyのクラスは不要なのでトリガーをクッキーで管理
+   */
+  const response = NextResponse.next();
+  const isCustomField = pathname.startsWith("/custom-field");
+
+  response.cookies.set("cf_mode", isCustomField ? "1" : "0");
+  return response;
 }
 
 /**
  * /custom-field/以下のパスが含まれている時のみmiddleware（）を実行
  */
 export const config = {
-  matcher: "/custom-field/:path*",
+  matcher: ["/", "/custom-field/:path*"],
 };
