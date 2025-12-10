@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Layout({
+export default function CustomField({
   children,
-}: Readonly<{ children: React.ReactDOM }>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return children;
 }
