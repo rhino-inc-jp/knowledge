@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
 
   const isMicroCMS =
-    pathname.includes("microcms.io") || pathname.includes("microcms.app");
+    hostname.includes("microcms.io") || hostname.includes("microcms.app");
 
   const isLocal = hostname.includes("localhost");
 
