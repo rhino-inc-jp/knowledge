@@ -5,7 +5,6 @@ import Script from "next/script";
 
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
-import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Nowledge",
@@ -20,12 +19,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cfMode = cookies().get("cf_mode")?.value === "1";
-
-  const bodyClass = cfMode
-    ? ""
-    : "text-xs relative font-normal not-italic text-black font-noto pt-[109px] md:pt-[146px]";
-
   return (
     <html lang="ja">
       <head>
@@ -48,10 +41,10 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={bodyClass}>
-        {!cfMode && <Header />}
+      <body className="text-xs relative font-normal not-italic text-black font-noto pt-[109px] md:pt-[146px]">
+        <Header />
         {children}
-        {!cfMode && <Footer />}
+        <Footer />
       </body>
     </html>
   );
