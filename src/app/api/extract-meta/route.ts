@@ -4,107 +4,71 @@
  * 取得したタイトル、ディスクリプション、画像は記事一覧にて使用
  */
 
-import "server-only";
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 import { NextResponse } from "next/server";
+import { pickMeta } from "@/components/libs/extractMeta";
 
-type CheerioAPI = import("cheerio").CheerioAPI;
+// Youtube URLに対応
+async function tryYoutbeEmbed(url: URL) {
+  if (url.hostname.includes("youtube.com") || url.hostname.includes("youtu.be"))
+    return null;
 
-function pickMeta($: CheerioAPI, base: URL) {
-  const get = (sel: string) => $(sel).attr("content") || "";
-  const txt = (sel: string) => $(sel).text().trim();
+  const embedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
+    url.toString()
+  )}&format=json`;
 
-  const firstNonEmpty = (...vals: string[]) => vals.find(Boolean) || "";
+  const response = await fetch(embedUrl);
+  if (!response.ok) return;
 
-  const title = firstNonEmpty(
-    get('meta[property="og:title"]'),
-    get('meta[name="twitter:title"]'),
-    txt("title")
-  );
+  const data = await response.json();
 
-  const description = firstNonEmpty(
-    get('meta[property="og:description"]'),
-    get('meta[name="twitter:description"]'),
-    get('meta[name="description"]')
-  );
+  return {
+    title: data.title,
+    description: "",
+    image: data.thumbnail_url,
+  };
+}
 
-  const imageRaw = firstNonEmpty(
-    get('meta[property="og:image"]'),
-    get('meta[name="twitter:image"]')
-  );
+// Instagram URLに対応
+async function tryInstagramEmbed(url: URL) {
+  if (
+    url.hostname.includes("instagram.com") ||
+    url.hostname.includes("www.instagram.com")
+  )
+    return null;
 
-  let image = "";
-  try {
-    if (imageRaw) image = new URL(imageRaw, base).toString(); // 相対→絶対に
-  } catch {}
+  const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!;
+  const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!;
+  const oembedUrl = `https://graph.facebook.com/v17.0/instagram_oembed?url=${encodeURIComponent(
+    url.toString()
+  )}&access_token=${FACEBOOK_APP_ID}|${FACEBOOK_APP_SECRET}`;
 
-  return { title, description, image };
+  const oembedRes = await fetch(oembedUrl);
+  if (!oembedRes.ok) return;
+
+  const oembed = await oembedRes.json();
+
+  return Response.json({
+    ok: true,
+    meta: {
+      title: oembed.title ?? "",
+      description: "",
+      image: oembed.thumbnail_url ?? "",
+    },
+  });
 }
 
 export async function GET(req: Request) {
-  // urlの検証
-  const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url");
-
   try {
+    const { searchParams } = new URL(req.url);
+    const url = searchParams.get("url");
+
+    // urlの検証
     if (!url)
       return NextResponse.json({ error: "url is required" }, { status: 400 });
+
     const target = new URL(url);
-  
-    if (
-      target.hostname.includes("youtube.com") ||
-      target.hostname.includes("youtu.be")
-    ) {
-    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
-      target.toString()
-    )}&format=json`;
-      const oembedRes = await fetch(oembedUrl);
-      if (oembedRes.ok) {
-        const oembed = await oembedRes.json();
-        return Response.json({
-          ok: true,
-          meta: {
-            title: oembed.title,
-            description: "",
-            image: oembed.thumbnail_url,
-          },
-        });
-      }
-    }
 
-    // Instagram URLに対応（oEmbed）
-  if (
-    target.hostname.includes("instagram.com") ||
-    target.hostname.includes("www.instagram.com")
-  ) {
-    const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!;
-    const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!;
-    const oembedUrl = `https://graph.facebook.com/v17.0/instagram_oembed?url=${encodeURIComponent(
-      target.toString()
-    )}&access_token=${FACEBOOK_APP_ID}|${FACEBOOK_APP_SECRET}`;
-
-    const oembedRes = await fetch(oembedUrl);
-    if (oembedRes.ok) {
-      const oembed = await oembedRes.json();
-      return Response.json({
-        ok: true,
-        meta: {
-          title: oembed.title ?? "",
-          description: "",
-          image: oembed.thumbnail_url ?? "",
-        },
-      });
-    } else {
-      return NextResponse.json(
-        { error: `Instagram oEmbed fetch failed: ${oembedRes.status}` },
-        { status: 502 }
-      );
-    }
-  }
-
-
+    // httpsのみ許可
     if (!/^https?:$/.test(target.protocol)) {
       return NextResponse.json(
         { error: "only http/https allowed" },
@@ -112,10 +76,19 @@ export async function GET(req: Request) {
       );
     }
 
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), 8000); // 8s タイムアウト
+    // YoutubeのURLからmeta取得
+    const yt = await tryYoutbeEmbed(target);
+    if (yt) return NextResponse.json({ ok: true, meta: yt });
 
-    // htmlからmeta情報を抽出
+    // Instagram URLに対応
+    const insta = await tryInstagramEmbed(target);
+    if (insta) return NextResponse.json({ ok: true, meta: insta });
+
+    // タイムアウト付き fetch 8sタイムアウト
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 8000);
+
+    // HTMLからmeta情報を抽出
     const res = await fetch(target.toString(), {
       signal: controller.signal,
       headers: {
@@ -135,16 +108,13 @@ export async function GET(req: Request) {
       );
     }
 
+    // HTMLパース
     const html = await res.text();
-
-    // サーバー側で確実に続行するため、このタイミングでインポート
-    // またnext.config.jsonで"serverComponentsExternalPackages"に設定
     const { load } = await import("cheerio");
     const $ = load(html);
 
     const meta = pickMeta($, new URL(res.url));
-
-    return Response.json({ ok: true, meta });
+    return NextResponse.json({ ok: true, meta });
   } catch (e) {
     return NextResponse.json(
       { error: (e as Error).message ?? "unknown error" },
