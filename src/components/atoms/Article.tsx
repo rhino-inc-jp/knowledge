@@ -89,7 +89,7 @@ const Article = ({
     /* スクレイピングで取得した画像（次点で表示） */
     /* どちらもない場合はno_image.jpgを表示 */
   }
-  const imgSrc = thumb?.url ?? metaImage ?? "/no_image.jpg";
+  const imgSrc = thumb?.url || metaImage || "/no_image.jpg";
 
   return (
     <a

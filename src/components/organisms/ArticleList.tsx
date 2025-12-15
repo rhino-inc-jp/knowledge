@@ -27,16 +27,23 @@ const ArticleList = ({ viewType, articles }: Props) => {
             <section key={year} className={styles.sectionWrap}>
               <h2 className={`${styles.sectionYearTtl} font-hel`}>{year}</h2>
               <div className={`w-full ${styles.itemWrap} ${wrapBorder(idx)}`}>
-                {dates.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                .map((article) => (
-                  <div key={article.id} className={`${styles.item} animate-in`}>
-                    <Article
-                      article={article}
-                      viewType={viewType}
-                      isSearchMode={false}
-                    />
-                  </div>
-                ))}
+                {dates
+                  .sort(
+                    (a, b) =>
+                      new Date(b.date).getTime() - new Date(a.date).getTime()
+                  )
+                  .map((article) => (
+                    <div
+                      key={article.id}
+                      className={`${styles.item} animate-in`}
+                    >
+                      <Article
+                        article={article}
+                        viewType={viewType}
+                        isSearchMode={false}
+                      />
+                    </div>
+                  ))}
               </div>
             </section>
           );
