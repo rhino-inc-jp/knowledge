@@ -16,11 +16,15 @@ export async function GET(req: Request) {
 
   const result = await extractMetaFromUrl(url);
 
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+  };
+
   if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 500 });
+    return NextResponse.json({ error: result.error }, { status: 500, headers });
   }
 
-  return NextResponse.json(result);
+  return NextResponse.json(result, { headers });
 }
 
 export async function POST(req: Request) {
@@ -31,9 +35,13 @@ export async function POST(req: Request) {
 
   const result = await extractMetaFromUrl(url);
 
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+  };
+
   if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 500 });
+    return NextResponse.json({ error: result.error }, { status: 500, headers });
   }
 
-  return NextResponse.json(result);
+  return NextResponse.json(result, { headers });
 }
