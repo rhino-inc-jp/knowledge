@@ -7,6 +7,12 @@
 import { NextResponse } from "next/server";
 import { extractMetaFromUrl } from "@/components/libs/extractMeta";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const url = searchParams.get("url");
@@ -16,15 +22,11 @@ export async function GET(req: Request) {
 
   const result = await extractMetaFromUrl(url);
 
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-  };
-
   if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 500, headers });
+    return NextResponse.json({ error: result.error }, { status: 500 });
   }
 
-  return NextResponse.json(result, { headers });
+  return NextResponse.json(result);
 }
 
 export async function POST(req: Request) {
@@ -35,13 +37,17 @@ export async function POST(req: Request) {
 
   const result = await extractMetaFromUrl(url);
 
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-  };
-
   if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 500, headers });
+    return NextResponse.json(
+      { error: result.error },
+      { status: 500, headers: corsHeaders }
+    );
   }
 
-  return NextResponse.json(result, { headers });
+  return NextResponse.json(result, { headers: corsHeaders });
+}
+
+// CORS プリフライト対応
+export function OPTIONS() {
+  return NextResponse.json({}, { status: 200, headers: corsHeaders });
 }
