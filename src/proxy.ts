@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
-  const referer = request.headers.get("refere") ?? "";
+  const referer = request.headers.get("referer") ?? "";
 
   // GETはローカルor本番ドメインのみ許可
   if (request.method === "GET") {
