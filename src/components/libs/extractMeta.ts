@@ -4,8 +4,12 @@ type CheerioAPI = import("cheerio").CheerioAPI;
 
 // Youtube URLに対応
 async function tryYoutbeEmbed(url: URL) {
-  if (url.hostname.includes("youtube.com") || url.hostname.includes("youtu.be"))
+  if (
+    !url.hostname.includes("youtube.com") ||
+    !url.hostname.includes("youtu.be")
+  ) {
     return null;
+  }
 
   const embedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
     url.toString()
@@ -26,10 +30,11 @@ async function tryYoutbeEmbed(url: URL) {
 // Instagram URLに対応
 async function tryInstagramEmbed(url: URL) {
   if (
-    url.hostname.includes("instagram.com") ||
-    url.hostname.includes("www.instagram.com")
-  )
+    !url.hostname.includes("instagram.com") ||
+    !url.hostname.includes("www.instagram.com")
+  ) {
     return null;
+  }
 
   const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID!;
   const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET!;
