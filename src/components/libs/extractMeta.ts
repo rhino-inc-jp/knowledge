@@ -8,6 +8,7 @@ async function tryYoutbeEmbed(url: URL) {
     !url.hostname.includes("youtube.com") ||
     !url.hostname.includes("youtu.be")
   ) {
+    console.log("これはyoutbeではないです", url.hostname);
     return null;
   }
 
@@ -21,6 +22,8 @@ async function tryYoutbeEmbed(url: URL) {
       Accept: "application/json",
     },
   });
+
+  console.log("response.okのチェック", response);
 
   if (!response.ok) {
     console.error("YouTube oEmbed failed", response.status);
