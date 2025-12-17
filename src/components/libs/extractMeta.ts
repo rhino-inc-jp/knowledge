@@ -2,6 +2,28 @@ import { NextResponse } from "next/server";
 
 type CheerioAPI = import("cheerio").CheerioAPI;
 
+async function tryYoutubeOEmbed(url: URL) {
+  if (!url.hostname.includes("youtube.com")) {
+    return null;
+  }
+
+  const embedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
+    url.toString()
+  )}&format=json`;
+
+  const response = await fetch(embedUrl);
+
+  if (!response.ok) return null;
+
+  const data = await response.json();
+
+  return {
+    title: data.title,
+    description: "",
+    image: data.thumbnail_url,
+  };
+}
+
 /**
  * URLからtitle,desc,image
  */
@@ -46,7 +68,12 @@ export async function extractMetaFromUrl(url: string) {
     );
   }
 
-  // タイムアウト付き fetch 8sタイムアウト
+  const youtubeMeta = await tryYoutubeOEmbed(target);
+  if (youtubeMeta) {
+    return { ok: true, meta: youtubeMeta };
+  }
+
+  // タイムアウト付き fetch 8sで中断（abort）
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), 8000);
 
@@ -76,5 +103,6 @@ export async function extractMetaFromUrl(url: string) {
   const $ = load(html);
 
   const meta = pickMeta($, new URL(res.url));
+
   return { ok: true, meta };
 }
