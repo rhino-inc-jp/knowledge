@@ -3,12 +3,11 @@ import { NextResponse } from "next/server";
 type CheerioAPI = import("cheerio").CheerioAPI;
 
 // Youtube URLに対応
-async function tryYoutbeEmbed(url: URL) {
+async function tryYoutubeEmbed(url: URL) {
   if (
-    !url.hostname.includes("youtube.com") ||
+    !url.hostname.includes("youtube.com") &&
     !url.hostname.includes("youtu.be")
   ) {
-    console.log("これはyoutbeではないです", url.hostname);
     return null;
   }
 
@@ -22,8 +21,6 @@ async function tryYoutbeEmbed(url: URL) {
       Accept: "application/json",
     },
   });
-
-  console.log("response.okのチェック", response);
 
   if (!response.ok) {
     console.error("YouTube oEmbed failed", response.status);
@@ -116,12 +113,12 @@ export async function extractMetaFromUrl(url: string) {
   }
 
   // YoutubeのURLからmeta取得
-  const yt = await tryYoutbeEmbed(target);
-  if (yt) return NextResponse.json({ ok: true, meta: yt });
+  // const yt = await tryYoutubeEmbed(target);
+  // if (yt) return NextResponse.json({ ok: true, meta: yt });
 
-  // Instagram URLに対応
-  const insta = await tryInstagramEmbed(target);
-  if (insta) return NextResponse.json({ ok: true, meta: insta });
+  // // Instagram URLに対応
+  // const insta = await tryInstagramEmbed(target);
+  // if (insta) return NextResponse.json({ ok: true, meta: insta });
 
   // タイムアウト付き fetch 8sタイムアウト
   const controller = new AbortController();
