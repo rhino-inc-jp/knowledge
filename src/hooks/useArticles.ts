@@ -52,6 +52,15 @@ async function enrichArticles(
   try {
     // metaを取得
     const metas = await mapWithLimit(newArticles, limit, async (a) => {
+      // タイトルとサムネイルが取得できた場合はスクレイピングをスキップ
+      if (a.title && a.thumb) {
+        return {
+          metaTitle: a.title,
+          metaDescription: "",
+          metaImage: a.thumb,
+        };
+      }
+
       try {
         return await fetchMeta(a.article_url);
       } catch {
