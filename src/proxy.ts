@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const PRODUCTION_HOST = "nowledge.rhino-inc.jp";
-export function isAllowedGet(host: string) {
-  return host.startsWith("localhost") || host === PRODUCTION_HOST;
+export const PRODUCTION_ORIGIN = `https://${PRODUCTION_HOST}`;
+
+export function isAllowedGet(host: string, referer: string) {
+  if (!referer) return false;
+  return host === PRODUCTION_HOST && referer.startsWith(PRODUCTION_ORIGIN);
 }
 
 export const IFRAME_ORIGIN = "https://nowledgeiframe.netlify.app";
@@ -14,8 +17,8 @@ export function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
   const referer = request.headers.get("referer") ?? "";
 
-  // GETはローカルor本番ドメインのみ許可
-  if (request.method === "GET" && !isAllowedGet(host)) {
+  // GETは本番ドメインのみ許可
+  if (request.method === "GET" && !isAllowedGet(host, referer)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
