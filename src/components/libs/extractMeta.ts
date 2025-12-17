@@ -15,8 +15,19 @@ async function tryYoutbeEmbed(url: URL) {
     url.toString()
   )}&format=json`;
 
-  const response = await fetch(embedUrl);
-  if (!response.ok) return;
+  const response = await fetch(embedUrl, {
+    headers: {
+      "User-Agent": "Mozilla/5.0",
+      Accept: "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    console.error("YouTube oEmbed failed", response.status);
+    const text = await response.text();
+    console.error(text);
+    return null;
+  }
 
   const data = await response.json();
 
