@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from "react";
+import { forwardRef } from "react";
 import { PulseLoader } from "react-spinners";
 
 const Loader = forwardRef<HTMLDivElement>((_, ref) => (

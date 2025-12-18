@@ -1,25 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "@/components/atoms/SearchBar";
 import styles from "@/styles/components/organisms/SearchFilterModal.module.css";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Category, CalnderDate, Staff } from "@/types/search";
 import FilterSection from "../atoms/FilterSection";
-
-// const links = [
-// {
-//   name: "Contact",
-//   icon: "mail",
-//   href: "/",
-// },
-// {
-//   name: "My Page",
-//   icon: "heart",
-//   href: "/",
-// },
-// ];
 
 type Props = {
   categories: Category[];
@@ -83,29 +70,6 @@ const SearchModal = ({
         >
           <div className="p-[75px_15px_40px] md:p-[60px_15px_50px] md:m-auto">
             <div className="max-md:p-[0_22px]">
-              {/* <div className="mb-[28px] md:pr-[102px]">
-                <ul className="max-md:[&>:not(:last-child)]:mb-[25px] md:[&>:not(:last-child)]:mr-[17px] md:flex md:items-center md:justify-end">
-                  {links.map(({ name, icon, href }) => (
-                    <li key={name}>
-                      <a
-                        className="flex items-center text-[17px] leading-none"
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Image
-                          src={`/icon_${icon}.svg`}
-                          width={19.5}
-                          height={17}
-                          className="md:w-[22px] max-md:mr-[20px]"
-                          alt=""
-                        />
-                        <span className="md:hidden">{name}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
               <div className="mb-[48px] md:mb-[68px]">
                 <SearchBar keyword={keyword} setKeyword={setKeyword} />
               </div>

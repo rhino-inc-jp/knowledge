@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ViewType } from "@/constants/viewTypes";
 
 import styles from "@/styles/components/atoms/switchBtns.module.css";
