@@ -1,11 +1,10 @@
-import React from "react";
 import styles from "@/styles/components/organisms/SearchSummaryBar.module.css";
 
 type Props = {
   keyword: string;
-  category: string[]; // ← IDの配列
+  category: string[];
   staff: string[];
-  categoryMap: Record<string, string>; // ← ID → 表示名
+  categoryMap: Record<string, string>;
   staffMap: Record<string, string>;
 };
 
@@ -21,25 +20,13 @@ const SearchSummaryBar = ({
   if (!hasAny) return null;
 
   return (
-  <div
-    className={` gap-4 ${styles.searchSummaryBar}`}
-  >
-      {keyword && (
-        <p>
-          {keyword}
-        </p>
-      )}
+    <div className={` gap-4 ${styles.searchSummaryBar}`}>
+      {keyword && <p>{keyword}</p>}
       {category.length > 0 && (
-        <p>
-          {" "}
-          {category.map((id) => categoryMap[id] || id).join(" / ")}
-        </p>
+        <p> {category.map((id) => categoryMap[id] || id).join(" / ")}</p>
       )}
       {staff.length > 0 && (
-        <p>
-          {" "}
-          {staff.map((id) => staffMap[id] || id).join(" / ")}
-        </p>
+        <p> {staff.map((id) => staffMap[id] || id).join(" / ")}</p>
       )}
     </div>
   );

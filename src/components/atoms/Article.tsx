@@ -143,7 +143,6 @@ const Article = ({
           })}
         </p>
         <p className={styles.articleCategory}>#{post_category.value}</p>
-        {/* <p className={styles.articleStaff}>{post_staff.value}</p> */}
         <p className={styles.articleStaff}>{staffText}</p>
         <div className={`${styles.articleBottomBtns}`}>
           <button
@@ -167,15 +166,6 @@ const Article = ({
               })}
             </p>
           </button>
-          {/* <button type="button">
-            <Image
-              src="/icon_heart.svg"
-              width={17}
-              height={17}
-              className="md:w-[22px]"
-              alt=""
-            />
-          </button> */}
         </div>
       </div>
 
