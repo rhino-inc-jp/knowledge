@@ -127,9 +127,10 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
             // OGP取得 → 記事更新
             (async () => {
               // OGP取得
+              const OGP_CONCURRENCY = 4; // 並列処理する数
               const enriched = await enrichArticles(
                 uniqueCandidates,
-                limit,
+                OGP_CONCURRENCY,
                 setEnrichJobs
               );
 
