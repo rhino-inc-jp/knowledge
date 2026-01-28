@@ -107,7 +107,7 @@ const Article = ({
           <img
             className="object-contain absolute
              top-0 left-0 w-[100%] h-[100%]"
-            src={imgSrc}
+            src={`${imgSrc}?fm=webp&w=1200`}
             onError={(e) => (e.currentTarget.src = "/no_image.jpg")}
             alt=""
           />
