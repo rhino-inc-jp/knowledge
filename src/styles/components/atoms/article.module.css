@@ -145,6 +145,9 @@
   display: block;
   width: fit-content;
 }
+.articleCategoryRed {
+  background-color: rgb(235, 108, 101);
+}
 
 .articleDesc{
   font-size: 10px;

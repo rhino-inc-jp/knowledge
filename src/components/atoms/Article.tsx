@@ -142,7 +142,7 @@ const Article = ({
             day: "2-digit",
           })}
         </p>
-        <p className={styles.articleCategory}>#{post_category.value}</p>
+        <p className={`${styles.articleCategory} ${post_category.value === "Portfolio" ? styles.articleCategoryRed : ""}`}>#{post_category.value}</p>
         <p className={styles.articleStaff}>{staffText}</p>
         <div className={`${styles.articleBottomBtns}`}>
           <button
@@ -157,14 +157,14 @@ const Article = ({
               className="md:w-[22px]"
               alt=""
             />
-            <p className={styles.articleDateList}>
+            <span className={styles.articleDateList}>
               {new Date(date).toLocaleDateString("ja-JP", {
                 timeZone: "Asia/Tokyo",
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit",
               })}
-            </p>
+            </span>
           </button>
         </div>
       </div>
