@@ -39,7 +39,15 @@ function prepareArticle(article: Article): Article {
   return { ...article, isMetaLoading: true };
 }
 
-export default function useArticles(searchParams: SearchParams, limit: number) {
+/**
+ * @param enabled false の間は記事を取得しない
+ *   （URL の検索条件を読み終える前に、絞り込みなしの記事を取りに行かないため）
+ */
+export default function useArticles(
+  searchParams: SearchParams,
+  limit: number,
+  enabled = true
+) {
   const [articles, setArticles] = useState<Article[]>([]);
 
   const [isEnd, setIsEnd] = useState(false);
@@ -49,6 +57,17 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
 
   // microCMS から記事一覧を取得している最中かどうか（追加読み込みの制御に使う）
   const [isLoading, setIsLoading] = useState(false);
+
+  // 検索条件が変わったら、記事一覧を空にして最初から読み込み直す
+  // （React 推奨の「描画中に前回の値と比べて state を調整する」書き方）
+  const [prevSearchParams, setPrevSearchParams] = useState(searchParams);
+  if (prevSearchParams !== searchParams) {
+    setPrevSearchParams(searchParams);
+    setArticles([]);
+    setOffset(0);
+    setIsEnd(false);
+    setHasInitialized(false);
+  }
 
   // OGP 取得の順番待ちの列（ページ全体で1つ）
   const queueRef = useRef(createLimiter(OGP_CONCURRENCY));
@@ -65,6 +84,8 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
   }, [searchParams]);
 
   useEffect(() => {
+    if (!enabled) return;
+
     // 検索条件が変わった後に、前の検索の結果が届いても使わないためのフラグ
     let cancelled = false;
 
@@ -147,7 +168,7 @@ export default function useArticles(searchParams: SearchParams, limit: number) {
     return () => {
       cancelled = true;
     };
-  }, [offset, searchParams, limit, updateArticle]);
+  }, [offset, searchParams, limit, updateArticle, enabled]);
 
   return {
     articles,
