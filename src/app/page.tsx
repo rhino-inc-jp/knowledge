@@ -52,7 +52,7 @@ const Home = () => {
     setHasInitialized,
     setOffset,
     error,
-    isEnriching,
+    isLoading,
   } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
 
   /* 検索オプション（カテゴリ、スタッフ、カレンダー） */
@@ -72,10 +72,11 @@ const Home = () => {
     setOffset((prev) => prev + SEARCH_TYPES.LIMIT);
   };
 
+  // 記事一覧の取得中だけ追加読み込みを止める（OGP の取得完了は待たない）
   const { loaderRef } = useInfiniteScroll(
     isEnd,
     hasInitialized,
-    isEnriching,
+    isLoading,
     calcOffset,
     SEARCH_TYPES.LIMIT
   );
@@ -90,7 +91,7 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
-  const showLoader = isEnriching || !(hasInitialized && isEnd);
+  const showLoader = isLoading || !(hasInitialized && isEnd);
 
   return (
     <main>
