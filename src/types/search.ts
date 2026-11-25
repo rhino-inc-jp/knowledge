@@ -40,4 +40,6 @@ export type SearchParams = {
   category: string[];
   date: string[];
   staff: string[];
+  // 指定した記事IDだけを表示する（マイページのお気に入り一覧で使う）
+  ids?: string[];
 };

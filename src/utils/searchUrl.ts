@@ -19,8 +19,13 @@ export const EMPTY_SEARCH: SearchParams = {
   staff: [],
 };
 
+// マイページ（お気に入り一覧）の URL の「?」以降
+export const MYPAGE_QUERY = "?view=mypage";
+
 // URL から読み取った直後の検索条件（カテゴリはまだ名前のまま）
 export type SearchQuery = {
+  // "mypage" のときはお気に入り一覧を表示する
+  view: "mypage" | null;
   keyword: string;
   categoryNames: string[];
   date: string[];
@@ -49,6 +54,7 @@ export const hasSearchQuery = (q: SearchQuery) =>
 export function parseSearchQuery(search: string): SearchQuery {
   const params = new URLSearchParams(search);
   return {
+    view: params.get("view") === "mypage" ? "mypage" : null,
     keyword: (params.get("q") ?? "").trim(),
     categoryNames: splitList(params.get("category")),
     // 年月は 2025-09 の形式だけ受け付ける

@@ -8,12 +8,17 @@ import { ViewType } from "@/constants/viewTypes";
 type Props = {
   articles: ArticleType[];
   viewType: ViewType;
+  // 指定すると、年月ごとに分けずに1つのまとまりで表示し、左の縦見出しをこの文字にする（例：My Page）
+  title?: string;
 };
 
-const ArticleList = ({ viewType, articles }: Props) => {
+const ArticleList = ({ viewType, articles, title }: Props) => {
   const listStyle = styles[viewType] || "";
 
-  const formatted = formatArticlesByYearAndMonth(articles);
+  // 月ごとのホバー色に使う month を設定しつつ、年月ごとに分ける
+  const byMonth = formatArticlesByYearAndMonth(articles);
+  // ※下で並べ替えるため、元の配列を書き換えないようコピーする
+  const formatted = title ? { [title]: [...articles] } : byMonth;
 
   const wrapBorder = (idx: number) =>
     idx > 0 ? "border-t border-t-black" : "";

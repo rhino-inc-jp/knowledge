@@ -3,6 +3,11 @@ import Image from "next/image";
 import type { Article as ArticleType } from "@/types/article";
 import styles from "@/styles/components/atoms/article.module.css";
 import { ViewType } from "@/constants/viewTypes";
+import { useFavorite } from "@/hooks/useFavorites";
+
+// ハートの形（public/icon_heart.svg と同じ）
+const HEART_PATH =
+  "M19.1774 1.85052C18.6609 1.39857 18.1443 1.07574 17.4987 0.817484C16.853 0.559224 16.272 0.494659 15.6263 0.494659C14.9807 0.494659 14.335 0.623789 13.7539 0.817484C13.1083 1.07574 12.5918 1.39857 12.0752 1.85052L10.7839 3.07726L9.49264 1.85052C8.97612 1.39857 8.4596 1.07574 7.81395 0.817484C7.1683 0.559224 6.58721 0.494659 5.94156 0.494659C5.29591 0.494659 4.65026 0.623789 4.06918 0.817484C3.42353 1.07574 2.90701 1.39857 2.39049 1.85052C1.87397 2.36704 1.42202 2.94813 1.16376 3.52921C0.905496 4.17486 0.776367 4.82051 0.776367 5.46616C0.776367 6.11181 0.905496 6.75746 1.16376 7.40311C1.42202 8.04876 1.87397 8.62985 2.39049 9.14636L10.7839 16.8296L19.1774 9.14636C19.6939 8.62985 20.1459 8.04876 20.4041 7.40311C20.6624 6.75746 20.7915 6.11181 20.7915 5.46616C20.7915 4.82051 20.6624 4.17486 20.4041 3.52921C20.1459 2.88356 19.6939 2.30248 19.1774 1.85052Z";
 
 type Props = {
   article: ArticleType;
@@ -60,6 +65,15 @@ const Article = ({
 
   const [isCommentVisible, setIsCommentVisible] = useState(false);
   const containerRef = useRef<HTMLAnchorElement>(null);
+
+  // お気に入り（ハート）
+  const { isFavorite, toggle: toggleFavorite } = useFavorite(article.id);
+  const handleFavoriteToggle = (e: React.MouseEvent) => {
+    // カード全体がリンクなので、記事が開かないように止める
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite();
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -182,6 +196,28 @@ const Article = ({
                 day: "2-digit",
               })}
             </span>
+          </button>
+
+          {/* お気に入り：押すとマイページに追加（黒く塗られる）。もう一度押すと解除 */}
+          <button
+            type="button"
+            className="ml-[10px] md:ml-[12px] leading-[0]"
+            onClick={handleFavoriteToggle}
+            aria-pressed={isFavorite}
+            aria-label={isFavorite ? "お気に入りから外す" : "お気に入りに追加"}
+          >
+            <svg
+              viewBox="0 0 22 18"
+              className="w-[19px] h-auto md:w-[24px]"
+              aria-hidden="true"
+            >
+              <path
+                d={HEART_PATH}
+                fill={isFavorite ? "#000" : "none"}
+                stroke="#000"
+                strokeMiterlimit="10"
+              />
+            </svg>
           </button>
         </div>
       </div>
