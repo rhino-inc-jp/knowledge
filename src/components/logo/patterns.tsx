@@ -67,9 +67,11 @@ function ring(color: string, radius: number, dx = 0, dy = 0) {
   }
   return out.join(",");
 }
-// P17 ステッカー：下から「黒い外周＋薄い影」「白い縁取り」「黒い文字」の3層
-// （層を分けるのは、文字どうしの間に黒い線が入らず、白がひと続きのステッカーになるようにするため）
-const STICKER_OUTER = `${ring("#121212", 0.135)},${ring("#d3ccbd", 0.135, 0.035, 0.07)}`;
+// P17 ステッカー：下から「薄い影」「黒い外周」「白い縁取り」「黒い文字」の4層
+// （層を分けるのは、文字どうしの間に黒い線が入らず、白がひと続きのステッカーになるようにするため。
+//   影だけ別の層にしているのは、マウスを乗せたときにステッカーだけが沈み、影はその場に残るようにするため）
+const STICKER_SHADOW = `0.035em 0.07em 0 #d3ccbd,${ring("#d3ccbd", 0.135, 0.035, 0.07)}`;
+const STICKER_OUTER = ring("#121212", 0.135);
 const STICKER_WHITE = ring("#ffffff", 0.1);
 
 // SVG の文字の大きさを測って、表示枠をぴったりに合わせる
@@ -255,9 +257,13 @@ export const LOGO_PATTERNS: LogoPattern[] = [
     render: () => (
       <div className={s.word} data-fit=".9">
         <span className={s.stk}>
-          <span className={cx("lay", "outer")} style={{ textShadow: STICKER_OUTER }} aria-hidden="true">{letters("Nowledge")}</span>
-          <span className={cx("lay", "white")} style={{ textShadow: STICKER_WHITE }} aria-hidden="true">{letters("Nowledge")}</span>
-          <span className={s.fillText}>{letters("Nowledge")}</span>
+          <span className={cx("lay", "shadow")} style={{ textShadow: STICKER_SHADOW }} aria-hidden="true">{letters("Nowledge")}</span>
+          {/* マウスを乗せると、この中（ステッカー本体）だけが下に沈む */}
+          <span className={s.press}>
+            <span className={cx("lay", "outer")} style={{ textShadow: STICKER_OUTER }} aria-hidden="true">{letters("Nowledge")}</span>
+            <span className={cx("lay", "white")} style={{ textShadow: STICKER_WHITE }} aria-hidden="true">{letters("Nowledge")}</span>
+            <span className={s.fillText}>{letters("Nowledge")}</span>
+          </span>
         </span>
       </div>
     ),
