@@ -1,5 +1,5 @@
 /* ==========================================================================
-   左上のロゴ（ページを開くたびに14案から切り替わる）
+   左上のロゴ（ページを開くたびに15案から切り替わる）
    - どの案も「最終形」を基本の見た目にして、.play が付いたときだけ動く
    - 動きを減らす設定の人には、動かさずに最終形を表示
    - 比較ページ（Claude の Artifact「Nowledge ロゴ案」）と同じ内容
@@ -176,6 +176,16 @@
 .p15.play .sl { animation: p15sub 0.6s 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
 @keyframes p15rise { 0% { transform: translateY(80px) scaleY(1.55); } 55% { transform: translateY(-2px) scaleY(1.06); } 100% { transform: none; } }
 @keyframes p15sub { from { transform: translateY(24px); } }
+
+/* P17 ステッカー（Flowfest）：黒い文字＋太い白の縁取り＋細い黒の外周＋薄い影。1文字ずつ下から浮かび上がる */
+.p17 .word { font-family: var(--logo-font-sticker), "Cooper Black", Georgia, serif; font-weight: 700; letter-spacing: -0.01em; }
+.p17 .stk { position: relative; display: inline-block; margin: 0.14em 0 0.2em 0.14em; }
+.p17 .lay { position: absolute; inset: 0; white-space: nowrap; }
+.p17 .outer { color: #121212; }
+.p17 .white { color: #fff; }
+.p17 .fillText { position: relative; color: #121212; white-space: nowrap; }
+.p17.play .ch { animation: p17rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i) * 45ms); }
+@keyframes p17rise { from { transform: translateY(45%); opacity: 0; } }
 
 /* 動きを減らす設定の人には、動かさずに最終形を表示 */
 @media (prefers-reduced-motion: reduce) {

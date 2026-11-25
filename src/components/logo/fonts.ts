@@ -8,6 +8,7 @@
 import {
   Alfa_Slab_One,
   Archivo_Black,
+  Corben,
   Fredoka,
   IBM_Plex_Mono,
   Playfair_Display,
@@ -49,6 +50,14 @@ export const plexMono = IBM_Plex_Mono({
   variable: "--logo-font-mono",
 });
 
+// P17 ステッカー：Flowfest の見出しの書体（Sugar Peachy・有料）に近い、レトロで丸みのある書体
+export const corben = Corben({
+  weight: "700",
+  subsets: ["latin"],
+  preload: false,
+  variable: "--logo-font-sticker",
+});
+
 // ロゴの外枠に付けるクラス（書体の変数を定義するだけ。使わない書体はダウンロードされない）
 export const logoFontVariables = [
   alfaSlab.variable,
@@ -56,4 +65,5 @@ export const logoFontVariables = [
   fredoka.variable,
   playfairItalic.variable,
   plexMono.variable,
+  corben.variable,
 ].join(" ");

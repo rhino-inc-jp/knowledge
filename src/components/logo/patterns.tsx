@@ -1,5 +1,5 @@
 /**
- * 左上ロゴの案の定義（14案。P06・P16 は検証の結果外した。番号は振り直さない）
+ * 左上ロゴの案の定義（15案。P06・P16 は検証の結果外した。番号は振り直さない）
  *
  * - render：表示する中身（最終形）。動きは logo.module.css の .play で付く
  * - fit：data-fit を付けた要素は、ロゴの横幅 × その値 に収まるよう文字の大きさを合わせる
@@ -10,7 +10,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import styles from "./logo.module.css";
 import { LOGO_LETTERS, LOGO_SUB, LOGO_VIEWBOX } from "./logoPaths";
-import { alfaSlab, archivoBlack, fredoka, playfairItalic, plexMono } from "./fonts";
+import { alfaSlab, archivoBlack, corben, fredoka, playfairItalic, plexMono } from "./fonts";
 
 export type LogoContext = {
   uid: string; // SVG の id が重ならないための文字列
@@ -20,7 +20,7 @@ export type LogoContext = {
 };
 
 export type LogoPattern = {
-  id: string; // p01〜p15（URL の ?logo=p07 で指定できる）
+  id: string; // p01〜p17（URL の ?logo=p07 で指定できる。p06・p16 は欠番）
   name: string;
   className: string;
   full?: boolean; // true：下の「Case Study Sharing by Rhino inc.」も中身に含む（今のロゴをそのまま使う案）
@@ -42,6 +42,7 @@ const BLACK = font("400", archivoBlack.style.fontFamily);
 const ROUND = font("700", fredoka.style.fontFamily);
 const ITALIC = font("italic 900", playfairItalic.style.fontFamily);
 const MONO = font("500", plexMono.style.fontFamily);
+const STICKER = font("700", corben.style.fontFamily);
 
 const s = styles as Record<string, string>;
 const cx = (...names: string[]) => names.map((n) => s[n] ?? n).join(" ");
@@ -53,6 +54,23 @@ const letters = (text: string, start = 0, extra = "") =>
       {c}
     </span>
   ));
+
+// 文字のまわりに、円を描くように影を並べて「縁取り」を作る（text-shadow を重ねる）
+// radius：縁取りの太さ（em）／dx・dy：全体のずらし（影に使う）
+function ring(color: string, radius: number, dx = 0, dy = 0) {
+  const out: string[] = [];
+  for (const r of [radius, radius * 0.6]) {
+    for (let k = 0; k < 24; k++) {
+      const a = (k / 24) * Math.PI * 2;
+      out.push(`${(dx + Math.cos(a) * r).toFixed(3)}em ${(dy + Math.sin(a) * r).toFixed(3)}em 0 ${color}`);
+    }
+  }
+  return out.join(",");
+}
+// P17 ステッカー：下から「黒い外周＋薄い影」「白い縁取り」「黒い文字」の3層
+// （層を分けるのは、文字どうしの間に黒い線が入らず、白がひと続きのステッカーになるようにするため）
+const STICKER_OUTER = `${ring("#121212", 0.135)},${ring("#d3ccbd", 0.135, 0.035, 0.07)}`;
+const STICKER_WHITE = ring("#ffffff", 0.1);
 
 // SVG の文字の大きさを測って、表示枠をぴったりに合わせる
 function fitSvg(svg: SVGSVGElement) {
@@ -231,5 +249,17 @@ export const LOGO_PATTERNS: LogoPattern[] = [
   {
     id: "p15", name: "1文字ずつせり上がる", className: cx("p15", "ex"), full: true,
     render: ({ uid }) => currentLogo(uid, "bottom", true),
+  },
+  {
+    id: "p17", name: "ステッカー", className: cx("p17"), fonts: [STICKER],
+    render: () => (
+      <div className={s.word} data-fit=".9">
+        <span className={s.stk}>
+          <span className={cx("lay", "outer")} style={{ textShadow: STICKER_OUTER }} aria-hidden="true">{letters("Nowledge")}</span>
+          <span className={cx("lay", "white")} style={{ textShadow: STICKER_WHITE }} aria-hidden="true">{letters("Nowledge")}</span>
+          <span className={s.fillText}>{letters("Nowledge")}</span>
+        </span>
+      </div>
+    ),
   },
 ];
