@@ -118,3 +118,21 @@
     width: 85.8%;
   }
 }
+
+/* List表示（PC・マウス操作）：行をはみ出すホバーサムネイルを、下の行より手前に見せる */
+@media (min-width: 768px) and (hover: hover) {
+  /* 行（.item）は表示時のアニメーションで重なりの単位になっているので、ここで手前に出す */
+  .list .item {
+    position: relative;
+    /* マウスが離れた行は、サムネイルが消えきる（0.3秒）まで手前に残す */
+    transition: z-index 0s linear 0.3s;
+  }
+  .list .item:hover {
+    z-index: 3;
+    transition: z-index 0s;
+  }
+  /* 月の最後の行のサムネイルが、次の月の行の下に隠れないよう、月のまとまりごと手前に出す */
+  .list .sectionWrap:hover {
+    z-index: 6;
+  }
+}
