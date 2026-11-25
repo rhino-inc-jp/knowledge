@@ -258,7 +258,10 @@
   pointer-events: none;
   padding: 24px 43px;
   display: flex;
-  align-items: center;
+  /* コメントが長いときに上が切れないよう、中央寄せは .articleComment の margin で行う */
+  align-items: flex-start;
+  /* カードに収まらない長さのコメントは、この中でスクロールして読めるようにする */
+  overflow-y: auto;
 }
 .articleCover.visible{
   opacity: 1;
@@ -270,6 +273,12 @@
   display: block;
   font-size: 12px;
   line-height: 1.5;
+  /* カードの幅に合わせて折り返す（長いURLがあっても横にはみ出さない） */
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  /* 収まるときは上下中央、収まらないときは上から表示 */
+  margin: auto 0;
 }
 .articleComment a {
   opacity: 0.6;
@@ -281,6 +290,13 @@
 
 .image .articleCover {
   padding: 16px 14px;
+}
+/* List表示（PC）は行が低いので、上下の余白を減らして読める行数を増やす */
+@media (min-width: 768px) {
+  .list .articleCover {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
 }
 
 /* mdスクリーン以上（768px～）でサイズ変更 */
