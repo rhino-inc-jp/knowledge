@@ -381,22 +381,29 @@
  * List表示：行にマウスを乗せるとサムネイルを表示
  * （参考：桑沢卒展アーカイブ の List View）
  * - PC かつマウス操作のときだけ（スマホ・タブレットのタップでは出さない）
- * - 説明の列の右寄り・行の高さに収まる大きさ（横150px）
+ * - 説明の列の右寄り・行の上端にそろえ、下の行へはみ出して大きく見せる（横280px）
  * ------------------------------------------------------------ */
 .listHoverThumb {
   display: none;
 }
 @media (min-width: 768px) and (hover: hover) {
+  /* はみ出したサムネイルを見せるため、List表示ではカードのはみ出しを隠さない */
+  /* ※マウスを乗せた行を手前に出す設定は articleList.module.css の .item 側にある */
+  .list.article {
+    overflow: visible;
+  }
+
   .list .listHoverThumb {
     display: block;
     position: absolute;
-    top: 50%;
+    top: 10px;
     right: calc(19.5% + 24px);
-    width: 150px;
+    /* 画面幅が狭い PC では、カード幅の40%まで */
+    width: min(280px, 40%);
     aspect-ratio: 1.91 / 1;
     background: #f2f2f2;
     opacity: 0;
-    transform: translateY(-50%) scale(0.96);
+    transform: translateY(6px) scale(0.98);
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
   }
@@ -408,6 +415,6 @@
   }
   .list.article:hover .listHoverThumb {
     opacity: 1;
-    transform: translateY(-50%) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
