@@ -98,15 +98,23 @@ export default function NowledgeLogo() {
   }
 
   return (
-    <div
-      ref={rootRef}
-      className={`${styles.logo} ${pattern.className} ${logoFontVariables}`}
-      style={{ "--mc": MONTH_COLORS[month] } as CSSProperties}
-      aria-hidden="true"
-      data-logo={pattern.id}
-    >
-      <div className={styles.mark}>{pattern.render({ uid, year: now.getFullYear(), month, monthColor: MONTH_COLORS[month] })}</div>
-      {!pattern.full && <p className={styles.sub}>Case Study Sharing by Rhino inc.</p>}
+    <div className={styles.frame}>
+      <div
+        ref={rootRef}
+        className={`${styles.logo} ${pattern.className} ${logoFontVariables}`}
+        style={{ "--mc": MONTH_COLORS[month] } as CSSProperties}
+        aria-hidden="true"
+        data-logo={pattern.id}
+      >
+        <div className={styles.mark}>{pattern.render({ uid, year: now.getFullYear(), month, monthColor: MONTH_COLORS[month] })}</div>
+        {!pattern.full && <p className={styles.sub}>Case Study Sharing by Rhino inc.</p>}
+      </div>
+      {/* 3D の案は Three.js の読み込みに数秒かかることがあるので、その間は今のロゴを出しておく。
+          準備ができたら（.ready が付いたら）CSS でフェードアウトして 3D に切り替わる */}
+      {pattern.is3d && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src="/logo_Nowledge.svg" alt="" aria-hidden="true" className={styles.placeholder} />
+      )}
     </div>
   );
 }
