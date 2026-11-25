@@ -8,6 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Category, CalnderDate, Staff, SearchParams } from "@/types/search";
 import FilterSection from "../atoms/FilterSection";
 
+// お問い合わせ先（ライノ公式サイトのお問い合わせページ。新しいタブで開く）
+const CONTACT_URL = "https://www.rhino-inc.jp/contact/";
+
 type Props = {
   categories: Category[];
   calendar: CalnderDate[];
@@ -109,18 +112,39 @@ const SearchModalBody = ({
 
   return (
     <div className="p-[75px_15px_40px] md:p-[120px_15px_50px] md:m-auto">
-      {/* ♡ マイページへの入口（PC：閉じるボタンの左に、同じ高さでアイコンだけ） */}
+      {/* ✉ お問い合わせ・♡ マイページへの入口（PC：閉じるボタンの左に、同じ高さでアイコンだけ） */}
       {/* ※検索欄と重ならないよう、PC は上の余白を 60px → 120px に広げた */}
+      {/* ※寸法・間隔は Figma「Knowledge_PC_Search」に合わせている */}
+      <a
+        href={CONTACT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hidden md:block absolute top-[48px] right-[155px] leading-[0]"
+        aria-label="Contact（お問い合わせ・新しいタブで開きます）"
+      >
+        <Image src="/icon_contact.svg" width={19} height={18} alt="" />
+      </a>
       <button
         type="button"
         onClick={onOpenMypage}
-        className="hidden md:block absolute top-[47px] right-[100px] leading-[0]"
+        className="hidden md:block absolute top-[49px] right-[101px] leading-[0]"
         aria-label="My Page（お気に入り一覧）"
       >
-        <Image src="/icon_heart.svg" width={24} height={20} alt="" />
+        <Image src="/icon_heart.svg" width={20} height={16} alt="" />
       </button>
 
       <div className="max-md:p-[0_22px]">
+        {/* ✉ お問い合わせ（スマホ：アイコン＋文字。新しいタブで開く） */}
+        <a
+          href={CONTACT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="md:hidden flex w-fit items-center gap-[21px] mb-[26px] text-[17px] leading-[1] font-hel"
+        >
+          <Image src="/icon_contact.svg" width={19} height={18} alt="" />
+          Contact
+        </a>
+
         {/* ♡ マイページへの入口（スマホ：アイコン＋文字） */}
         <button
           type="button"
