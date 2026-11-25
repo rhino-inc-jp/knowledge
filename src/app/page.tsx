@@ -1,12 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 import styles from "@/styles/components/atoms/Headline.module.css";
 
 import { ViewType } from "@/constants/viewTypes";
 import { SEARCH_TYPES } from "@/constants/searchTypes";
 import type { SearchParams } from "@/types/search";
+import {
+  EMPTY_SEARCH,
+  buildSearchQuery,
+  getLocationSearch,
+  getServerLocationSearch,
+  parseSearchQuery,
+  pushSearchUrl,
+  resolveSearchQuery,
+  subscribeLocation,
+} from "@/utils/searchUrl";
 
 import useArticles from "@/hooks/useArticles";
 import useSearchOptions from "@/hooks/useSearchOptions";
@@ -27,13 +37,39 @@ const Home = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  /* 検索条件の状態 */
-  const [searchParams, setSearchParams] = useState<SearchParams>({
-    keyword: "",
-    category: [],
-    date: [],
-    staff: [],
-  });
+  /* 検索オプション（カテゴリ、スタッフ、カレンダー） */
+  const { categories, calendar, staff, isCategoriesLoaded } = useSearchOptions(
+    SEARCH_TYPES.YEAR,
+    SEARCH_TYPES.MONTH
+  );
+
+  /* 🔗 検索条件は URL（?category=Portfolio など）が正。共有URL・戻る/進む にも対応 */
+  // URL の「?」以降（サーバーで描画するときは null）
+  const locationSearch = useSyncExternalStore(
+    subscribeLocation,
+    getLocationSearch,
+    getServerLocationSearch
+  );
+  const urlQuery = useMemo(
+    () => (locationSearch === null ? null : parseSearchQuery(locationSearch)),
+    [locationSearch]
+  );
+
+  // URL を読み終えたか。カテゴリ名 → ID の変換にはカテゴリ一覧が必要なので、それまで待つ
+  // （読み終える前に、絞り込みなしの記事を取りに行かないため）
+  const isUrlResolved =
+    urlQuery !== null &&
+    (urlQuery.categoryNames.length === 0 || isCategoriesLoaded);
+
+  // 中身が同じ検索条件なら同じものとして扱う（不要な取り直しを防ぐ）
+  const searchKey =
+    isUrlResolved && urlQuery
+      ? JSON.stringify(resolveSearchQuery(urlQuery, categories))
+      : "";
+  const searchParams = useMemo<SearchParams>(
+    () => (searchKey ? JSON.parse(searchKey) : EMPTY_SEARCH),
+    [searchKey]
+  );
 
   /* 🔍 検索モードかどうかの判定 */
   const isSearchMode =
@@ -42,24 +78,9 @@ const Home = () => {
     searchParams.date.length > 0 ||
     searchParams.staff.length > 0;
 
-  /* 記事の取得 */
-  const {
-    articles,
-    setArticles,
-    isEnd,
-    setIsEnd,
-    hasInitialized,
-    setHasInitialized,
-    setOffset,
-    error,
-    isLoading,
-  } = useArticles(searchParams, SEARCH_TYPES.LIMIT);
-
-  /* 検索オプション（カテゴリ、スタッフ、カレンダー） */
-  const { categories, calendar, staff } = useSearchOptions(
-    SEARCH_TYPES.YEAR,
-    SEARCH_TYPES.MONTH
-  );
+  /* 記事の取得（検索条件が変わると、最初から取り直す） */
+  const { articles, isEnd, hasInitialized, setOffset, error, isLoading } =
+    useArticles(searchParams, SEARCH_TYPES.LIMIT, isUrlResolved);
 
   /* ID → 表示名 のマップを作成 */
   const categoryMap = Object.fromEntries(
@@ -83,12 +104,16 @@ const Home = () => {
 
   /* 🔍 検索を実行 */
   const handleSearch = ({ keyword, category, date, staff }: SearchParams) => {
-    setArticles([]);
-    setOffset(0);
-    setIsEnd(false);
-    setHasInitialized(false);
-    setSearchParams({ keyword, category, date, staff });
     setIsModalOpen(false);
+
+    // 検索条件を URL に反映する → URL の変化を受けて記事を取り直す
+    // （この URL を共有すると、同じ絞り込み結果が開く）
+    pushSearchUrl(
+      `${window.location.pathname}${buildSearchQuery(
+        { keyword, category, date, staff },
+        categories
+      )}`
+    );
   };
 
   const showLoader = isLoading || !(hasInitialized && isEnd);
@@ -131,6 +156,7 @@ const Home = () => {
         calendar={calendar}
         staff={staff}
         isOpen={isModalOpen}
+        activeParams={searchParams}
         onSearch={handleSearch}
       />
 
