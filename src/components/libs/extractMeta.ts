@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 type CheerioAPI = import("cheerio").CheerioAPI;
 
 async function tryYoutubeOEmbed(url: URL) {
-  if (!url.hostname.includes("youtube.com")) {
+  // youtube.com と短縮URL（youtu.be）は、重いHTMLを読まずに oEmbed で取得する
+  if (!url.hostname.includes("youtube.com") && url.hostname !== "youtu.be") {
     return null;
   }
 

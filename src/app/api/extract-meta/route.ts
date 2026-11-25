@@ -13,6 +13,19 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+/**
+ * 取得に成功した OGP は Netlify の CDN に保存させる。
+ * 2回目以降は（別の人が見た場合も）外部サイトに取りに行かず、CDN から即座に返る。
+ * - CDN：30日間保存。期限切れ後7日間は古いものを返しつつ裏で取り直す
+ * - ブラウザ：保存しない（ブラウザ側の保存は metaCache.ts で行う）
+ * ※アクセス制限（proxy.ts）は CDN より手前で動くため、制限はそのまま効く
+ */
+const CDN_CACHE_HEADERS = {
+  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Netlify-CDN-Cache-Control":
+    "public, durable, max-age=2592000, stale-while-revalidate=604800",
+};
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const url = searchParams.get("url");
@@ -22,11 +35,10 @@ export async function GET(req: Request) {
 
   const result = await extractMetaFromUrl(url);
 
-  if ("error" in result) {
-    return NextResponse.json({ error: result.error }, { status: 500 });
-  }
+  // 取得失敗（400/502）はそのまま返す。CDN には保存しない
+  if (result instanceof Response) return result;
 
-  return NextResponse.json(result);
+  return NextResponse.json(result, { headers: CDN_CACHE_HEADERS });
 }
 
 export async function POST(req: Request) {

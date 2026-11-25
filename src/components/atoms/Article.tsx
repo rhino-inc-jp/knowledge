@@ -46,6 +46,7 @@ const Article = ({
     metaTitle,
     metaDescription,
     metaImage,
+    isMetaLoading,
     editor,
   } = article;
 
@@ -87,9 +88,16 @@ const Article = ({
     /** サムネイルの画像を決定 */
     /* 記事投稿に設定した画像（最優先で表示） */
     /* スクレイピングで取得した画像（次点で表示） */
-    /* どちらもない場合はno_image.jpgを表示 */
+    /* どちらもない場合はno_image.jpgを表示（OGP取得中は何も出さずに待つ） */
   }
-  const imgSrc = thumb?.url || metaImage || "/no_image.jpg";
+  const imgSrc =
+    thumb?.url || metaImage || (isMetaLoading ? "" : "/no_image.jpg");
+
+  // microCMS の画像だけ、WebP かつ表示幅に合ったサイズ（横800px）で配信してもらう
+  // ※外部サイトの画像に付けると URL が壊れることがあるため付けない
+  const optimizedSrc = imgSrc.startsWith("https://images.microcms-assets.io/")
+    ? `${imgSrc}${imgSrc.includes("?") ? "&" : "?"}fm=webp&w=800`
+    : imgSrc;
 
   return (
     <a
@@ -102,15 +110,24 @@ const Article = ({
       } ${monthColors[month]}`}
     >
       {viewType === "image" && (
-        <div className={`${styles.articleThumb} mb-[8px]`}>
+        <div
+          className={`${styles.articleThumb} mb-[8px] ${
+            isMetaLoading ? "bg-[#f2f2f2]" : ""
+          }`}
+        >
           {/* Next/Imageだと特定のドメインでエラーになるのでimgタグに変更 */}
-          <img
-            className="object-contain absolute
+          {/* 画面に近づいてから読み込む（lazy）ことで、最初の表示を速くする */}
+          {optimizedSrc && (
+            <img
+              className="object-contain absolute
              top-0 left-0 w-[100%] h-[100%]"
-            src={`${imgSrc}?fm=webp&w=1200`}
-            onError={(e) => (e.currentTarget.src = "/no_image.jpg")}
-            alt=""
-          />
+              src={optimizedSrc}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => (e.currentTarget.src = "/no_image.jpg")}
+              alt=""
+            />
+          )}
         </div>
       )}
 
