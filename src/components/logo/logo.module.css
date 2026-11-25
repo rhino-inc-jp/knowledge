@@ -1,5 +1,5 @@
 /* ==========================================================================
-   左上のロゴ（ページを開くたびに16案から切り替わる）
+   左上のロゴ（ページを開くたびに14案から切り替わる）
    - どの案も「最終形」を基本の見た目にして、.play が付いたときだけ動く
    - 動きを減らす設定の人には、動かさずに最終形を表示
    - 比較ページ（Claude の Artifact「Nowledge ロゴ案」）と同じ内容
@@ -81,13 +81,6 @@
 @keyframes p05stamp { from { transform: scale(1.9); opacity: 0; } }
 @keyframes p05slide { from { transform: translateX(0.7em); opacity: 0; } }
 
-/* P06 ふくらむ（W Conran・疑似3D） */
-.p06 .word { position: relative; font-family: var(--logo-font-round), "Arial Rounded MT Bold", sans-serif; font-weight: 700; letter-spacing: 0.005em; transform-origin: 50% 85%; }
-.p06 .base { background: linear-gradient(180deg, #6be6b1 0%, #20a77b 46%, #0d6f50 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0.035em 0 #0a573e) drop-shadow(0 0.09em 0.07em rgba(0, 0, 0, 0.22)); }
-.p06 .hl { position: absolute; inset: 0; color: transparent; background: linear-gradient(165deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 34%); -webkit-background-clip: text; background-clip: text; transform: translate(-0.012em, -0.025em) scale(0.985); pointer-events: none; }
-.p06.play .word { animation: p06inflate 1.15s cubic-bezier(0.2, 0.9, 0.3, 1) backwards; }
-@keyframes p06inflate { 0% { transform: scale(0.25, 0.18); opacity: 0; } 45% { transform: scale(1.1, 0.9); opacity: 1; } 65% { transform: scale(0.95, 1.06); } 82% { transform: scale(1.02, 0.98); } 100% { transform: none; } }
-
 /* P07 目（W Conran） */
 .p07 .word { font-weight: 700; letter-spacing: -0.025em; color: #111; }
 .p07 .eye { display: inline-block; width: 0.6em; height: 0.6em; vertical-align: -0.012em; margin: 0 0.01em; }
@@ -153,7 +146,7 @@
 .mark3d { width: 100%; height: calc(var(--W) * 0.27); position: relative; }
 .mark3d canvas { display: block; }
 
-/* P14〜P16 今のロゴのまま（文字ごとの図形を動かす） */
+/* P14・P15 今のロゴのまま（文字ごとの図形を動かす） */
 .ex svg { overflow: hidden; }
 .ex .ch, .ex .ln { transform-box: fill-box; }
 .p14.play .wm { animation: p14fall 0.95s 0.06s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
@@ -165,11 +158,6 @@
 .p15.play .sl { animation: p15sub 0.6s 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
 @keyframes p15rise { 0% { transform: translateY(80px) scaleY(1.55); } 55% { transform: translateY(-2px) scaleY(1.06); } 100% { transform: none; } }
 @keyframes p15sub { from { transform: translateY(24px); } }
-.p16 .ch { transform-origin: 50% 0; }
-.p16.play .ch { animation: p16drop 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i) * 60ms); }
-.p16.play .sl { animation: p16sub 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-@keyframes p16drop { 0% { transform: translateY(-78px) scaleY(1.45); } 55% { transform: translateY(2px) scaleY(1.04); } 100% { transform: none; } }
-@keyframes p16sub { from { transform: translateY(-26px); } }
 
 /* 動きを減らす設定の人には、動かさずに最終形を表示 */
 @media (prefers-reduced-motion: reduce) {

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * 左上のロゴ：ページを開くたびに16案からランダムに1つ表示し、1〜2秒動いて止まる
+ * 左上のロゴ：ページを開くたびに14案からランダムに1つ表示し、1〜2秒動いて止まる
  *
  * - ブラウザだけで動かす（NowledgeLogoLoader から ssr: false で読み込む）。
  *   サーバーで描くと、ランダムの結果がサーバーとブラウザで食い違うため
@@ -11,7 +11,7 @@
  */
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import styles from "./logo.module.css";
-import { logoFontVariables } from "./fonts";
+import { fredoka, logoFontVariables } from "./fonts";
 import { LOGO_PATTERNS, MONTH_COLORS } from "./patterns";
 import { pickPatternId } from "./pickPattern";
 import type { Logo3D } from "./Logo3D";
@@ -67,7 +67,7 @@ export default function NowledgeLogo() {
         try {
           const { mount3D } = await import("./Logo3D");
           if (cancelled || !host) return;
-          three = await mount3D(host, pattern.is3d);
+          three = await mount3D(host, pattern.is3d, fredoka.style.fontFamily);
           if (cancelled) {
             three.destroy();
             return;

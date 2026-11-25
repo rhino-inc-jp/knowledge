@@ -1,5 +1,5 @@
 /**
- * 左上ロゴの16案の定義
+ * 左上ロゴの案の定義（14案。P06・P16 は検証の結果外した。番号は振り直さない）
  *
  * - render：表示する中身（最終形）。動きは logo.module.css の .play で付く
  * - fit：data-fit を付けた要素は、ロゴの横幅 × その値 に収まるよう文字の大きさを合わせる
@@ -20,7 +20,7 @@ export type LogoContext = {
 };
 
 export type LogoPattern = {
-  id: string; // p01〜p16（URL の ?logo=p07 で指定できる）
+  id: string; // p01〜p15（URL の ?logo=p07 で指定できる）
   name: string;
   className: string;
   full?: boolean; // true：下の「Case Study Sharing by Rhino inc.」も中身に含む（今のロゴをそのまま使う案）
@@ -135,15 +135,6 @@ export const LOGO_PATTERNS: LogoPattern[] = [
     ),
   },
   {
-    id: "p06", name: "ふくらむ", className: cx("p06"), fonts: [ROUND],
-    render: () => (
-      <div className={s.word} data-fit="1">
-        <span className={s.base}>Nowledge</span>
-        <span className={s.hl} aria-hidden="true">Nowledge</span>
-      </div>
-    ),
-  },
-  {
     id: "p07", name: "目", className: cx("p07"),
     render: ({ uid }) => (
       <div className={s.word} data-fit="1">
@@ -230,7 +221,7 @@ export const LOGO_PATTERNS: LogoPattern[] = [
     render: () => <div className={s.mark3d} />,
   },
   {
-    id: "p13", name: "緑の風船", className: cx("p13"), is3d: "balloon",
+    id: "p13", name: "緑の風船", className: cx("p13"), is3d: "balloon", fonts: [ROUND],
     render: () => <div className={s.mark3d} />,
   },
   {
@@ -240,9 +231,5 @@ export const LOGO_PATTERNS: LogoPattern[] = [
   {
     id: "p15", name: "1文字ずつせり上がる", className: cx("p15", "ex"), full: true,
     render: ({ uid }) => currentLogo(uid, "bottom", true),
-  },
-  {
-    id: "p16", name: "1文字ずつ降りてくる", className: cx("p16", "ex"), full: true,
-    render: ({ uid }) => currentLogo(uid, "top", true),
   },
 ];
