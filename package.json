@@ -18,12 +18,14 @@
     "next": "^16.0.10",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-spinners": "^0.17.0"
+    "react-spinners": "^0.17.0",
+    "three": "0.160.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "0.160.0",
     "autoprefixer": "^10.0.1",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.0.10",
