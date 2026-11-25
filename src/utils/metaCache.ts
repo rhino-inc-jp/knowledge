@@ -14,7 +14,8 @@ export type Meta = {
 
 type Entry = Meta & { savedAt: number };
 
-const STORAGE_KEY = "nowledge:ogp:v1";
+// v1 は、CDN の保存の不具合（別の記事の OGP が返る）があった時期の値が残っている可能性があるので使わない
+const STORAGE_KEY = "nowledge:ogp:v2";
 const TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30日
 const MAX_ENTRIES = 3000; // 保存しすぎないための上限（古いものから消す）
 
