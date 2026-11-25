@@ -99,6 +99,10 @@ const Article = ({
     ? `${imgSrc}${imgSrc.includes("?") ? "&" : "?"}fm=webp&w=800`
     : imgSrc;
 
+  // List表示でマウスを乗せたときに出すサムネイル
+  // （実際の画像があるときだけ。No Image は出さない）
+  const hoverSrc = thumb?.url || metaImage ? optimizedSrc : "";
+
   return (
     <a
       ref={containerRef}
@@ -129,6 +133,22 @@ const Article = ({
             />
           )}
         </div>
+      )}
+
+      {/* List表示：行にマウスを乗せるとサムネイルが出る（PC・マウス操作のときだけ。見た目は CSS） */}
+      {viewType === "list" && hoverSrc && (
+        <span className={styles.listHoverThumb} aria-hidden="true">
+          <img
+            src={hoverSrc}
+            loading="lazy"
+            decoding="async"
+            // 画像が読めなかったときは、枠ごと出さない
+            onError={(e) => {
+              e.currentTarget.parentElement!.style.display = "none";
+            }}
+            alt=""
+          />
+        </span>
       )}
 
       {/* グループ先頭だけに年月を表示（検索時） */}
