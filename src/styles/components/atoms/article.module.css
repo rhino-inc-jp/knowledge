@@ -385,6 +385,8 @@
  * ------------------------------------------------------------ */
 .listHoverThumb {
   display: none;
+  /* 行の中の文字（担当者名など）より手前に。コメント表示（z-index: 10）よりは下 */
+  z-index: 2;
 }
 @media (min-width: 768px) and (hover: hover) {
   /* はみ出したサムネイルを見せるため、List表示ではカードのはみ出しを隠さない */
@@ -416,5 +418,56 @@
   .list.article:hover .listHoverThumb {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* ------------------------------------------------------------
+ * スマホ・タブレット（タッチ操作）：List表示で、指が触れている行だけサムネイルを表示
+ * - 触れている間は .touching が付く（Article.tsx）
+ * - 指を離すと消える。普通にタップすれば記事が開く
+ * ------------------------------------------------------------ */
+@media (hover: none) {
+  .list.article {
+    overflow: visible;
+    /* 長押ししたときに、リンクのメニュー（iOS）や文字選択がサムネイルを隠さないようにする */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .list .listHoverThumb {
+    display: block;
+    position: absolute;
+    aspect-ratio: 1.91 / 1;
+    background: #f2f2f2;
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+  .list .listHoverThumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .list.article.touching .listHoverThumb {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* スマホ：行の右上寄り・タイトルの下あたりから、下の行へ少しはみ出す大きさ */
+@media (hover: none) and (max-width: 767px) {
+  .list .listHoverThumb {
+    top: 20px;
+    right: 8px;
+    width: min(260px, 75%);
+  }
+}
+/* タブレット（PCと同じ3列のレイアウト）：PCのマウス操作と同じ位置・大きさ */
+@media (hover: none) and (min-width: 768px) {
+  .list .listHoverThumb {
+    top: 10px;
+    right: calc(19.5% + 24px);
+    width: min(280px, 40%);
   }
 }

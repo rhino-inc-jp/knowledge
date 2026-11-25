@@ -136,3 +136,20 @@
     z-index: 6;
   }
 }
+
+/* スマホ・タブレット（タッチ操作）：指が触れている行・月のまとまりを手前に出す
+   （はみ出したサムネイルが、下の行や次の月の行に隠れないようにするため） */
+@media (hover: none) {
+  .list .item {
+    position: relative;
+    /* 指を離した行は、サムネイルが消えきる（0.3秒）まで手前に残す */
+    transition: z-index 0s linear 0.3s;
+  }
+  .list .item:has([data-touching]) {
+    z-index: 3;
+    transition: z-index 0s;
+  }
+  .list .sectionWrap:has([data-touching]) {
+    z-index: 6;
+  }
+}
