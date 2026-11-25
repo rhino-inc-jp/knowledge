@@ -455,12 +455,12 @@
     transform: translateY(0) scale(1);
   }
 }
-/* スマホ：行の右上寄り・タイトルの下あたりから、下の行へ少しはみ出す大きさ */
+/* スマホ：行の右上寄りに、画面幅の1/3の大きさ */
 @media (hover: none) and (max-width: 767px) {
   .list .listHoverThumb {
     top: 20px;
     right: 8px;
-    width: min(260px, 75%);
+    width: calc(100vw / 3);
   }
 }
 /* タブレット（PCと同じ3列のレイアウト）：PCのマウス操作と同じ位置・大きさ */
