@@ -1,5 +1,5 @@
 /**
- * 左上ロゴの案の定義（15案。P06・P16 は検証の結果外した。番号は振り直さない）
+ * 左上ロゴの案の定義（16案。P06・P16 は検証の結果外した。番号は振り直さない）
  *
  * - render：表示する中身（最終形）。動きは logo.module.css の .play で付く
  * - fit：data-fit を付けた要素は、ロゴの横幅 × その値 に収まるよう文字の大きさを合わせる
@@ -17,10 +17,12 @@ export type LogoContext = {
   year: number;
   month: number;
   monthColor: string; // サイトの「今月の色」（記事の行にマウスを乗せたときの色）
+  seed: number; // 開いたときに決める 0〜1 の乱数（色違いがある案で、どれを出すかに使う）
+  variant: string | null; // URL の ?variant=black などで色違いを固定（確認用）
 };
 
 export type LogoPattern = {
-  id: string; // p01〜p17（URL の ?logo=p07 で指定できる。p06・p16 は欠番）
+  id: string; // p01〜p18（URL の ?logo=p07 で指定できる。p06・p16 は欠番）
   name: string;
   className: string;
   full?: boolean; // true：下の「Case Study Sharing by Rhino inc.」も中身に含む（今のロゴをそのまま使う案）
@@ -73,6 +75,30 @@ function ring(color: string, radius: number, dx = 0, dy = 0) {
 const STICKER_SHADOW = `0.035em 0.07em 0 #d3ccbd,${ring("#d3ccbd", 0.135, 0.035, 0.07)}`;
 const STICKER_OUTER = ring("#121212", 0.135);
 const STICKER_WHITE = ring("#ffffff", 0.1);
+
+// P18 INFOBAR：携帯（INFOBAR ZERO）の3色。frame＝枠、keys＝キーのタイルの色（順に繰り返す）、ink＝文字の色
+type Infobar = { frame: string; keys: string[]; ink: string[] };
+const INFOBAR: Record<string, Infobar> = {
+  // 赤：赤い枠に、赤・白・淡い青紫の真珠色のタイルを組み合わせた柄
+  red: {
+    frame: "#c8102e",
+    keys: ["#d7192a", "#f3f0ea", "#cdd6ea", "#f3f0ea", "#d9cfe6", "#d7192a", "#f3f0ea", "#cfe0ec"],
+    ink: ["#fff", "#c8102e", "#5a5f78", "#c8102e", "#5a5f78", "#fff", "#c8102e", "#5a5f78"],
+  },
+  // 黒：黒い枠に、黒と白の市松模様
+  black: {
+    frame: "#111",
+    keys: ["#f4f4f2", "#161616", "#f4f4f2", "#161616", "#f4f4f2", "#161616", "#f4f4f2", "#161616"],
+    ink: ["#111", "#f4f4f2", "#111", "#f4f4f2", "#111", "#f4f4f2", "#111", "#f4f4f2"],
+  },
+  // 白：真珠のような白
+  white: {
+    frame: "#ecebe7",
+    keys: ["#f8f7f4", "#f1f0f3", "#f8f7f4", "#eef2f4", "#f8f7f4", "#f3f0f2", "#f8f7f4", "#eef1f4"],
+    ink: ["#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86"],
+  },
+};
+const INFOBAR_NAMES = Object.keys(INFOBAR);
 
 // SVG の文字の大きさを測って、表示枠をぴったりに合わせる
 function fitSvg(svg: SVGSVGElement) {
@@ -251,6 +277,38 @@ export const LOGO_PATTERNS: LogoPattern[] = [
   {
     id: "p15", name: "1文字ずつせり上がる", className: cx("p15", "ex"), full: true,
     render: ({ uid }) => currentLogo(uid, "bottom", true),
+  },
+  {
+    // P18 INFOBAR：銀色の袋の端がちぎれて開き、袋が抜けると、携帯のキーのようなバーが現れる
+    id: "p18", name: "INFOBAR", className: cx("p18"),
+    render: ({ seed, variant }) => {
+      const name = variant && INFOBAR[variant] ? variant : INFOBAR_NAMES[Math.floor(seed * INFOBAR_NAMES.length) % INFOBAR_NAMES.length];
+      const c = INFOBAR[name];
+      return (
+        <div className={s.scene} data-color={name}>
+          {/* 携帯のようなバー（左に黒い画面、右にキーのタイル） */}
+          <div className={s.bar} style={{ background: c.frame }}>
+            <span className={s.screen} />
+            <span className={s.keys}>
+              {"Nowledge".split("").map((ch, i) => (
+                <span key={i} className={s.key} style={{ background: c.keys[i], color: c.ink[i], "--i": i } as CSSProperties}>
+                  {ch}
+                </span>
+              ))}
+            </span>
+          </div>
+          {/* 銀色の袋（両端にギザギザの留め口。右の留め口がちぎれて開く） */}
+          <div className={s.pack} aria-hidden="true">
+            <span className={cx("crimp", "crimpL")} />
+            <span className={s.foil}>
+              <span className={s.print}>N O W L E D G E</span>
+              <i className={s.shine} />
+            </span>
+            <span className={cx("crimp", "crimpR")} />
+          </div>
+        </div>
+      );
+    },
   },
   {
     id: "p17", name: "ステッカー", className: cx("p17"), fonts: [STICKER],

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   左上のロゴ（ページを開くたびに15案から切り替わる）
+   左上のロゴ（ページを開くたびに16案から切り替わる）
    - どの案も「最終形」を基本の見た目にして、.play が付いたときだけ動く
    - 動きを減らす設定の人には、動かさずに最終形を表示
    - 比較ページ（Claude の Artifact「Nowledge ロゴ案」）と同じ内容
@@ -193,6 +193,69 @@
 .p17 .fillText { position: relative; color: #121212; white-space: nowrap; }
 .p17.play .ch { animation: p17rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i) * 45ms); }
 @keyframes p17rise { from { transform: translateY(45%); opacity: 0; } }
+
+/* P18 INFOBAR（au Design project「INFOBAR ZERO」の映像を参考）
+   銀色の袋の右端の留め口がちぎれて開き、袋が左へ抜けると、携帯のキーのようなバーが現れる（約1.8秒）
+   色は赤・黒・白の3色から開くたびにランダム（?variant=red / black / white で固定） */
+.p18 .scene { position: relative; height: calc(var(--W) * 0.2); overflow: hidden; }
+/* バー（携帯）：左に黒い画面、右に「Nowledge」のキー */
+.p18 .bar {
+  position: absolute; left: 0; right: 0; top: 50%; height: calc(var(--W) * 0.135); margin-top: calc(var(--W) * -0.0675);
+  display: flex; gap: calc(var(--W) * 0.012); padding: calc(var(--W) * 0.012);
+  border-radius: calc(var(--W) * 0.03); box-shadow: 0 calc(var(--W) * 0.008) calc(var(--W) * 0.02) rgba(0, 0, 0, 0.18);
+}
+.p18 .screen { width: 15%; border-radius: calc(var(--W) * 0.02); background: linear-gradient(160deg, #3a3a3a 0%, #050505 45%, #111 100%); }
+.p18 .keys { flex: 1; display: grid; grid-template-columns: repeat(8, 1fr); gap: calc(var(--W) * 0.006); }
+.p18 .key {
+  display: grid; place-items: center; border-radius: calc(var(--W) * 0.006);
+  font: 700 calc(var(--W) * 0.068) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: inset 0 calc(var(--W) * -0.004) 0 rgba(0, 0, 0, 0.08), inset 0 calc(var(--W) * 0.004) 0 rgba(255, 255, 255, 0.35);
+}
+/* 銀色の袋（最終形では見えない） */
+.p18 .pack { position: absolute; inset: 0; display: flex; opacity: 0; transform: translateX(-105%); filter: drop-shadow(0 calc(var(--W) * 0.008) calc(var(--W) * 0.012) rgba(0, 0, 0, 0.2)); }
+.p18 .foil {
+  position: relative; flex: 1; overflow: hidden;
+  /* 上下に陰影を付けて、ふっくらした袋に見せる */
+  box-shadow: inset 0 calc(var(--W) * 0.012) calc(var(--W) * 0.01) rgba(255, 255, 255, 0.75), inset 0 calc(var(--W) * -0.016) calc(var(--W) * 0.014) rgba(0, 0, 0, 0.22);
+  background:
+    repeating-linear-gradient(172deg, rgba(255, 255, 255, 0) 0 9px, rgba(255, 255, 255, 0.45) 10px, rgba(0, 0, 0, 0.07) 12px, rgba(255, 255, 255, 0) 14px),
+    linear-gradient(100deg, #9d9d9d 0%, #f3f3f3 12%, #bdbdbd 25%, #fbfbfb 38%, #a8a8a8 52%, #ebebeb 66%, #c3c3c3 80%, #f8f8f8 92%, #b0b0b0 100%);
+}
+.p18 .print { position: absolute; right: 8%; top: 50%; transform: translateY(-50%); font: 500 calc(var(--W) * 0.032) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: 0.1em; color: rgba(60, 60, 60, 0.55); white-space: nowrap; }
+.p18 .shine { position: absolute; top: -20%; bottom: -20%; width: 28%; transform: translateX(-130%) skewX(-18deg); background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0)); }
+/* 両端の留め口：細かい縦じわと、外側のギザギザ */
+.p18 .crimp { width: 6.5%; background: repeating-linear-gradient(90deg, #ececec 0 1px, #b9b9b9 1px 2.5px); }
+.p18 .crimpL { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18% 92%, 0 83%, 18% 75%, 0 67%, 18% 58%, 0 50%, 18% 42%, 0 33%, 18% 25%, 0 17%, 18% 8%); }
+.p18 .crimpR { transform-origin: 0 50%; clip-path: polygon(0 0, 100% 0, 82% 8%, 100% 17%, 82% 25%, 100% 33%, 82% 42%, 100% 50%, 82% 58%, 100% 67%, 82% 75%, 100% 83%, 82% 92%, 100% 100%, 0 100%); }
+
+.p18.play .pack { animation: p18pack 1.85s backwards; }
+.p18.play .crimpR { animation: p18tear 1.85s backwards; }
+.p18.play .shine { animation: p18shine 1.85s ease-in-out backwards; }
+.p18.play .bar { animation: p18bar 1.85s backwards; }
+.p18.play ~ .sub, .p18.play .sub { animation: p18sub 0.45s 1.55s ease-out backwards; }
+/* 袋：現れる → しばらく置かれる → 左へ抜けていく */
+@keyframes p18pack {
+  0% { opacity: 0; transform: scale(0.96); }
+  12% { opacity: 1; transform: none; }
+  52% { opacity: 1; transform: none; animation-timing-function: cubic-bezier(0.55, 0, 0.25, 1); }
+  92% { opacity: 1; transform: translateX(-102%); }
+  100% { opacity: 0; transform: translateX(-105%); }
+}
+/* 右の留め口：ちぎれて、はね飛ぶ */
+@keyframes p18tear {
+  0%, 36% { transform: none; opacity: 1; animation-timing-function: cubic-bezier(0.3, 0, 0.6, 1); }
+  50% { transform: translate(40%, -70%) rotate(-48deg); opacity: 0; }
+  100% { transform: translate(40%, -70%) rotate(-48deg); opacity: 0; }
+}
+/* 袋の光沢：一度だけ光が走る */
+@keyframes p18shine { 0%, 8% { transform: translateX(-130%) skewX(-18deg); } 34%, 100% { transform: translateX(420%) skewX(-18deg); } }
+/* バー：袋から引き出されるように、少し遅れてついてくる */
+@keyframes p18bar {
+  0%, 52% { transform: translateX(-7%); animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1); }
+  90% { transform: translateX(0.8%); }
+  100% { transform: none; }
+}
+@keyframes p18sub { from { opacity: 0; transform: translateY(-0.3em); } }
 
 /* 動きを減らす設定の人には、動かさずに最終形を表示 */
 @media (prefers-reduced-motion: reduce) {
