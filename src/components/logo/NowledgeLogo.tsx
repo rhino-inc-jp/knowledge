@@ -23,9 +23,6 @@ export default function NowledgeLogo() {
     return LOGO_PATTERNS.find((p) => p.id === id) ?? LOGO_PATTERNS[0];
   });
   const [now] = useState(() => new Date());
-  // 色違いがある案（P18 など）で、どの色を出すか（開いたときに1回だけ決める。?variant= で固定できる）
-  const [seed] = useState(() => Math.random());
-  const [variant] = useState(() => new URLSearchParams(window.location.search).get("variant"));
   const [failed3d, setFailed3d] = useState(false);
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const rootRef = useRef<HTMLDivElement>(null);
@@ -109,7 +106,7 @@ export default function NowledgeLogo() {
         aria-hidden="true"
         data-logo={pattern.id}
       >
-        <div className={styles.mark}>{pattern.render({ uid, year: now.getFullYear(), month, monthColor: MONTH_COLORS[month], seed, variant })}</div>
+        <div className={styles.mark}>{pattern.render({ uid, year: now.getFullYear(), month, monthColor: MONTH_COLORS[month] })}</div>
         {!pattern.full && <p className={styles.sub}>Case Study Sharing by Rhino inc.</p>}
       </div>
       {/* 3D の案は Three.js の読み込みに数秒かかることがあるので、その間は今のロゴを出しておく。

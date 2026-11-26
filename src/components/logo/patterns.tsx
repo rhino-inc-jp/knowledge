@@ -17,8 +17,6 @@ export type LogoContext = {
   year: number;
   month: number;
   monthColor: string; // サイトの「今月の色」（記事の行にマウスを乗せたときの色）
-  seed: number; // 開いたときに決める 0〜1 の乱数（色違いがある案で、どれを出すかに使う）
-  variant: string | null; // URL の ?variant=black などで色違いを固定（確認用）
 };
 
 export type LogoPattern = {
@@ -76,29 +74,8 @@ const STICKER_SHADOW = `0.035em 0.07em 0 #d3ccbd,${ring("#d3ccbd", 0.135, 0.035,
 const STICKER_OUTER = ring("#121212", 0.135);
 const STICKER_WHITE = ring("#ffffff", 0.1);
 
-// P18 INFOBAR：携帯（INFOBAR ZERO）の3色。frame＝枠、keys＝キーのタイルの色（順に繰り返す）、ink＝文字の色
-type Infobar = { frame: string; keys: string[]; ink: string[] };
-const INFOBAR: Record<string, Infobar> = {
-  // 赤：赤い枠に、赤・白・淡い青紫の真珠色のタイルを組み合わせた柄
-  red: {
-    frame: "#c8102e",
-    keys: ["#d7192a", "#f3f0ea", "#cdd6ea", "#f3f0ea", "#d9cfe6", "#d7192a", "#f3f0ea", "#cfe0ec"],
-    ink: ["#fff", "#c8102e", "#5a5f78", "#c8102e", "#5a5f78", "#fff", "#c8102e", "#5a5f78"],
-  },
-  // 黒：黒い枠に、黒と白の市松模様
-  black: {
-    frame: "#111",
-    keys: ["#f4f4f2", "#161616", "#f4f4f2", "#161616", "#f4f4f2", "#161616", "#f4f4f2", "#161616"],
-    ink: ["#111", "#f4f4f2", "#111", "#f4f4f2", "#111", "#f4f4f2", "#111", "#f4f4f2"],
-  },
-  // 白：真珠のような白
-  white: {
-    frame: "#ecebe7",
-    keys: ["#f8f7f4", "#f1f0f3", "#f8f7f4", "#eef2f4", "#f8f7f4", "#f3f0f2", "#f8f7f4", "#eef1f4"],
-    ink: ["#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86", "#8c8a86"],
-  },
-};
-const INFOBAR_NAMES = Object.keys(INFOBAR);
+// P18 INFOBAR：携帯（INFOBAR ZERO の赤）のキーの色。tone＝タイルの色の種類（CSS の .k-red / .k-cream / .k-lilac）
+const INFOBAR_KEYS: ("red" | "cream" | "lilac")[] = ["red", "cream", "lilac", "red", "cream", "lilac", "red", "cream"];
 
 // SVG の文字の大きさを測って、表示枠をぴったりに合わせる
 function fitSvg(svg: SVGSVGElement) {
@@ -279,36 +256,33 @@ export const LOGO_PATTERNS: LogoPattern[] = [
     render: ({ uid }) => currentLogo(uid, "bottom", true),
   },
   {
-    // P18 INFOBAR：銀色の袋の端がちぎれて開き、袋が抜けると、携帯のキーのようなバーが現れる
-    id: "p18", name: "INFOBAR", className: cx("p18"),
-    render: ({ seed, variant }) => {
-      const name = variant && INFOBAR[variant] ? variant : INFOBAR_NAMES[Math.floor(seed * INFOBAR_NAMES.length) % INFOBAR_NAMES.length];
-      const c = INFOBAR[name];
-      return (
-        <div className={s.scene} data-color={name}>
-          {/* 携帯のようなバー（左に黒い画面、右にキーのタイル） */}
-          <div className={s.bar} style={{ background: c.frame }}>
-            <span className={s.screen} />
-            <span className={s.keys}>
-              {"Nowledge".split("").map((ch, i) => (
-                <span key={i} className={s.key} style={{ background: c.keys[i], color: c.ink[i], "--i": i } as CSSProperties}>
-                  {ch}
-                </span>
-              ))}
-            </span>
-          </div>
-          {/* 銀色の袋（両端にギザギザの留め口。右の留め口がちぎれて開く） */}
-          <div className={s.pack} aria-hidden="true">
-            <span className={cx("crimp", "crimpL")} />
-            <span className={s.foil}>
-              <span className={s.print}>N O W L E D G E</span>
-              <i className={s.shine} />
-            </span>
-            <span className={cx("crimp", "crimpR")} />
-          </div>
+    // P18 INFOBAR：銀色の袋の上部が左から右へ裂けて開き、袋が下へ抜けると、携帯（INFOBAR ZERO の赤）のようなバーが残る
+    id: "p18", name: "INFOBAR", className: cx("p18"), fonts: [MONO],
+    render: () => (
+      <div className={s.scene}>
+        {/* 携帯のようなバー（左に黒い画面、右に「Nowledge」のキー）。開くまでは袋の内側だけに隠れている */}
+        <div className={s.bar}>
+          <span className={s.screen} />
+          <span className={s.keys}>
+            {"Nowledge".split("").map((ch, i) => (
+              <span key={i} className={cx("key", `k-${INFOBAR_KEYS[i]}`)}>
+                {ch}
+              </span>
+            ))}
+          </span>
         </div>
-      );
-    },
+        {/* 銀色の袋：上部（flap）と下部（lower）の2枚で1つの袋に見せる。両端はギザギザの留め口 */}
+        {/* 上部は留め口ごと、左から右へ裂けて開く */}
+        <div className={s.pack} aria-hidden="true">
+          <span className={s.lower}>
+            <span className={s.print}>NOWLEDGE</span>
+          </span>
+          <span className={s.inside} />
+          <span className={s.flap} />
+          <span className={s.curl} />
+        </div>
+      </div>
+    ),
   },
   {
     id: "p17", name: "ステッカー", className: cx("p17"), fonts: [STICKER],

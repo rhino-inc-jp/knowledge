@@ -195,65 +195,125 @@
 @keyframes p17rise { from { transform: translateY(45%); opacity: 0; } }
 
 /* P18 INFOBAR（au Design project「INFOBAR ZERO」の映像を参考）
-   銀色の袋の右端の留め口がちぎれて開き、袋が左へ抜けると、携帯のキーのようなバーが現れる（約1.8秒）
-   色は赤・黒・白の3色から開くたびにランダム（?variant=red / black / white で固定） */
+   なめらかな銀色の袋の上部が左から右へ裂けて開き、袋が下へ抜けると、INFOBAR ZERO（赤）のようなバーが残る（約2秒） */
 .p18 .scene { position: relative; height: calc(var(--W) * 0.2); overflow: hidden; }
-/* バー（携帯）：左に黒い画面、右に「Nowledge」のキー */
+
+/* ---- バー（携帯）：つやのある赤い枠、左に黒い画面、右にぷっくりしたキー ---- */
 .p18 .bar {
   position: absolute; left: 0; right: 0; top: 50%; height: calc(var(--W) * 0.135); margin-top: calc(var(--W) * -0.0675);
-  display: flex; gap: calc(var(--W) * 0.012); padding: calc(var(--W) * 0.012);
-  border-radius: calc(var(--W) * 0.03); box-shadow: 0 calc(var(--W) * 0.008) calc(var(--W) * 0.02) rgba(0, 0, 0, 0.18);
+  display: flex; gap: calc(var(--W) * 0.012); padding: calc(var(--W) * 0.013);
+  border-radius: calc(var(--W) * 0.05);
+  background: linear-gradient(180deg, #ea3d48 0%, #c8102e 42%, #a30a1d 100%);
+  box-shadow:
+    inset 0 calc(var(--W) * 0.004) calc(var(--W) * 0.003) rgba(255, 255, 255, 0.55),
+    inset 0 calc(var(--W) * -0.006) calc(var(--W) * 0.008) rgba(0, 0, 0, 0.3),
+    0 calc(var(--W) * 0.01) calc(var(--W) * 0.018) rgba(0, 0, 0, 0.22);
 }
-.p18 .screen { width: 15%; border-radius: calc(var(--W) * 0.02); background: linear-gradient(160deg, #3a3a3a 0%, #050505 45%, #111 100%); }
+.p18 .screen {
+  width: 16%; border-radius: calc(var(--W) * 0.032);
+  background: linear-gradient(155deg, #444 0%, #111 32%, #000 70%, #1a1a1a 100%);
+  box-shadow: inset 0 calc(var(--W) * 0.003) calc(var(--W) * 0.004) rgba(255, 255, 255, 0.22);
+}
 .p18 .keys { flex: 1; display: grid; grid-template-columns: repeat(8, 1fr); gap: calc(var(--W) * 0.006); }
 .p18 .key {
-  display: grid; place-items: center; border-radius: calc(var(--W) * 0.006);
-  font: 700 calc(var(--W) * 0.068) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-  box-shadow: inset 0 calc(var(--W) * -0.004) 0 rgba(0, 0, 0, 0.08), inset 0 calc(var(--W) * 0.004) 0 rgba(255, 255, 255, 0.35);
+  position: relative; overflow: hidden; display: grid; place-items: center;
+  border-radius: calc(var(--W) * 0.024);
+  font: 700 calc(var(--W) * 0.064) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow:
+    inset 0 calc(var(--W) * 0.004) 0 rgba(255, 255, 255, 0.75),
+    inset 0 calc(var(--W) * -0.006) calc(var(--W) * 0.006) rgba(0, 0, 0, 0.22),
+    0 calc(var(--W) * 0.003) calc(var(--W) * 0.004) rgba(0, 0, 0, 0.3);
 }
-/* 銀色の袋（最終形では見えない） */
-.p18 .pack { position: absolute; inset: 0; display: flex; opacity: 0; transform: translateX(-105%); filter: drop-shadow(0 calc(var(--W) * 0.008) calc(var(--W) * 0.012) rgba(0, 0, 0, 0.2)); }
-.p18 .foil {
-  position: relative; flex: 1; overflow: hidden;
-  /* 上下に陰影を付けて、ふっくらした袋に見せる */
-  box-shadow: inset 0 calc(var(--W) * 0.012) calc(var(--W) * 0.01) rgba(255, 255, 255, 0.75), inset 0 calc(var(--W) * -0.016) calc(var(--W) * 0.014) rgba(0, 0, 0, 0.22);
-  background:
-    repeating-linear-gradient(172deg, rgba(255, 255, 255, 0) 0 9px, rgba(255, 255, 255, 0.45) 10px, rgba(0, 0, 0, 0.07) 12px, rgba(255, 255, 255, 0) 14px),
-    linear-gradient(100deg, #9d9d9d 0%, #f3f3f3 12%, #bdbdbd 25%, #fbfbfb 38%, #a8a8a8 52%, #ebebeb 66%, #c3c3c3 80%, #f8f8f8 92%, #b0b0b0 100%);
+/* キーの上のつや（ぷっくりした光の反射） */
+.p18 .key::after {
+  content: ""; position: absolute; left: 14%; right: 14%; top: 7%; height: 36%; border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
 }
-.p18 .print { position: absolute; right: 8%; top: 50%; transform: translateY(-50%); font: 500 calc(var(--W) * 0.032) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: 0.1em; color: rgba(60, 60, 60, 0.55); white-space: nowrap; }
-.p18 .shine { position: absolute; top: -20%; bottom: -20%; width: 28%; transform: translateX(-130%) skewX(-18deg); background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0)); }
-/* 両端の留め口：細かい縦じわと、外側のギザギザ */
-.p18 .crimp { width: 6.5%; background: repeating-linear-gradient(90deg, #ececec 0 1px, #b9b9b9 1px 2.5px); }
-.p18 .crimpL { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18% 92%, 0 83%, 18% 75%, 0 67%, 18% 58%, 0 50%, 18% 42%, 0 33%, 18% 25%, 0 17%, 18% 8%); }
-.p18 .crimpR { transform-origin: 0 50%; clip-path: polygon(0 0, 100% 0, 82% 8%, 100% 17%, 82% 25%, 100% 33%, 82% 42%, 100% 50%, 82% 58%, 100% 67%, 82% 75%, 100% 83%, 82% 92%, 100% 100%, 0 100%); }
+.p18 .k-red { background: linear-gradient(180deg, #f4464f 0%, #d3121f 55%, #ab0b18 100%); color: #fff; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+.p18 .k-cream { background: linear-gradient(180deg, #fffdf8 0%, #efe8d9 58%, #d6cdba 100%); color: #3c3a36; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7); }
+.p18 .k-lilac { background: linear-gradient(180deg, #f0f2fc 0%, #cbd0e8 58%, #a9afd3 100%); color: #3d4160; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6); }
 
-.p18.play .pack { animation: p18pack 1.85s backwards; }
-.p18.play .crimpR { animation: p18tear 1.85s backwards; }
-.p18.play .shine { animation: p18shine 1.85s ease-in-out backwards; }
-.p18.play .bar { animation: p18bar 1.85s backwards; }
-.p18.play ~ .sub, .p18.play .sub { animation: p18sub 0.45s 1.55s ease-out backwards; }
-/* 袋：現れる → しばらく置かれる → 左へ抜けていく */
+/* ---- 銀色の袋（最終形では見えない）：なめらかな光沢、両端は縦じわとギザギザの留め口 ----
+   上部（裂ける部分＝高さ40%）と下部（60%）の2枚に分け、同じ光沢をつなげて1枚の袋に見せる */
+.p18 .pack {
+  position: absolute; inset: 0; opacity: 0; transform: translateY(110%);
+  filter: drop-shadow(0 calc(var(--W) * 0.008) calc(var(--W) * 0.012) rgba(0, 0, 0, 0.22));
+  /* 留め口のギザギザ（山の深さ D、山の高さ 2D）。袋の高さ 0.2W に山がちょうど10個入る */
+  --D: calc(var(--W) * 0.01);
+  --crimp: 6.5%;
+}
+.p18 .flap, .p18 .lower {
+  position: absolute; left: 0; right: 0;
+  background:
+    /* 両端の留め口：細かい縦じわ（下の光沢が透けるよう半透明） */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 0.8px, rgba(0, 0, 0, 0.16) 0.8px 1.7px, rgba(255, 255, 255, 0) 1.7px 2.6px) left / var(--crimp) 100% no-repeat,
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 0.8px, rgba(0, 0, 0, 0.16) 0.8px 1.7px, rgba(255, 255, 255, 0) 1.7px 2.6px) right / var(--crimp) 100% no-repeat,
+    /* 留め口と本体の境目の、うっすらした段差 */
+    linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--crimp) - 1.5px), rgba(0, 0, 0, 0.12) var(--crimp), rgba(255, 255, 255, 0.5) calc(var(--crimp) + 1px), rgba(255, 255, 255, 0) calc(var(--crimp) + 4px), rgba(255, 255, 255, 0) calc(100% - var(--crimp) - 4px), rgba(255, 255, 255, 0.5) calc(100% - var(--crimp) - 1px), rgba(0, 0, 0, 0.12) calc(100% - var(--crimp)), rgba(0, 0, 0, 0) calc(100% - var(--crimp) + 1.5px)),
+    /* 横方向のやわらかな映り込み */
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 24%, rgba(0, 0, 0, 0.05) 62%, rgba(255, 255, 255, 0.25)),
+    /* 縦方向の光沢（つるっとした金属フィルム） */
+    linear-gradient(180deg, #b9b9b9 0%, #f8f8f8 9%, #e6e6e6 24%, #d2d2d2 44%, #f6f6f6 63%, #c6c6c6 80%, #ececec 92%, #a6a6a6 100%);
+  /* 左右の端をギザギザに切り抜く（真ん中は全面、両端は三角の山をくり返す） */
+  --p18-mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--D)) 100% no-repeat,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) 0 0 / var(--D) calc(var(--D) * 2) repeat-y,
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) 100% 0 / var(--D) calc(var(--D) * 2) repeat-y;
+  -webkit-mask: var(--p18-mask);
+  mask: var(--p18-mask);
+}
+/* 縦の光沢だけは袋全体の高さで描き、上下2枚でつながって見えるようにする */
+.p18 .flap { top: 0; height: 40%; background-size: var(--crimp) 100%, var(--crimp) 100%, 100% 100%, 100% 100%, 100% 250%; background-position: left, right, 0 0, 0 0, 0 0; clip-path: inset(0 0 0 100%); }
+.p18 .lower { bottom: 0; height: 60%; background-size: var(--crimp) 100%, var(--crimp) 100%, 100% 100%, 100% 100%, 100% calc(100% / 0.6); background-position: left, right, 0 0, 0 0, 0 100%; }
+/* 裂けた口の影（袋の口に近いほど、中のバーが少し暗く見える） */
+.p18 .inside { position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.32) 100%); }
+/* 袋の印字（参考映像の「INFOBAR ZERO」のような細い字） */
+.p18 .print { position: absolute; right: 11%; top: 14%; font: 400 calc(var(--W) * 0.03) / 1 var(--logo-font-mono), Menlo, monospace; letter-spacing: 0.3em; color: rgba(60, 60, 60, 0.6); white-space: nowrap; }
+/* 裂け目の先でめくれ上がる切れ端 */
+.p18 .curl {
+  position: absolute; top: -18%; left: 0; width: 8%; height: 56%; opacity: 0;
+  border-radius: calc(var(--W) * 0.006);
+  background: linear-gradient(110deg, #9e9e9e 0%, #f7f7f7 45%, #c9c9c9 100%);
+  transform: skewX(-28deg) rotate(-14deg); transform-origin: 0 100%;
+  box-shadow: 0 calc(var(--W) * 0.004) calc(var(--W) * 0.006) rgba(0, 0, 0, 0.25);
+}
+
+/* ---- 動き ---- */
+.p18.play .pack { animation: p18pack 2s backwards; }
+.p18.play .flap { animation: p18flap 2s backwards; }
+.p18.play .curl { animation: p18curl 2s backwards; }
+.p18.play .bar { animation: p18bar 2s backwards; }
+.p18.play .sub { animation: p18sub 0.45s 1.7s ease-out backwards; }
+/* 袋：現れる → 置かれたまま上部が裂ける → 下へ抜けていく */
 @keyframes p18pack {
-  0% { opacity: 0; transform: scale(0.96); }
-  12% { opacity: 1; transform: none; }
-  52% { opacity: 1; transform: none; animation-timing-function: cubic-bezier(0.55, 0, 0.25, 1); }
-  92% { opacity: 1; transform: translateX(-102%); }
-  100% { opacity: 0; transform: translateX(-105%); }
+  0% { opacity: 0; transform: scale(0.97); }
+  10% { opacity: 1; transform: none; }
+  58% { opacity: 1; transform: none; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0.3); }
+  88% { opacity: 1; transform: translateY(105%); }
+  100% { opacity: 0; transform: translateY(110%); }
 }
-/* 右の留め口：ちぎれて、はね飛ぶ */
-@keyframes p18tear {
-  0%, 36% { transform: none; opacity: 1; animation-timing-function: cubic-bezier(0.3, 0, 0.6, 1); }
-  50% { transform: translate(40%, -70%) rotate(-48deg); opacity: 0; }
-  100% { transform: translate(40%, -70%) rotate(-48deg); opacity: 0; }
+/* 上部が左から右へ裂けていく */
+@keyframes p18flap {
+  0%, 17% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  50%, 100% { clip-path: inset(0 0 0 100%); }
 }
-/* 袋の光沢：一度だけ光が走る */
-@keyframes p18shine { 0%, 8% { transform: translateX(-130%) skewX(-18deg); } 34%, 100% { transform: translateX(420%) skewX(-18deg); } }
-/* バー：袋から引き出されるように、少し遅れてついてくる */
+/* めくれた切れ端が、裂け目と一緒に右へ進んで消える */
+@keyframes p18curl {
+  0%, 16% { left: 0; opacity: 0; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  19% { opacity: 1; }
+  48% { left: 91%; opacity: 1; }
+  55%, 100% { left: 95%; opacity: 0; }
+}
+/* バー：袋が出そろうまでは表示しない。袋の中にある間は、留め口のギザギザのすき間からのぞかないよう両端をわずかに隠す。
+   上部が裂けると、袋の口から少しせり出し → 袋が下へ抜けきったら、元の位置へ落ち着く */
 @keyframes p18bar {
-  0%, 52% { transform: translateX(-7%); animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1); }
-  90% { transform: translateX(0.8%); }
-  100% { transform: none; }
+  0%, 9.9% { opacity: 0; clip-path: inset(0 calc(var(--W) * 0.012)); transform: translateY(5%); }
+  10%, 50% { opacity: 1; clip-path: inset(0 calc(var(--W) * 0.012)); transform: translateY(5%); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  62% { transform: translateY(-16%); }
+  84% { clip-path: inset(0 calc(var(--W) * 0.012)); }
+  86% { transform: translateY(-16%); animation-timing-function: ease-in-out; }
+  90% { clip-path: inset(0 0); }
+  100% { opacity: 1; clip-path: inset(0 0); transform: none; }
 }
 @keyframes p18sub { from { opacity: 0; transform: translateY(-0.3em); } }
 
