@@ -275,7 +275,7 @@ export const LOGO_PATTERNS: LogoPattern[] = [
         {/* 上部は留め口ごと、左から右へ裂けて開く */}
         <div className={s.pack} aria-hidden="true">
           <span className={s.lower}>
-            <span className={s.print}>NOWLEDGE</span>
+            <span className={s.print}>Case Study Sharing by Rhino inc.</span>
           </span>
           <span className={s.inside} />
           <span className={s.flap} />

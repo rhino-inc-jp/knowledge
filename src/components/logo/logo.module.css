@@ -267,8 +267,8 @@
 .p18 .lower { bottom: 0; height: 60%; background-size: var(--crimp) 100%, var(--crimp) 100%, 100% 100%, 100% 100%, 100% calc(100% / 0.6); background-position: left, right, 0 0, 0 0, 0 100%; }
 /* 裂けた口の影（袋の口に近いほど、中のバーが少し暗く見える） */
 .p18 .inside { position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.32) 100%); }
-/* 袋の印字（参考映像の「INFOBAR ZERO」のような細い字） */
-.p18 .print { position: absolute; right: 11%; top: 14%; font: 400 calc(var(--W) * 0.03) / 1 var(--logo-font-mono), Menlo, monospace; letter-spacing: 0.3em; color: rgba(60, 60, 60, 0.6); white-space: nowrap; }
+/* 袋の印字（参考映像の「INFOBAR ZERO」のような細い字）。完成後に出る説明文と同じ文言 */
+.p18 .print { position: absolute; right: 11%; top: 14%; font: 400 calc(var(--W) * 0.03) / 1 var(--logo-font-mono), Menlo, monospace; letter-spacing: 0.06em; color: rgba(60, 60, 60, 0.6); white-space: nowrap; }
 /* 裂け目の先でめくれ上がる切れ端 */
 .p18 .curl {
   position: absolute; top: -18%; left: 0; width: 8%; height: 56%; opacity: 0;
