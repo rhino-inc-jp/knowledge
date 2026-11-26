@@ -1,5 +1,5 @@
 /**
- * 左上ロゴの案の定義（15案。P06・P16 は検証の結果外した。番号は振り直さない）
+ * 左上ロゴの案の定義（16案。P06・P16 は検証の結果外した。番号は振り直さない）
  *
  * - render：表示する中身（最終形）。動きは logo.module.css の .play で付く
  * - fit：data-fit を付けた要素は、ロゴの横幅 × その値 に収まるよう文字の大きさを合わせる
@@ -20,7 +20,7 @@ export type LogoContext = {
 };
 
 export type LogoPattern = {
-  id: string; // p01〜p17（URL の ?logo=p07 で指定できる。p06・p16 は欠番）
+  id: string; // p01〜p18（URL の ?logo=p07 で指定できる。p06・p16 は欠番）
   name: string;
   className: string;
   full?: boolean; // true：下の「Case Study Sharing by Rhino inc.」も中身に含む（今のロゴをそのまま使う案）
@@ -73,6 +73,9 @@ function ring(color: string, radius: number, dx = 0, dy = 0) {
 const STICKER_SHADOW = `0.035em 0.07em 0 #d3ccbd,${ring("#d3ccbd", 0.135, 0.035, 0.07)}`;
 const STICKER_OUTER = ring("#121212", 0.135);
 const STICKER_WHITE = ring("#ffffff", 0.1);
+
+// P18 INFOBAR：携帯（INFOBAR ZERO の赤）のキーの色。tone＝タイルの色の種類（CSS の .k-red / .k-cream / .k-lilac）
+const INFOBAR_KEYS: ("red" | "cream" | "lilac")[] = ["red", "cream", "lilac", "red", "cream", "lilac", "red", "cream"];
 
 // SVG の文字の大きさを測って、表示枠をぴったりに合わせる
 function fitSvg(svg: SVGSVGElement) {
@@ -251,6 +254,35 @@ export const LOGO_PATTERNS: LogoPattern[] = [
   {
     id: "p15", name: "1文字ずつせり上がる", className: cx("p15", "ex"), full: true,
     render: ({ uid }) => currentLogo(uid, "bottom", true),
+  },
+  {
+    // P18 INFOBAR：銀色の袋の上部が左から右へ裂けて開き、袋が下へ抜けると、携帯（INFOBAR ZERO の赤）のようなバーが残る
+    id: "p18", name: "INFOBAR", className: cx("p18"), fonts: [MONO],
+    render: () => (
+      <div className={s.scene}>
+        {/* 携帯のようなバー（左に黒い画面、右に「Nowledge」のキー）。開くまでは袋の内側だけに隠れている */}
+        <div className={s.bar}>
+          <span className={s.screen} />
+          <span className={s.keys}>
+            {"Nowledge".split("").map((ch, i) => (
+              <span key={i} className={cx("key", `k-${INFOBAR_KEYS[i]}`)}>
+                {ch}
+              </span>
+            ))}
+          </span>
+        </div>
+        {/* 銀色の袋：上部（flap）と下部（lower）の2枚で1つの袋に見せる。両端はギザギザの留め口 */}
+        {/* 上部は留め口ごと、左から右へ裂けて開く */}
+        <div className={s.pack} aria-hidden="true">
+          <span className={s.lower}>
+            <span className={s.print}>Case Study Sharing by Rhino inc.</span>
+          </span>
+          <span className={s.inside} />
+          <span className={s.flap} />
+          <span className={s.curl} />
+        </div>
+      </div>
+    ),
   },
   {
     id: "p17", name: "ステッカー", className: cx("p17"), fonts: [STICKER],
