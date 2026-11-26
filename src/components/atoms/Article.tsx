@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Article as ArticleType } from "@/types/article";
 import styles from "@/styles/components/atoms/article.module.css";
 import { ViewType } from "@/constants/viewTypes";
+import { openLinksInNewTab } from "@/utils/openLinksInNewTab";
 
 type Props = {
   article: ArticleType;
@@ -240,7 +241,8 @@ const Article = ({
       >
         <div
           className={styles.articleComment}
-          dangerouslySetInnerHTML={{ __html: editor }}
+          // コメント内のリンクは、入力の仕方に関係なく新しいタブで開く
+          dangerouslySetInnerHTML={{ __html: openLinksInNewTab(editor ?? "") }}
         />
       </div>
     </a>
