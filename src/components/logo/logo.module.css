@@ -1,0 +1,326 @@
+/* ==========================================================================
+   左上のロゴ（ページを開くたびに16案から切り替わる）
+   - どの案も「最終形」を基本の見た目にして、.play が付いたときだけ動く
+   - 動きを減らす設定の人には、動かさずに最終形を表示
+   - 比較ページ（Claude の Artifact「Nowledge ロゴ案」）と同じ内容
+   ========================================================================== */
+
+.logo {
+  --W: 200px;
+  width: 100%;
+  color: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+/* 書体の準備と大きさ合わせが終わるまでは見せない（一瞬崩れた形が見えないように） */
+.logo:not(.ready) {
+  visibility: hidden;
+}
+
+/* 3D の案：準備ができるまでは今のロゴを重ねて表示し、準備ができたらフェードアウト */
+.frame {
+  position: relative;
+}
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.ready + .placeholder {
+  opacity: 0;
+}
+.mark {
+  position: relative;
+}
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+.sub {
+  margin: calc(var(--W) * 0.02) 0 0;
+  font: 400 calc(var(--W) * 0.056) / 1.2 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  color: #000;
+}
+.ch {
+  display: inline-block;
+}
+.logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* P01 赤いN（VOU） */
+.p01 .word { font-family: var(--logo-font-slab), Georgia, serif; color: #151515; letter-spacing: -0.01em; }
+.p01 .red { color: #d23a2b; }
+.p01.play .ch { animation: p01drop 0.62s cubic-bezier(0.2, 1.35, 0.45, 1) backwards; animation-delay: calc(var(--i) * 55ms); }
+@keyframes p01drop { from { transform: translateY(-0.9em); opacity: 0; } }
+
+/* P02 太い斜体（VOU） */
+.p02 .word { font-family: var(--logo-font-italic), Georgia, serif; font-style: italic; font-weight: 900; color: #c72f28; letter-spacing: -0.005em; }
+.p02.play .word { animation: p02in 1s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+@keyframes p02in { from { transform: translateX(-35%) skewX(-28deg); opacity: 0; filter: blur(3px); } }
+
+/* P03 罫線と紙（VOU） */
+.p03 .paper { position: relative; height: calc(var(--W) * 0.26); background: #e3a83b; color: #161616; }
+.p03 .rh { position: absolute; left: 0; right: 0; top: 64%; height: 1px; background: #161616; transform-origin: left; }
+.p03 .rv { position: absolute; top: 0; bottom: 0; left: 30%; width: 1px; background: #161616; transform-origin: top; }
+.p03 .no { position: absolute; left: 5%; top: 9%; font: 500 calc(var(--W) * 0.034) / 1.35 var(--logo-font-mono), Menlo, monospace; letter-spacing: 0.04em; }
+.p03 .word { position: absolute; left: 36%; top: 11%; font-family: var(--logo-font-slab), Georgia, serif; }
+.p03.play .rh { animation: p03h 0.45s ease-out backwards; }
+.p03.play .rv { animation: p03v 0.45s 0.18s ease-out backwards; }
+.p03.play .no { animation: p03w 0.4s 0.5s ease-out backwards; }
+.p03.play .word { animation: p03w 0.55s 0.6s ease-out backwards; }
+@keyframes p03h { from { transform: scaleX(0); } }
+@keyframes p03v { from { transform: scaleY(0); } }
+@keyframes p03w { from { opacity: 0; transform: translateY(0.3em); } }
+
+/* P04 はみ出す極太（VOU） */
+.p04 .block { display: inline-flex; align-items: flex-end; height: 0.6em; overflow: hidden; background: #ee5c3c; padding: 0 0.05em; line-height: 0.72; }
+.p04 .word { font-family: var(--logo-font-black), "Arial Black", sans-serif; font-size: 1em; color: #4a2421; letter-spacing: -0.01em; line-height: 0.72; }
+.p04.play .block { animation: p04wipe 0.35s ease-out backwards; }
+.p04.play .word { animation: p04rise 0.8s 0.2s cubic-bezier(0.2, 0.85, 0.25, 1) backwards; }
+@keyframes p04wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes p04rise { from { transform: translateY(105%); } }
+
+/* P05 黒いNと水色（VOU） */
+.p05 .word { font-family: var(--logo-font-black), "Arial Black", sans-serif; color: #6da7da; letter-spacing: -0.02em; }
+.p05 .n { color: #111; }
+.p05.play .n { animation: p05stamp 0.38s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; }
+.p05.play .ch:not(.n) { animation: p05slide 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) backwards; animation-delay: calc(0.25s + var(--i) * 45ms); }
+@keyframes p05stamp { from { transform: scale(1.9); opacity: 0; } }
+@keyframes p05slide { from { transform: translateX(0.7em); opacity: 0; } }
+
+/* P07 目（W Conran） */
+.p07 .word { font-weight: 700; letter-spacing: -0.025em; color: #111; }
+.p07 .eye { display: inline-block; width: 0.6em; height: 0.6em; vertical-align: -0.012em; margin: 0 0.01em; }
+.p07 .iris, .p07 .lid { transform-box: view-box; }
+.p07 .lid { transform-origin: 50px 0; transform: scaleY(0); }
+.p07.play .eye { animation: p07pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; }
+.p07.play .iris { animation: p07look 1.7s 0.3s ease-in-out backwards; }
+.p07.play .lid { animation: p07blink 1.7s 0.3s linear backwards; }
+@keyframes p07pop { from { transform: scale(0); } }
+@keyframes p07look { 0% { transform: translate(0, 0); } 22% { transform: translate(-15px, 3px); } 52% { transform: translate(15px, -3px); } 78%, 100% { transform: translate(0, 0); } }
+@keyframes p07blink { 0%, 62% { transform: scaleY(0); } 68% { transform: scaleY(1); } 74%, 100% { transform: scaleY(0); } }
+
+/* P08 ビー玉（W Conran） */
+.p08 text { font-family: var(--logo-font-black), "Arial Black", sans-serif; }
+.p08 .fill { fill: #1fa67a; }
+.p08 .marbles circle { fill: #111; }
+.p08.play .fill { animation: p08fade 0.25s ease-out backwards; }
+.p08.play .marbles circle { animation: p08fall 0.7s cubic-bezier(0.3, 1.25, 0.5, 1) backwards; animation-delay: var(--d); }
+@keyframes p08fade { from { opacity: 0; } }
+@keyframes p08fall { from { transform: translateY(var(--fy)); } }
+
+/* P09 版ズレ（W Conran × VOU） */
+.p09 text { font-family: var(--logo-font-black), "Arial Black", sans-serif; fill: none; mix-blend-mode: multiply; }
+.p09 .c { stroke: #00aeef; }
+.p09 .m { stroke: #ec008c; }
+.p09 .y { stroke: #fff200; }
+.p09.play .c { animation: p09c 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) backwards; }
+.p09.play .m { animation: p09m 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) backwards; }
+.p09.play .y { animation: p09y 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) backwards; }
+@keyframes p09c { 0% { transform: translate(-60px, 18px); opacity: 0; } 25% { opacity: 1; } 45% { transform: translate(14px, -8px); } 70% { transform: translate(-5px, 2px); } 100% { transform: none; } }
+@keyframes p09m { 0% { transform: translate(50px, -22px); opacity: 0; } 25% { opacity: 1; } 45% { transform: translate(-12px, 9px); } 70% { transform: translate(4px, -3px); } 100% { transform: none; } }
+@keyframes p09y { 0% { transform: translate(10px, 34px); opacity: 0; } 25% { opacity: 1; } 45% { transform: translate(-8px, -12px); } 70% { transform: translate(3px, 4px); } 100% { transform: none; } }
+
+/* P10 押し出し（疑似3D）：厚みの色 --mc はサイトの「今月の色」 */
+.p10 .word {
+  font-weight: 700; letter-spacing: -0.025em; color: #111; transform-origin: 50% 100%;
+  text-shadow: 0.011em 0.011em 0 var(--mc), 0.022em 0.022em 0 var(--mc), 0.033em 0.033em 0 var(--mc), 0.044em 0.044em 0 var(--mc), 0.055em 0.055em 0 var(--mc), 0.066em 0.066em 0 var(--mc),
+    0.077em 0.077em 0 var(--mc), 0.088em 0.088em 0 var(--mc), 0.099em 0.099em 0 var(--mc), 0.11em 0.11em 0 var(--mc), 0.121em 0.121em 0 var(--mc), 0.132em 0.132em 0 var(--mc);
+  transform: perspective(6em) rotateX(16deg) rotateY(-16deg);
+}
+.p10.play .word { animation: p10ext 1.3s cubic-bezier(0.2, 0.9, 0.3, 1) backwards; }
+@keyframes p10ext {
+  from {
+    text-shadow: 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc), 0 0 0 var(--mc);
+    transform: perspective(6em) rotateX(0) rotateY(0);
+  }
+}
+
+/* P11 棚（now＋ledge） */
+.p11 .word { position: relative; font-weight: 700; letter-spacing: -0.025em; color: #111; }
+.p11 .shelf { position: absolute; left: -2%; right: -2%; bottom: 0.19em; height: 0.045em; background: #111; transform-origin: left; }
+.p11 .bracket { position: absolute; bottom: 0.06em; width: 0.045em; height: 0.13em; background: #111; transform-origin: top; }
+.p11 .b1 { left: 14%; }
+.p11 .b2 { left: 84%; }
+.p11.play .shelf { animation: p11shelf 0.35s ease-out backwards; }
+.p11.play .bracket { animation: p11br 0.25s 0.3s ease-out backwards; }
+.p11.play .ch { animation: p11drop 0.6s cubic-bezier(0.25, 1.65, 0.5, 1) backwards; animation-delay: calc(0.35s + var(--i) * 65ms); }
+@keyframes p11shelf { from { transform: scaleX(0); } }
+@keyframes p11br { from { transform: scaleY(0); } }
+@keyframes p11drop { from { transform: translateY(-1.5em) rotate(-10deg); opacity: 0; } 40% { opacity: 1; } }
+
+/* P12・P13 本物の3D（Three.js） */
+.mark3d { width: 100%; height: calc(var(--W) * 0.27); position: relative; }
+.mark3d canvas { display: block; }
+
+/* P14・P15 今のロゴのまま（文字ごとの図形を動かす） */
+.ex svg { overflow: hidden; }
+.ex .ch, .ex .ln { transform-box: fill-box; }
+.p14.play .wm { animation: p14fall 0.95s 0.06s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.p14.play .sl { animation: p14sub 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+@keyframes p14fall { from { transform: translateY(-175px); } }
+@keyframes p14sub { from { transform: translateY(-115px); } }
+.p15 .ch { transform-origin: 50% 100%; }
+.p15.play .ch { animation: p15rise 0.78s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i) * 65ms); }
+.p15.play .sl { animation: p15sub 0.6s 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+@keyframes p15rise { 0% { transform: translateY(80px) scaleY(1.55); } 55% { transform: translateY(-2px) scaleY(1.06); } 100% { transform: none; } }
+@keyframes p15sub { from { transform: translateY(24px); } }
+
+/* P17 ステッカー（Flowfest）：黒い文字＋太い白の縁取り＋細い黒の外周＋薄い影。1文字ずつ下から浮かび上がり、マウスを乗せると沈む */
+.p17 .word { font-family: var(--logo-font-sticker), "Cooper Black", Georgia, serif; font-weight: 700; letter-spacing: -0.01em; }
+.p17 .stk { position: relative; display: inline-block; margin: 0.14em 0 0.2em 0.14em; }
+.p17 .lay { position: absolute; inset: 0; white-space: nowrap; }
+.p17 .shadow { color: transparent; }
+.p17 .press { position: relative; display: inline-block; transition: transform 0.25s cubic-bezier(0.625, 0.05, 0, 1); }
+/* マウスを乗せると、ステッカー本体が下に少し沈む（影はその場に残るので、押し付けたように見える）
+   参考：Flowfest の見出し（約0.05文字分・0.25秒） */
+@media (hover: hover) {
+  a:hover .p17 .press { transform: translateY(0.05em); }
+}
+.p17 .outer { color: #121212; }
+.p17 .white { color: #fff; }
+.p17 .fillText { position: relative; color: #121212; white-space: nowrap; }
+.p17.play .ch { animation: p17rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i) * 45ms); }
+@keyframes p17rise { from { transform: translateY(45%); opacity: 0; } }
+
+/* P18 INFOBAR（au Design project「INFOBAR ZERO」の映像を参考）
+   なめらかな銀色の袋の上部が左から右へ裂けて開き、袋が下へ抜けると、INFOBAR ZERO（赤）のようなバーが残る（約2秒） */
+.p18 .scene { position: relative; height: calc(var(--W) * 0.2); overflow: hidden; }
+
+/* ---- バー（携帯）：つやのある赤い枠、左に黒い画面、右にぷっくりしたキー ---- */
+.p18 .bar {
+  position: absolute; left: 0; right: 0; top: 50%; height: calc(var(--W) * 0.135); margin-top: calc(var(--W) * -0.0675);
+  display: flex; gap: calc(var(--W) * 0.012); padding: calc(var(--W) * 0.013);
+  border-radius: calc(var(--W) * 0.05);
+  background: linear-gradient(180deg, #ea3d48 0%, #c8102e 42%, #a30a1d 100%);
+  box-shadow:
+    inset 0 calc(var(--W) * 0.004) calc(var(--W) * 0.003) rgba(255, 255, 255, 0.55),
+    inset 0 calc(var(--W) * -0.006) calc(var(--W) * 0.008) rgba(0, 0, 0, 0.3),
+    0 calc(var(--W) * 0.01) calc(var(--W) * 0.018) rgba(0, 0, 0, 0.22);
+}
+.p18 .screen {
+  width: 16%; border-radius: calc(var(--W) * 0.032);
+  background: linear-gradient(155deg, #444 0%, #111 32%, #000 70%, #1a1a1a 100%);
+  box-shadow: inset 0 calc(var(--W) * 0.003) calc(var(--W) * 0.004) rgba(255, 255, 255, 0.22);
+}
+.p18 .keys { flex: 1; display: grid; grid-template-columns: repeat(8, 1fr); gap: calc(var(--W) * 0.006); }
+.p18 .key {
+  position: relative; overflow: hidden; display: grid; place-items: center;
+  border-radius: calc(var(--W) * 0.024);
+  font: 700 calc(var(--W) * 0.064) / 1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow:
+    inset 0 calc(var(--W) * 0.004) 0 rgba(255, 255, 255, 0.75),
+    inset 0 calc(var(--W) * -0.006) calc(var(--W) * 0.006) rgba(0, 0, 0, 0.22),
+    0 calc(var(--W) * 0.003) calc(var(--W) * 0.004) rgba(0, 0, 0, 0.3);
+}
+/* キーの上のつや（ぷっくりした光の反射） */
+.p18 .key::after {
+  content: ""; position: absolute; left: 14%; right: 14%; top: 7%; height: 36%; border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+}
+.p18 .k-red { background: linear-gradient(180deg, #f4464f 0%, #d3121f 55%, #ab0b18 100%); color: #fff; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
+.p18 .k-cream { background: linear-gradient(180deg, #fffdf8 0%, #efe8d9 58%, #d6cdba 100%); color: #3c3a36; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7); }
+.p18 .k-lilac { background: linear-gradient(180deg, #f0f2fc 0%, #cbd0e8 58%, #a9afd3 100%); color: #3d4160; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6); }
+
+/* ---- 銀色の袋（最終形では見えない）：なめらかな光沢、両端は縦じわとギザギザの留め口 ----
+   上部（裂ける部分＝高さ40%）と下部（60%）の2枚に分け、同じ光沢をつなげて1枚の袋に見せる */
+.p18 .pack {
+  position: absolute; inset: 0; opacity: 0; transform: translateY(110%);
+  filter: drop-shadow(0 calc(var(--W) * 0.008) calc(var(--W) * 0.012) rgba(0, 0, 0, 0.22));
+  /* 留め口のギザギザ（山の深さ D、山の高さ 2D）。袋の高さ 0.2W に山がちょうど10個入る */
+  --D: calc(var(--W) * 0.01);
+  --crimp: 6.5%;
+}
+.p18 .flap, .p18 .lower {
+  position: absolute; left: 0; right: 0;
+  background:
+    /* 両端の留め口：細かい縦じわ（下の光沢が透けるよう半透明） */
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 0.8px, rgba(0, 0, 0, 0.16) 0.8px 1.7px, rgba(255, 255, 255, 0) 1.7px 2.6px) left / var(--crimp) 100% no-repeat,
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0 0.8px, rgba(0, 0, 0, 0.16) 0.8px 1.7px, rgba(255, 255, 255, 0) 1.7px 2.6px) right / var(--crimp) 100% no-repeat,
+    /* 留め口と本体の境目の、うっすらした段差 */
+    linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--crimp) - 1.5px), rgba(0, 0, 0, 0.12) var(--crimp), rgba(255, 255, 255, 0.5) calc(var(--crimp) + 1px), rgba(255, 255, 255, 0) calc(var(--crimp) + 4px), rgba(255, 255, 255, 0) calc(100% - var(--crimp) - 4px), rgba(255, 255, 255, 0.5) calc(100% - var(--crimp) - 1px), rgba(0, 0, 0, 0.12) calc(100% - var(--crimp)), rgba(0, 0, 0, 0) calc(100% - var(--crimp) + 1.5px)),
+    /* 横方向のやわらかな映り込み */
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 24%, rgba(0, 0, 0, 0.05) 62%, rgba(255, 255, 255, 0.25)),
+    /* 縦方向の光沢（つるっとした金属フィルム） */
+    linear-gradient(180deg, #b9b9b9 0%, #f8f8f8 9%, #e6e6e6 24%, #d2d2d2 44%, #f6f6f6 63%, #c6c6c6 80%, #ececec 92%, #a6a6a6 100%);
+  /* 左右の端をギザギザに切り抜く（真ん中は全面、両端は三角の山をくり返す） */
+  --p18-mask:
+    linear-gradient(#000 0 0) center / calc(100% - 2 * var(--D)) 100% no-repeat,
+    conic-gradient(from 45deg at left, #0000, #000 1deg 89deg, #0000 90deg) 0 0 / var(--D) calc(var(--D) * 2) repeat-y,
+    conic-gradient(from -135deg at right, #0000, #000 1deg 89deg, #0000 90deg) 100% 0 / var(--D) calc(var(--D) * 2) repeat-y;
+  -webkit-mask: var(--p18-mask);
+  mask: var(--p18-mask);
+}
+/* 縦の光沢だけは袋全体の高さで描き、上下2枚でつながって見えるようにする */
+.p18 .flap { top: 0; height: 40%; background-size: var(--crimp) 100%, var(--crimp) 100%, 100% 100%, 100% 100%, 100% 250%; background-position: left, right, 0 0, 0 0, 0 0; clip-path: inset(0 0 0 100%); }
+.p18 .lower { bottom: 0; height: 60%; background-size: var(--crimp) 100%, var(--crimp) 100%, 100% 100%, 100% 100%, 100% calc(100% / 0.6); background-position: left, right, 0 0, 0 0, 0 100%; }
+/* 裂けた口の影（袋の口に近いほど、中のバーが少し暗く見える） */
+.p18 .inside { position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.32) 100%); }
+/* 袋の印字（参考映像の「INFOBAR ZERO」のような細い字）。完成後に出る説明文と同じ文言 */
+.p18 .print { position: absolute; right: 11%; top: 14%; font: 400 calc(var(--W) * 0.03) / 1 var(--logo-font-mono), Menlo, monospace; letter-spacing: 0.06em; color: rgba(60, 60, 60, 0.6); white-space: nowrap; }
+/* 裂け目の先でめくれ上がる切れ端 */
+.p18 .curl {
+  position: absolute; top: -18%; left: 0; width: 8%; height: 56%; opacity: 0;
+  border-radius: calc(var(--W) * 0.006);
+  background: linear-gradient(110deg, #9e9e9e 0%, #f7f7f7 45%, #c9c9c9 100%);
+  transform: skewX(-28deg) rotate(-14deg); transform-origin: 0 100%;
+  box-shadow: 0 calc(var(--W) * 0.004) calc(var(--W) * 0.006) rgba(0, 0, 0, 0.25);
+}
+
+/* ---- 動き ---- */
+.p18.play .pack { animation: p18pack 2s backwards; }
+.p18.play .flap { animation: p18flap 2s backwards; }
+.p18.play .curl { animation: p18curl 2s backwards; }
+.p18.play .bar { animation: p18bar 2s backwards; }
+.p18.play .sub { animation: p18sub 0.45s 1.7s ease-out backwards; }
+/* 袋：現れる → 置かれたまま上部が裂ける → 下へ抜けていく */
+@keyframes p18pack {
+  0% { opacity: 0; transform: scale(0.97); }
+  10% { opacity: 1; transform: none; }
+  58% { opacity: 1; transform: none; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0.3); }
+  88% { opacity: 1; transform: translateY(105%); }
+  100% { opacity: 0; transform: translateY(110%); }
+}
+/* 上部が左から右へ裂けていく */
+@keyframes p18flap {
+  0%, 17% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  50%, 100% { clip-path: inset(0 0 0 100%); }
+}
+/* めくれた切れ端が、裂け目と一緒に右へ進んで消える */
+@keyframes p18curl {
+  0%, 16% { left: 0; opacity: 0; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  19% { opacity: 1; }
+  48% { left: 91%; opacity: 1; }
+  55%, 100% { left: 95%; opacity: 0; }
+}
+/* バー：袋が出そろうまでは表示しない。袋の中にある間は、留め口のギザギザのすき間からのぞかないよう両端をわずかに隠す。
+   上部が裂けると、袋の口から少しせり出し → 袋が下へ抜けきったら、元の位置へ落ち着く */
+@keyframes p18bar {
+  0%, 9.9% { opacity: 0; clip-path: inset(0 calc(var(--W) * 0.012)); transform: translateY(5%); }
+  10%, 50% { opacity: 1; clip-path: inset(0 calc(var(--W) * 0.012)); transform: translateY(5%); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  62% { transform: translateY(-16%); }
+  84% { clip-path: inset(0 calc(var(--W) * 0.012)); }
+  86% { transform: translateY(-16%); animation-timing-function: ease-in-out; }
+  90% { clip-path: inset(0 0); }
+  100% { opacity: 1; clip-path: inset(0 0); transform: none; }
+}
+@keyframes p18sub { from { opacity: 0; transform: translateY(-0.3em); } }
+
+/* 動きを減らす設定の人には、動かさずに最終形を表示 */
+@media (prefers-reduced-motion: reduce) {
+  .play,
+  .play * {
+    animation: none !important;
+  }
+}
