@@ -4,6 +4,7 @@ import type { Article as ArticleType } from "@/types/article";
 import styles from "@/styles/components/atoms/article.module.css";
 import { ViewType } from "@/constants/viewTypes";
 import { useFavorite } from "@/hooks/useFavorites";
+import { openLinksInNewTab } from "@/utils/openLinksInNewTab";
 
 // ハートの形（public/icon_heart.svg と同じ）
 const HEART_PATH =
@@ -113,6 +114,25 @@ const Article = ({
     ? `${imgSrc}${imgSrc.includes("?") ? "&" : "?"}fm=webp&w=800`
     : imgSrc;
 
+  // List表示でマウスを乗せたときに出すサムネイル
+  // （実際の画像があるときだけ。No Image は出さない）
+  const hoverSrc = thumb?.url || metaImage ? optimizedSrc : "";
+
+  // スマホ・タブレット（タッチ操作）：List表示で、指が行に触れている間だけサムネイルを出す
+  // （マウスの「乗せる」の代わり。見た目は CSS の .touching）
+  const isListThumb = viewType === "list" && !!hoverSrc;
+  const [isTouching, setIsTouching] = useState(false);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    // 吹き出し・ハートなどのボタンを押したとき、コメント表示中は出さない
+    if ((e.target as HTMLElement).closest("button") || isCommentVisible) return;
+    setIsTouching(true);
+  };
+  const handleTouchEnd = () => setIsTouching(false);
+  // 長押ししたときに、端末のリンクメニューがサムネイルを隠さないようにする
+  const handleContextMenu = (e: React.MouseEvent) => {
+    if (isTouching) e.preventDefault();
+  };
+
   return (
     <a
       ref={containerRef}
@@ -121,7 +141,15 @@ const Article = ({
       rel="noopener noreferrer"
       className={`${styles.article} ${listStyle} ${
         isSearchMode && styles.searchMode
-      } ${monthColors[month]}`}
+      } ${monthColors[month]} ${isTouching ? styles.touching : ""}`}
+      // 一覧側の CSS（articleList.module.css）から「触れている行」を見分けるための目印
+      data-touching={isTouching || undefined}
+      {...(isListThumb && {
+        onTouchStart: handleTouchStart,
+        onTouchEnd: handleTouchEnd,
+        onTouchCancel: handleTouchEnd,
+        onContextMenu: handleContextMenu,
+      })}
     >
       {viewType === "image" && (
         <div
@@ -143,6 +171,22 @@ const Article = ({
             />
           )}
         </div>
+      )}
+
+      {/* List表示：行にマウスを乗せるとサムネイルが出る（PC・マウス操作のときだけ。見た目は CSS） */}
+      {viewType === "list" && hoverSrc && (
+        <span className={styles.listHoverThumb} aria-hidden="true">
+          <img
+            src={hoverSrc}
+            loading="lazy"
+            decoding="async"
+            // 画像が読めなかったときは、枠ごと出さない
+            onError={(e) => {
+              e.currentTarget.parentElement!.style.display = "none";
+            }}
+            alt=""
+          />
+        </span>
       )}
 
       {/* グループ先頭だけに年月を表示（検索時） */}
@@ -233,7 +277,8 @@ const Article = ({
       >
         <div
           className={styles.articleComment}
-          dangerouslySetInnerHTML={{ __html: editor }}
+          // コメント内のリンクは、入力の仕方に関係なく新しいタブで開く
+          dangerouslySetInnerHTML={{ __html: openLinksInNewTab(editor ?? "") }}
         />
       </div>
     </a>
