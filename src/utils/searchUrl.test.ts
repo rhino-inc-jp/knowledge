@@ -50,6 +50,12 @@ describe("検索条件 ↔ URL の変換", () => {
     });
   });
 
+  it("?view=mypage でマイページと判定する", () => {
+    expect(parseSearchQuery("?view=mypage").view).toBe("mypage");
+    expect(parseSearchQuery("?view=other").view).toBeNull();
+    expect(parseSearchQuery("").view).toBeNull();
+  });
+
   it("条件がなければ hasSearchQuery は false", () => {
     expect(hasSearchQuery(parseSearchQuery(""))).toBe(false);
     expect(hasSearchQuery(parseSearchQuery("?utm_source=slack"))).toBe(false);

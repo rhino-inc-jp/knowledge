@@ -94,7 +94,16 @@ export default function useArticles(
       category = [],
       date = [],
       staff = [],
+      ids,
     }: SearchParams) => {
+      // 記事ID指定（マイページ）でお気に入りが0件なら、問い合わせずに終了
+      // ※ids を空で問い合わせると、全記事が返ってきてしまうため
+      if (ids && ids.length === 0) {
+        setIsEnd(true);
+        setHasInitialized(true);
+        return;
+      }
+
       setIsLoading(true);
       try {
         const filters = formatSearchParams(category, date, staff);
@@ -106,6 +115,8 @@ export default function useArticles(
             orders: "-date",
             q: keyword,
             filters: filters,
+            // マイページ：お気に入りの記事だけを取得
+            ...(ids ? { ids: ids.join(",") } : {}),
           },
         });
         if (cancelled) return;

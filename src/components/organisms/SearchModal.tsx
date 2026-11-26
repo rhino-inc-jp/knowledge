@@ -15,6 +15,8 @@ type Props = {
   isOpen: boolean;
   // いま表示中の検索条件（モーダルを開いたときのチェック状態に使う）
   activeParams: SearchParams;
+  // マイページ（お気に入り一覧）を開く
+  onOpenMypage: () => void;
   onSearch: (params: {
     keyword: string;
     category: string[];
@@ -29,6 +31,7 @@ const SearchModal = ({
   staff,
   isOpen,
   activeParams,
+  onOpenMypage,
   onSearch,
 }: Props) => {
   // 検索展開時のbodyのスクロール制御
@@ -61,6 +64,7 @@ const SearchModal = ({
             calendar={calendar}
             staff={staff}
             activeParams={activeParams}
+            onOpenMypage={onOpenMypage}
             onSearch={onSearch}
           />
         </motion.div>
@@ -79,6 +83,7 @@ const SearchModalBody = ({
   calendar,
   staff,
   activeParams,
+  onOpenMypage,
   onSearch,
 }: Omit<Props, "isOpen">) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
@@ -103,8 +108,29 @@ const SearchModalBody = ({
   };
 
   return (
-    <div className="p-[75px_15px_40px] md:p-[60px_15px_50px] md:m-auto">
+    <div className="p-[75px_15px_40px] md:p-[120px_15px_50px] md:m-auto">
+      {/* ♡ マイページへの入口（PC：閉じるボタンの左に、同じ高さでアイコンだけ） */}
+      {/* ※検索欄と重ならないよう、PC は上の余白を 60px → 120px に広げた */}
+      <button
+        type="button"
+        onClick={onOpenMypage}
+        className="hidden md:block absolute top-[47px] right-[100px] leading-[0]"
+        aria-label="My Page（お気に入り一覧）"
+      >
+        <Image src="/icon_heart.svg" width={24} height={20} alt="" />
+      </button>
+
       <div className="max-md:p-[0_22px]">
+        {/* ♡ マイページへの入口（スマホ：アイコン＋文字） */}
+        <button
+          type="button"
+          onClick={onOpenMypage}
+          className="md:hidden flex items-center gap-[21px] mb-[56px] text-[17px] leading-[1] font-hel"
+        >
+          <Image src="/icon_heart.svg" width={19} height={16} alt="" />
+          My Page
+        </button>
+
         <div className="mb-[48px] md:mb-[68px]">
           <SearchBar keyword={keyword} setKeyword={setKeyword} />
         </div>
