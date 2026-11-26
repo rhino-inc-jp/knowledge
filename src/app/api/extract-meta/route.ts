@@ -19,11 +19,16 @@ const corsHeaders = {
  * - CDN：30日間保存。期限切れ後7日間は古いものを返しつつ裏で取り直す
  * - ブラウザ：保存しない（ブラウザ側の保存は metaCache.ts で行う）
  * ※アクセス制限（proxy.ts）は CDN より手前で動くため、制限はそのまま効く
+ *
+ * 【重要】Netlify の CDN は、初期設定では URL の「?」以降を区別せずに保存する。
+ * そのままだと、最初に保存した1記事の OGP がほかの全記事にも返ってしまう。
+ * Netlify-Vary で「url の値ごとに別々に保存する」と指定している（消さないこと）。
  */
 const CDN_CACHE_HEADERS = {
   "Cache-Control": "public, max-age=0, must-revalidate",
   "Netlify-CDN-Cache-Control":
     "public, durable, max-age=2592000, stale-while-revalidate=604800",
+  "Netlify-Vary": "query=url",
 };
 
 export async function GET(req: Request) {
