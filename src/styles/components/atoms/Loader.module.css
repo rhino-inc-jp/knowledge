@@ -1,0 +1,31 @@
+/* ローディング表示（Figma「Knowledge_PC_Kekka」の Please Wait... に準拠） */
+
+/* 下向きの矢印（∨）が、上から順に濃くなっていく */
+.chevron {
+  opacity: 0.15;
+  animation: chevronFlow 1.2s ease-in-out infinite;
+}
+.chevron:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.chevron:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes chevronFlow {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* 「視差効果を減らす」設定の人には、動かさずに表示する */
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    animation: none;
+    opacity: 1;
+  }
+}

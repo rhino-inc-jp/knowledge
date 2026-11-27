@@ -12,6 +12,8 @@ export default function useSearchOptions(year: number, month: number) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [calendar, setCalendar] = useState<CalnderDate[]>([]);
   const [staff, setStaff] = useState<Staff[]>([]);
+  // カテゴリー一覧の取得が終わったか（失敗した場合も true。URL の絞り込み条件の変換に使う）
+  const [isCategoriesLoaded, setIsCategoriesLoaded] = useState(false);
 
   useEffect(() => {
     // カテゴリーの取得
@@ -30,6 +32,8 @@ export default function useSearchOptions(year: number, month: number) {
         }
       } catch {
         console.log("カテゴリーが取得できませんでした");
+      } finally {
+        setIsCategoriesLoaded(true);
       }
     };
 
@@ -96,5 +100,6 @@ export default function useSearchOptions(year: number, month: number) {
     categories,
     calendar,
     staff,
+    isCategoriesLoaded,
   };
 }

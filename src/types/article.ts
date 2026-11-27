@@ -28,6 +28,8 @@ export type Article = {
   metaTitle?: string;
   metaDescription?: string;
   metaImage?: string;
+  // OGP を取得中かどうか（取得中は No Image を出さずに待つ）
+  isMetaLoading?: boolean;
 
   editor: string;
 };
