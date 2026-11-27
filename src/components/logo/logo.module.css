@@ -16,22 +16,9 @@
   visibility: hidden;
 }
 
-/* 3D の案：準備ができるまでは今のロゴを重ねて表示し、準備ができたらフェードアウト */
+/* ロゴ全体の枠 */
 .frame {
   position: relative;
-}
-.placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.ready + .placeholder {
-  opacity: 0;
 }
 .mark {
   position: relative;

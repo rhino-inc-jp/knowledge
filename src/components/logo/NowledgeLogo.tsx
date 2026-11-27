@@ -1,12 +1,14 @@
 "use client";
 
 /**
- * 左上のロゴ：ページを開くたびに16案からランダムに1つ表示し、1〜2秒動いて止まる
+ * 左上のロゴ：ページを開くたびに16案から1つ表示し、1〜2秒動いて止まる
+ * （出す順番は「山札」方式。16回開けば全案が1回ずつ出る。詳しくは pickPattern.ts）
  *
  * - ブラウザだけで動かす（NowledgeLogoLoader から ssr: false で読み込む）。
  *   サーバーで描くと、ランダムの結果がサーバーとブラウザで食い違うため
  * - URL に ?logo=p07 を付けると、その案に固定できる（確認・レビュー用）
  * - 書体を読み込んで大きさを合わせ終わるまでは見せない（崩れた形が一瞬見えないように）
+ * - 本物の3D の案は、Three.js の準備ができるまで何も出さない（今のロゴの仮表示はしない）
  * - 本物の3D の案が使えない環境（WebGL なし等）では、今のロゴを表示する
  */
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
@@ -19,7 +21,7 @@ import type { Logo3D } from "./Logo3D";
 export default function NowledgeLogo() {
   // どの案を出すか（ページを開いたときに1回だけ決める）
   const [pattern] = useState(() => {
-    const id = pickPatternId(window.location.search, LOGO_PATTERNS.map((p) => p.id));
+    const id = pickOncePerPageLoad();
     return LOGO_PATTERNS.find((p) => p.id === id) ?? LOGO_PATTERNS[0];
   });
   const [now] = useState(() => new Date());
@@ -109,12 +111,24 @@ export default function NowledgeLogo() {
         <div className={styles.mark}>{pattern.render({ uid, year: now.getFullYear(), month, monthColor: MONTH_COLORS[month] })}</div>
         {!pattern.full && <p className={styles.sub}>Case Study Sharing by Rhino inc.</p>}
       </div>
-      {/* 3D の案は Three.js の読み込みに数秒かかることがあるので、その間は今のロゴを出しておく。
-          準備ができたら（.ready が付いたら）CSS でフェードアウトして 3D に切り替わる */}
-      {pattern.is3d && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src="/logo_Nowledge.svg" alt="" aria-hidden="true" className={styles.placeholder} />
-      )}
     </div>
   );
+}
+
+// 選んだ案は、ページを読み込み直すまで覚えておく。
+// React は画面を確定するまでに描画を何度かやり直すことがあり、そのたびに選び直すと
+// 山札が1回の表示で2〜4枚進んでしまう（全案が1回ずつ出なくなる）ため
+let pickedId: string | null = null;
+function pickOncePerPageLoad(): string {
+  pickedId ??= pickPatternId(window.location.search, LOGO_PATTERNS.map((p) => p.id), Math.random, safeLocalStorage());
+  return pickedId;
+}
+
+// ブラウザの保存領域（localStorage）。使えない設定（Cookie のブロック等）では null
+function safeLocalStorage(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
 }
