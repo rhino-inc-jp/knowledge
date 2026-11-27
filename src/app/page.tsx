@@ -27,6 +27,7 @@ import { useFavoriteIds } from "@/hooks/useFavorites";
 import SwitchBtns from "@/components/atoms/SwitchBtns";
 import Loading from "@/components/atoms/Loader";
 import SearchIcon from "@/components/atoms/SearchIcon";
+import QuickLinks from "@/components/atoms/QuickLinks";
 
 import ArticleList from "@/components/organisms/ArticleList";
 import SearchFilterModal from "@/components/organisms/SearchModal";
@@ -189,6 +190,9 @@ const Home = () => {
       {/* エラーメッセージ */}
       {error && <div className="text-sm text-center mt-4">{error}</div>}
 
+      {/* ✉ お問い合わせ・♡ マイページ（検索アイコンの左に、いつも表示） */}
+      <QuickLinks onOpenMypage={handleOpenMypage} />
+
       {/* 検索アイコン */}
       <SearchIcon
         onClick={isModalOpen ? handleCloseModal : handleOpenModal}
@@ -203,7 +207,6 @@ const Home = () => {
         isOpen={isModalOpen}
         activeParams={searchParams}
         onSearch={handleSearch}
-        onOpenMypage={handleOpenMypage}
       />
 
       {/* 初回ロード or 追加読み込み時にローディングを表示*/}
